@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>As três mensagens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .msg { border-top: 3px solid var(--ink); padding: 14px 0 6px; margin: 0 0 18px; }
+  .msg h4 { margin: 0 0 4px; font-size: 18px; color: var(--ink); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .msg .atalho { font-size: 12px; font-weight: 700; color: var(--confianca); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+  .msg .quando { font-size: 14px; color: var(--ink-3); margin: 0 0 8px; }
+  .msg .diz { font-size: 14px; margin: 10px 0 4px; }
+  .msg .porque { font-size: 14px; color: var(--ink-2); margin: 0; }
+  @media print { .msg { break-inside: avoid; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>Esse link está incompleto. Preenche de novo e a gente te manda um link novo.</p><a class="btn" href="../">Abrir a página <span class="seta">→</span></a></div>
+
+  <article id="page" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>As três mensagens</span></div>
+      <p class="capa-tipo" id="capaTipo">As três mensagens</p>
+      <h1 id="cTitulo"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-mensagens.png" alt="Desenho em traço de alguém ao lado da van digitando no celular, com três balões de mensagem"></div>
+      <div class="capa-kpis">
+        <div><b class="ganho">3</b><span>mensagens para o cliente, em inglês</span></div>
+        <div><b>2</b><span>textos para o telefone</span></div>
+        <div><b>0</b><span>aplicativo novo</span></div>
+      </div>
+      <div class="capa-pe"><span>Uma folha particular, montada com o nome da sua empresa.</span><span>Sete capítulos · fontes no fim</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="mensagens" id="sMsgs"></section>
+    <section class="cap" data-secao="telefone" id="sFone"></section>
+    <section class="cap" data-secao="mercado" id="sMercado"></section>
+    <section class="cap" data-secao="playbook" id="sPlaybook"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">07 · Fontes e próximo passo</p>
+      <h2>De onde vêm os números</h2>
+      <p>As mensagens foram escritas para o cliente americano de serviço de casa: curtas, por escrito, com duas opções e uma pergunta no fim. Os números deste material vêm de pesquisas publicadas, com a fonte de cada um abaixo. Onde a pesquisa mediu outra coisa (consulta de saúde, por exemplo), o texto diz.</p>
+      <h3>Fontes</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Quer que a equipe adapte alguma delas para o seu serviço?</h3>
+      <p id="proxTxt">Responda a mensagem do WhatsApp que trouxe você até aqui contando como você atende hoje. Se você marcou a caixa, alguém da equipe liga em até 24 horas.</p>
+      <a class="btn noprint hidden" id="whats" href="#" target="_blank" rel="noopener">Falar com a equipe do Pedro <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Preparado pela equipe do Pedro Mustafa</b><br><span class="muted small">Marketing para quem tem negócio de serviço nos EUA.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Salvar em PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/servicos.js"></script>
+<script src="../../assets/mensagens.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/playbook.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), d;
+  try { d = T.dec(T.qs.get("d")); } catch (e) { d = null; }
+  if (!d || !SERVICOS[d.s]) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(a, x) { if (!own) T.event(id, "mensagens", a, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("pt"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var sv = SERVICOS[d.s], emp = d.e || "", empEn = emp || "[your company]", da = emp ? "da " + emp : "da sua empresa";
+  var trade = (SERVICO_OFICIO[d.s] || ["other"])[0];
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  function fill(t) { return t.replace(/\{E\}/g, empEn).replace(/\{S\}/g, sv.about).replace(/\{Y\}/g, sv.your); }
+  function pt(t) { return t.replace(/\{E\}/g, emp || "[sua empresa]"); }
+
+  // ---------- capa ----------
+  $("capaTipo").textContent = "As três mensagens · " + sv.pt;
+  $("cTitulo").innerHTML = "As três mensagens em inglês " + T.esc(da) + ', <span class="ganho">prontas para mandar</span>';
+  $("cPara").textContent = "Preparado para " + (nome || (emp ? "a " + emp : "você")) + " · " + mes;
+  rx.cabecalho("As três mensagens " + da + " · " + mes);
+
+  // ---------- 01 · resumo ----------
+  function linha() {
+    // a linha do tempo de um serviço, com as três mensagens no lugar em que entram
+    var W = 400, H = 156, L = 52, R = 348, y = 80, P = [[["Pede", "orçamento"], 0], [["Visita", "e preço"], .27], [["Véspera"], .52], [["O serviço"], .76], [["Depois"], 1]];
+    var M = [[0, "1", "No mesmo dia"], [2, "2", "Um dia antes"], [4, "3", "No mesmo dia"]];
+    function x(f) { return L + f * (R - L); }
+    var g = '<line x1="' + L + '" x2="' + R + '" y1="' + y + '" y2="' + y + '" stroke="var(--ink)" stroke-width="2"/>';
+    P.forEach(function (p) { g += '<circle cx="' + x(p[1]) + '" cy="' + y + '" r="4" fill="var(--ink)"/>' + p[0].map(function (t, i) { return '<text x="' + x(p[1]) + '" y="' + (y + 22 + i * 14) + '" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink-2)">' + t + "</text>"; }).join(""); });
+    M.forEach(function (m) {
+      var cx = x(P[m[0]][1]);
+      g += '<line x1="' + cx + '" x2="' + cx + '" y1="' + (y - 34) + '" y2="' + (y - 6) + '" stroke="var(--confianca)" stroke-dasharray="2 3"/><circle cx="' + cx + '" cy="' + (y - 44) + '" r="12" fill="var(--confianca)"/><text x="' + cx + '" y="' + (y - 40) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">' + m[1] + '</text><text x="' + cx + '" y="' + (y - 62) + '" text-anchor="middle" font-size="10.5" fill="var(--confianca)" font-weight="700">' + m[2] + "</text>";
+    });
+    return '<div class="svg-box" style="max-width:560px"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Linha do tempo de um serviço com as três mensagens: no pedido de orçamento, na véspera e depois do serviço">' + g + "</svg></div>";
+  }
+  var achados = [
+    "<b>A mensagem 1 chega no mesmo dia do pedido.</b> Nos testes publicados, só 29% a 37% das empresas responderam em até uma hora, e de 23% a 40% nunca responderam." + cite("hbr", "valve"),
+    "<b>Ela termina pedindo para marcar.</b> " + MERCADO.naoPede + "% das empresas de serviço de casa não pedem para fechar ou marcar o serviço na ligação." + cite("invoca"),
+    "<b>A mensagem 2 confirma a véspera.</b> Em consultas de saúde, o lembrete por SMS levou o comparecimento de 67,8% para 78,6%." + cite("cochrane"),
+    "<b>A mensagem 3 pede a avaliação com o link.</b> 83% de quem é convidado a avaliar escreve a avaliação." + cite("brightlocal")
+  ];
+  $("sResumo").innerHTML = capNum("01", "O resumo") +
+    "<h2>Três momentos decidem se o americano fecha e volta</h2>" +
+    '<p class="lead">O pedido de orçamento, a véspera do serviço e o dia em que você termina. Em cada um, uma mensagem curta, por escrito e em inglês faz o trabalho de quem atende o telefone num escritório.</p>' +
+    ex("linha", "Onde cada mensagem entra no caminho de um serviço", linha(), "As mensagens estão no capítulo 02, já com o nome " + T.esc(da) + ".") +
+    "<h3>O que a pesquisa mostra</h3><ol class=\"achados\">" + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+    leve("Por SMS, e não por WhatsApp", "<p>O americano quase não usa WhatsApp e lê mensagem de texto no mesmo dia. Mande do mesmo número que está no seu site e no seu Google.</p>");
+
+  // ---------- 02 · as três mensagens ----------
+  $("sMsgs").innerHTML = capNum("02", "As três mensagens") +
+    "<h2>As três, com o nome " + T.esc(da) + "</h2>" +
+    "<p>Troque só o que está entre colchetes, como o nome do cliente e o horário, e mande por SMS.</p>" +
+    MENSAGENS.map(function (m, n) {
+      return '<div class="msg"><h4><span>' + T.esc(m.titulo) + '</span><span class="atalho">atalho: ' + m.atalho + '</span></h4><p class="quando">' + T.esc(m.quando) + "</p>" +
+        rx.script(fill(m.en), "msg" + (n + 1)) +
+        '<p class="diz"><b>O que ela diz:</b> ' + T.esc(pt(m.pt)) + '</p><p class="porque"><b>Por que funciona:</b> ' + T.esc(m.porque) + "</p></div>";
+    }).join("");
+
+  // ---------- 03 · o telefone ----------
+  $("sFone").innerHTML = capNum("03", "O telefone em inglês") +
+    "<h2>Dois textos que seguram quem liga enquanto você trabalha</h2>" +
+    '<p class="lead">O americano liga mais do que manda mensagem. Se ninguém atende, ele deixa recado e, se ninguém volta, liga para a próxima empresa. No serviço de casa, cerca de metade das ligações cai numa pessoa.' + cite("invoca") + "</p>" +
+    BONUS_TELEFONE.map(function (m, n) {
+      return '<div class="msg"><h4><span>' + T.esc(m.titulo) + '</span></h4><p class="quando">' + T.esc(m.quando) + "</p>" + rx.script(fill(m.en), "bonus" + (n + 1)) + '<p class="diz"><b>O que ele diz:</b> ' + T.esc(pt(m.pt)) + "</p></div>";
+    }).join("") +
+    "<h3>Deixe as três salvas no celular</h3>" +
+    '<ol class="achados"><li>Copie a mensagem no capítulo 02.</li><li>No iPhone, abra Ajustes › Geral › Teclado › Substituição de Texto e toque em +.</li><li>Cole a mensagem em Frase e escreva o atalho dela (orc1, orc2 ou orc3). Daí em diante, você digita três letras e a mensagem aparece inteira. No Android, o caminho parecido fica no teclado do Google, em Dicionário pessoal.</li></ol>';
+
+  // ---------- 04 · o que os números dizem ----------
+  var M = MERCADO, MP = MERCADO.pt, LEMB = ["Sem lembrete", "Lembrete por SMS", "Lembrete por ligação"];
+  $("sMercado").innerHTML = capNum("04", "O que os números dizem") +
+    "<h2>Responder rápido, confirmar e pedir avaliação</h2>" +
+    '<p class="lead">Cada comparação vem de um estudo ou pesquisa publicada, com a fonte embaixo e a referência completa no fim. Quando a pesquisa mediu outra coisa, a nota diz.</p>' +
+    '<div class="grade2">' +
+    ex("janela", "Quanto as empresas testadas demoraram para responder um pedido novo", rx.janela(null), "Os dois estudos mandaram um pedido de teste e cronometraram a primeira resposta." + cite("hbr", "valve")) +
+    ex("lembrete", "Quantos compareceram à consulta, sem lembrete e com lembrete", barras(M.lembrete.map(function (x, i) { return { rotulo: LEMB[i], valor: x[1], texto: String(x[1]).replace(".", ",") + "%", classe: i ? "voce" : "cinza" }; }), 100),
+      "Consultas de saúde, 8 estudos com 6.615 pessoas. Serviço de casa não foi medido; o mecanismo do lembrete é o mesmo." + cite("cochrane")) +
+    ex("avaliacoes", "O que o americano diz sobre avaliações quando escolhe uma empresa local", barras(M.avaliacoes.map(function (x, i) { return { rotulo: MP.avaliacoes[i], valor: x[1], texto: x[1] + "%", classe: i === 3 ? "voce" : "cinza" }; }), 100), "Pesquisa com 1.002 adultos dos EUA." + cite("brightlocal")) +
+    ex("espera", "O que a demora custa: chance de ser contratado, contra responder na hora", barras(M.espera.barras.map(function (b, i) { return { rotulo: MP.espera[i], valor: b[1], texto: b[1] === 10 ? "cerca de 10" : String(b[1]), classe: "cinza" }; }), 100),
+      "Na mesma pesquisa, a vantagem de responder rápido sumiu quando a pessoa achou que a resposta era automática. São freelancers de um marketplace, e não serviço de casa." + cite("ms")) +
+    "</div>";
+
+  // ---------- 05 · o que fecha o serviço ----------
+  $("sPlaybook").innerHTML = PLAYBOOK.capitulo(rx, "pt", trade, "05");
+
+  // ---------- 06 · o plano ----------
+  var semanas = [
+    ["Semana 1", "Salve as três mensagens como atalho e grave a caixa postal em inglês."],
+    ["Semana 2", "Mande a mensagem 1 para todo pedido de orçamento, no mesmo dia."],
+    ["Semana 3", "Confirme todo serviço na véspera com a mensagem 2."],
+    ["Semana 4", "Peça avaliação depois de todo serviço com a mensagem 3, e conte quantas chegaram no mês."]
+  ];
+  $("sPlano").innerHTML = capNum("06", "O plano de 30 dias") +
+    "<h2>Uma mensagem por semana até virar costume</h2>" +
+    "<p>Nada aqui pede aplicativo novo. O celular e os textos desta folha bastam para começar.</p>" +
+    '<table class="t"><thead><tr><th>Quando</th><th>O que fazer</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  $("fontes").innerHTML = rx.fontes();
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.WHATSAPP) {
+    var w = $("whats");
+    w.href = "https://wa.me/" + String(cfg.WHATSAPP).replace(/\D/g, "") + "?text=" + encodeURIComponent("Oi, vi as mensagens " + da + ".");
+    w.classList.remove("hidden");
+    $("proxTxt").textContent = "Mande uma mensagem contando como você atende hoje, e a equipe do Pedro adapta com você. Se você marcou a caixa, alguém da equipe liga em até 24 horas.";
+    w.addEventListener("click", function () { ev("whatsapp"); });
+  }
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("page").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

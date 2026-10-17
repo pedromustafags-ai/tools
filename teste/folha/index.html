@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>A sua folha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .olhada { list-style: none; padding: 0; margin: 0; }
+  .olhada li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .olhada li:last-child { border-bottom: 0; }
+  .olhada .s { font-weight: 700; color: var(--ink); }
+  .passo { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+  .passo h4 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
+  .alav ul { margin: 2px 0 0; padding-left: 16px; }
+  .alav ul li { margin: 0 0 2px; }
+  @media print { .passo { break-inside: avoid; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>Esse link está incompleto. Faz o teste de novo e a gente te manda um link novo.</p><a class="btn" href="../">Fazer o teste <span class="seta">→</span></a></div>
+
+  <article id="page" class="hidden">
+    <!-- capa: a ilustração do ofício (arte/gerar_capas.py + arte/traco.py), sem foto -->
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>A folha do teste</span></div>
+      <p class="capa-tipo" id="capaTipo">Teste de três minutos</p>
+      <h1 id="cTitulo"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img id="arte" alt=""></div>
+      <div class="capa-kpis">
+        <div><b id="cNota"></b><span>a sua nota</span></div>
+        <div><b class="ganho" id="cForte"></b><span id="cForteR"></span></div>
+        <div><b class="perda" id="cGanho"></b><span id="cGanhoR"></span></div>
+      </div>
+      <div class="capa-pe"><span>Uma folha particular, montada com as suas respostas.</span><span>Oito capítulos · fontes no fim</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="caminho" id="sCaminho"></section>
+    <section class="cap" data-secao="frentes" id="sFrentes"></section>
+    <section class="cap" data-secao="passos">
+      <div id="sPassos"></div>
+      <h3 id="oTitulo"></h3>
+      <div id="olhada"><div class="leve"><span class="rot">Em até 24 horas</span><p id="oEspera"></p></div></div>
+    </section>
+    <section class="cap" data-secao="mercado" id="sMercado"></section>
+    <section class="cap" data-secao="playbook" id="sPlaybook"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">08 · Método, fontes e próximo passo</p>
+      <h2>Como a sua nota é calculada</h2>
+      <p>Cada resposta vale de 0 a 3 pontos. A nota de cada frente é a soma dos pontos dividida pelo máximo possível, de 0 a 100, e a nota geral é a média das quatro frentes. A pergunta da língua das avaliações só conta para quem já tem avaliação.</p>
+      <p class="muted">O que a nota deixa de fora: a qualidade do serviço em si, o preço e a sua região. Ela mede o caminho até o cliente americano, do Google até a avaliação.</p>
+
+      <h3>O que você respondeu</h3>
+      <table class="t" id="respostas"></table>
+      <p class="noprint"><a href="../">Fazer o teste de novo</a></p>
+
+      <h3>Fontes</h3>
+      <ol class="fontes" id="fontes"></ol>
+
+      <h3>Quer olhar isso junto com a equipe?</h3>
+      <p id="proxTxt">Responda a mensagem do WhatsApp que trouxe você até aqui, e a equipe do Pedro olha com você. Se você marcou a caixa no teste, alguém da equipe liga em até 24 horas.</p>
+      <a class="btn noprint hidden" id="whats" href="#" target="_blank" rel="noopener">Falar com a equipe do Pedro <span class="seta">→</span></a>
+
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Preparado pela equipe do Pedro Mustafa</b><br><span class="muted small">Marketing para quem tem negócio de serviço nos EUA.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Salvar em PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/servicos.js"></script>
+<script src="../../assets/teste.js"></script>
+<script src="../../assets/folhas.js"></script>
+<script src="../../assets/fx.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/playbook.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), d;
+  try { d = T.dec(T.qs.get("d")); } catch (e) { d = null; }
+  if (!d || !FOLHAS[d.p] || !d.a) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(t, x) { if (!own) T.event(id, "teste", t, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("pt"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var P = Teste.PONTOS, p = d.p, a = d.a, resp = d.r || {}, f = FOLHAS[p];
+  var emp = d.e || "", da = emp ? "da " + emp : "da sua empresa";
+  var OFICIO = { limpeza: "cleaning", pintura: "painting", grama: "lawn", reparos: "handyman", outro: "other" };
+  var trade = OFICIO[d.g] || "other";
+  var sv = SERVICOS[d.s] ? SERVICOS[d.s].pt : "";
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  function lc(t) { return t.charAt(0).toLowerCase() + t.slice(1); }
+  function mai(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  function fill(t) { return t.replace(/\{E\}/g, emp || "[your company]"); }
+  var forte = Teste.ORDEM.slice().sort(function (x, y) { return a[y] - a[x]; })[0];
+  var fila = Teste.ORDEM.slice().sort(function (x, y) { return a[x] - a[y] || Teste.ORDEM.indexOf(x) - Teste.ORDEM.indexOf(y); });
+  // a resposta dele a cada pergunta, pelo rótulo da opção
+  var Q = {}; Teste.PERGUNTAS.forEach(function (q) { Q[q.id] = q; });
+  function resposta(k) { var q = Q[k], i = resp["_" + k]; return q && q.o[i] ? q.o[i][0] : ""; }
+  function r(k) { var t = resposta(k); return t ? "<b>" + T.esc(t) + "</b>" : '<span class="vazio">sem resposta</span>'; }
+  var CURTA = { perfil: "Perfil no Google", avaliacoes: "Avaliações", lingua: "Língua das avaliações", pede: "Pede avaliação", ligacao: "Ligação no meio do serviço", caixa: "Caixa postal",
+    resposta: "Resposta por mensagem", orcamento: "Como o preço chega", vespera: "Confirmação na véspera", site: "Site", seguro: "Licensed and insured" };
+  // a linha de mercado de uma resposta (teste.js), com a fonte numerada
+  function citaFonte(t) { return /BrightLocal/.test(t) ? cite("brightlocal") : /Invoca/.test(t) ? cite("invoca") : /Harvard/.test(t) ? cite("hbr", "valve") : /HIRI/.test(t) ? cite("hiri") : ""; }
+  var DA_FRENTE = { G: ["avaliacoes", "pede"], T: ["ligacao"], R: ["resposta"], C: ["seguro"] };
+  function linhas(pt) {
+    return DA_FRENTE[pt].map(function (k) { return resp[k] !== undefined ? Teste.mercado(k, resp[k]) : null; }).filter(Boolean)
+      .map(function (m) { return T.esc(m[0]) + citaFonte(m[1]); });
+  }
+  function estado(pt) {
+    if (pt === p) return '<span class="pill vaza">Comece por aqui</span>';
+    return a[pt] >= 80 ? '<span class="pill forte">Forte</span>' : a[pt] >= 50 ? '<span class="pill meio">Dá pra crescer</span>' : '<span class="pill vaza">Onde mais se perde</span>';
+  }
+
+  // ---------- capa ----------
+  $("arte").src = "../../assets/img/capa-" + trade + ".png";
+  $("arte").alt = "Desenho em traço de quem trabalha no serviço enquanto o celular acende";
+  $("capaTipo").textContent = "Teste de três minutos" + (sv ? " · " + sv : "");
+  $("cTitulo").innerHTML = (emp ? T.esc(emp) + ": " : "") + '<span class="ganho">' + d.n + "%</span> do caminho até o cliente americano já está montado";
+  $("cPara").textContent = "Preparado para " + (nome || (emp ? "a " + emp : "você")) + " · " + mes;
+  $("cNota").textContent = d.n + " de 100";
+  $("cForte").textContent = a[forte] + " de 100";
+  $("cForteR").textContent = "o mais forte: " + lc(P[forte].nome);
+  $("cGanho").textContent = a[p] + " de 100";
+  $("cGanhoR").textContent = "o maior ganho: " + lc(P[p].nome);
+  rx.cabecalho("A folha " + da + " · " + mes);
+
+  // ---------- 01 · resumo ----------
+  var achados = [
+    "<b>O que já está mais forte: " + lc(P[forte].nome) + ", com " + a[forte] + " de 100.</b> " + (linhas(forte)[0] || ""),
+    "<b>Onde está o maior ganho: " + lc(P[p].nome) + ", com " + a[p] + " de 100.</b> " + (linhas(p)[0] || T.esc(P[p].onde)),
+    "<b>O primeiro passo: " + lc(f.passos[0].t) + ".</b> O capítulo 04 tem o passo a passo, com o texto em inglês pronto para copiar."
+  ];
+  $("sResumo").innerHTML = capNum("01", "O resumo") +
+    "<h2>" + d.n + " de 100: o que já está forte, e por onde começar</h2>" +
+    '<p class="lead">' + T.esc(P[p].onde) + "</p>" +
+    '<div class="kpis"><div class="kpi"><b>' + d.n + '</b><span>a nota geral, de 0 a 100</span></div><div class="kpi ganho"><b>' + a[forte] + "</b><span>" + P[forte].nome + ', a frente mais forte</span></div><div class="kpi perda"><b>' + a[p] + "</b><span>" + P[p].nome + ", o maior ganho</span></div></div>" +
+    ex("frentes", "As quatro frentes, de 0 a 100", barras(Teste.TRECHOS.map(function (pt) {
+      return { rotulo: P[pt].nome + (pt === p ? " · comece por aqui" : ""), valor: a[pt] || 0, texto: (a[pt] || 0) + " de 100", classe: pt === p ? "" : pt === forte ? "ok" : "cinza" };
+    }), 100), "A partir das suas respostas. Como a nota é calculada: capítulo 08.") +
+    "<h3>O que a folha encontrou</h3><ol class=\"achados\">" + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+    leve("Esta semana", "<p>" + T.esc(mai(f.semana)) + " O capítulo 07 tem o plano das próximas quatro semanas.</p>");
+
+  // ---------- 02 · o caminho do cliente americano ----------
+  var E = [
+    { nome: "Procura no Google", curto: "Procura", sente: "Desconfiado", nivel: -1, pt: "G",
+      cliente: "Algo quebrou, ou a casa precisa do serviço. Ele digita o serviço com “near me”, compara estrelas, fotos e horário, e monta uma lista curta.", pensa: "Quem aqui eu deixo entrar na minha casa?",
+      voce: CURTA.perfil + ": " + r("perfil") + ". " + CURTA.avaliacoes + ": " + r("avaliacoes") + (resposta("lingua") ? ". Em inglês: " + r("lingua") : "") + ".",
+      pesquisa: "47% não contratam empresa com menos de 20 avaliações, e 74% só levam em conta as dos últimos três meses." + cite("brightlocal") },
+    { nome: "Liga", curto: "Liga", sente: "Com pressa", nivel: 0, pt: "T",
+      cliente: "Liga para o primeiro nome da lista. O segundo nome está a um toque.", pensa: "Só quero que alguém atenda.",
+      voce: "No meio do serviço: " + r("ligacao") + ". A caixa postal: " + r("caixa") + ".",
+      pesquisa: "No serviço de casa, cerca de metade das ligações (52%) cai numa pessoa." + cite("invoca") },
+    { nome: "Espera a resposta", curto: "Espera", sente: "Ansioso", nivel: -2, verdade: true, pt: "R",
+      cliente: "Pede orçamento por mensagem e fica olhando o celular.", pensa: "Será que viram a minha mensagem?",
+      voce: "A resposta ao pedido por mensagem: " + r("resposta") + ".",
+      pesquisa: "Só 29% a 37% das empresas testadas responderam em até uma hora, e de 23% a 40% nunca responderam." + cite("hbr", "valve") + " Responder uma hora depois cortou pela metade a chance de ser contratado." + cite("ms") },
+    { nome: "Recebe o preço", curto: "Preço", sente: "Tenso", nivel: 0, pt: "R",
+      cliente: "Recebe o preço e mostra para a família.", pensa: "Quanto vai custar, e o que está incluso?",
+      voce: "Como o preço chega: " + r("orcamento") + ".",
+      pesquisa: '<span class="vazio">Nenhuma pesquisa publicada compara o orçamento escrito com o falado. O capítulo 06 mostra como apresentar o preço.</span>' },
+    { nome: "Confere a empresa", curto: "Confere", sente: "Cauteloso", nivel: -1, pt: "C",
+      cliente: "Antes de fechar, olha o site, o e-mail e se a empresa tem seguro.", pensa: "Essa empresa é de verdade?",
+      voce: CURTA.site + ": " + r("site") + ". " + CURTA.seguro + ": " + r("seguro") + ".",
+      pesquisa: "Na escolha do profissional, ser licensed and insured pesa mais que o preço." + cite("hiri") },
+    { nome: "O serviço", curto: "Serviço", sente: "Aliviado", nivel: 2, verdade: true, pt: "R",
+      cliente: "Recebe você em casa e acompanha o trabalho.", pensa: "Estão fazendo direito?",
+      voce: "A confirmação na véspera: " + r("vespera") + ".",
+      pesquisa: '<span class="vazio">O seu trabalho. A pesquisa aqui são as suas avaliações.</span>' },
+    { nome: "Depois", curto: "Depois", sente: "Decidindo se indica", nivel: 1.4, pt: "G",
+      cliente: "Paga e decide se vai indicar você.", pensa: "Eu chamaria de novo?",
+      voce: "O pedido de avaliação: " + r("pede") + ".",
+      pesquisa: "83% de quem é convidado a avaliar escreve a avaliação." + cite("brightlocal") }
+  ];
+  var primeira = true;
+  var C = E.map(function (e) {
+    var m = e.pt === p ? (primeira ? P[p].curto + ": " + a[p] : true) : "";
+    if (e.pt === p) primeira = false;
+    return { curto: e.curto, nivel: e.nivel, verdade: e.verdade, marca: m };
+  });
+  $("sCaminho").innerHTML = capNum("02", "O caminho do cliente") +
+    "<h2>O caminho de todo cliente americano até fechar</h2>" +
+    '<p class="lead">Todo serviço que você fecha passa pelo mesmo caminho, do momento em que o cliente procura no Google até a avaliação que traz o próximo. Pôr o que ele vive ao lado do que a sua empresa faz mostra onde os dois se desencontram, e é ali que o cliente vai para outra empresa.</p>' +
+    ex("curva", "Como o cliente se sente em cada passo, e onde está o seu maior ganho", rx.curva(C, '<i style="background:var(--perda);border-radius:50%"></i>Onde está o seu maior ganho (a nota da frente) &nbsp; <i style="background:var(--confianca)"></i>Os dois momentos que decidem como o cliente lembra de você', "Como o cliente se sente em cada passo, com o maior ganho marcado em vermelho"),
+      "A curva é o nosso mapa de uma compra típica de serviço de casa, desenhado a partir de como esses serviços costumam acontecer. As marcas vermelhas vêm das suas respostas.") +
+    rx.etapas(E, ["Passo", "O cliente", "A sua empresa", "O que a pesquisa mostra", "Passo"]) +
+    leve("", "<p>Dois momentos decidem como o cliente lembra de um serviço: a primeira resposta e o serviço pronto. E ele julga a experiência inteira pelo momento mais intenso e pelo fim, por isso os últimos dez minutos do serviço contam tanto quanto a primeira ligação. No seu caso, o maior ganho está em " + lc(P[p].nome) + ", nos passos marcados em vermelho.</p>");
+
+  // ---------- 03 · as quatro frentes ----------
+  var DEF = { G: "O americano procura, compara estrelas e fotos, e liga para quem aparece inteiro.", T: "Quem liga e não é atendido deixa recado e, se ninguém volta, liga para o próximo.",
+    R: "O pedido por mensagem recebe resposta no mesmo dia, o preço chega por escrito e a véspera é confirmada.", C: "Site, e-mail com o nome da empresa e o seguro à vista antes de alguém entrar na casa." };
+  $("sFrentes").innerHTML = capNum("03", "As quatro frentes") +
+    "<h2>Quatro frentes decidem se o americano liga para você</h2>" +
+    '<p class="lead">Nenhuma delas pede mais anúncio. Cada uma muda quantos dos clientes que já procuram o seu serviço chegam até você e fecham. Aqui está onde você está em cada uma, pelas suas respostas.</p>' +
+    '<div class="alavancas">' + Teste.TRECHOS.map(function (pt) {
+      var qs = Teste.PERGUNTAS.filter(function (q) { return q.p === pt && resp[q.id] !== undefined; });
+      var pesq = linhas(pt);
+      return '<div class="alav"><h4>' + P[pt].nome + estado(pt) + '</h4><p class="def">' + DEF[pt] + "</p><dl>" +
+        "<dt>A sua nota</dt><dd><b>" + a[pt] + " de 100</b></dd>" +
+        "<dt>As suas respostas</dt><dd><ul>" + qs.map(function (q) { return "<li>" + CURTA[q.id] + ": " + r(q.id) + "</li>"; }).join("") + "</ul></dd>" +
+        (pesq.length ? "<dt>O que a pesquisa mostra</dt><dd>" + pesq.join(" ") + "</dd>" : "") +
+        "<dt>O primeiro passo</dt><dd>" + T.esc(FOLHAS[pt].passos[0].t) + ".</dd></dl></div>";
+    }).join("") + "</div>" +
+    leve("", "<p>A frente mais forte é <b>" + lc(P[forte].nome) + "</b>. O maior ganho está em <b>" + lc(P[p].nome) + "</b>, e é por ela que o capítulo 04 começa. Uma frente por vez, nessa ordem, e o teste de novo depois de quatro semanas.</p>");
+
+  // ---------- 04 · comece por aqui ----------
+  $("sPassos").innerHTML = capNum("04", "Comece por aqui") +
+    "<h2>" + P[p].nome + ": os passos na ordem</h2>" +
+    '<p class="lead">' + T.esc(f.abre) + "</p>" +
+    f.passos.map(function (s, n) {
+      var h = '<div class="passo"><h4>' + (n + 1) + ". " + T.esc(s.t) + "</h4><p>" + T.esc(s.d) + "</p>";
+      if (s.en) h += rx.script(fill(s.en), "p" + (n + 1));
+      if (s.d2) h += '<p style="margin-top:14px">' + T.esc(s.d2) + "</p>" + rx.script(fill(s.en2), "p" + (n + 1) + "b");
+      if (s.link) h += '<a class="btn ghost noprint" href="' + s.link + '" style="margin-top:6px">' + T.esc(s.linkTexto) + "</a>";
+      return h + "</div>";
+    }).join("") +
+    leve("Esta semana", "<p>" + T.esc(mai(f.semana)) + "</p>");
+  // a olhada no Google: preenchida pela equipe na planilha; até lá, o aviso
+  $("oTitulo").textContent = "A olhada no Google " + da;
+  $("oEspera").textContent = "A equipe do Pedro olha o perfil " + da + " no Google e completa esta parte em até 24 horas: estrelas, número de avaliações, a data da última, telefone, horário, site e avaliações em inglês.";
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.ENDPOINT && id && /^https?:/.test(cfg.ENDPOINT)) {
+    window.__olhada = function (o) {
+      if (!o || !o.ok || !o.itens || !o.itens.length) return;
+      $("olhada").innerHTML = ex("olhada", "O que a equipe viu no seu perfil do Google", '<ul class="olhada">' + o.itens.map(function (i) {
+        return "<li><span>" + T.esc(i[0]) + '</span><span class="s">' + T.esc(i[1]) + "</span></li>";
+      }).join("") + "</ul>", "Conferido pela equipe do Pedro.") + (o.frase ? leve("A leitura da equipe", "<p>" + T.esc(o.frase) + "</p>") : "");
+    };
+    var sc = document.createElement("script");
+    sc.src = cfg.ENDPOINT + "?action=olhada&id=" + encodeURIComponent(id) + "&callback=__olhada";
+    document.body.appendChild(sc);
+  }
+
+  // ---------- 05 · como o americano escolhe ----------
+  var X = { 3: 1, 2: 2, 1: 3 }, xv = X[resp.resposta];
+  var M = MERCADO, MP = MERCADO.pt;
+  var cpl = M.porPedido.map(function (x) { return { rotulo: MP.porPedido[x[0]] || x[0], valor: x[1], texto: "US$ " + x[1], classe: x[2] === trade ? "voce" : "cinza" }; });
+  var meu = M.porPedido.some(function (x) { return x[2] === trade; });
+  $("sMercado").innerHTML = capNum("05", "Como o americano escolhe") +
+    "<h2>O que o cliente americano confere antes de ligar</h2>" +
+    '<p class="lead">Cada comparação deste capítulo vem de um estudo ou pesquisa publicada, com a fonte embaixo do gráfico e a referência completa no fim. Quando a pesquisa mediu algo parecido com a sua resposta, mas não igual, a nota diz.</p>' +
+    '<div class="grade2">' +
+    ex("janela", "Quanto as empresas testadas demoraram para responder um pedido novo", rx.janela(xv), "Os dois estudos mandaram um pedido de teste e cronometraram a primeira resposta. A sua faixa vem da sua resposta no teste." + cite("hbr", "valve")) +
+    ex("espera", "O que a demora custa: chance de ser contratado, contra responder na hora", barras(M.espera.barras.map(function (b, i) { return { rotulo: MP.espera[i], valor: b[1], texto: b[1] === 10 ? "cerca de 10" : String(b[1]), classe: "cinza" }; }), 100),
+      "Na mesma pesquisa, a vantagem de responder rápido sumiu quando a pessoa achou que a resposta era automática. Responda rápido, e responda você. São freelancers de um marketplace, e não serviço de casa." + cite("ms")) +
+    ex("ligacoes", "Quantas ligações ao serviço de casa caem numa pessoa", barras(M.ligacoes.map(function (x, i) { return { rotulo: MP.ligacoes[i], valor: x[1], texto: x[1] + "%", classe: resp.ligacao === 3 && i === 0 ? "voce" : "cinza" }; }), 100),
+      "A base são empresas que pagam pelo rastreamento de ligação, em geral maiores que um negócio tocado pelo dono." + cite("invoca")) +
+    ex("avaliacoes", "O que o americano diz sobre avaliações quando escolhe uma empresa local", barras(M.avaliacoes.map(function (x, i) { return { rotulo: MP.avaliacoes[i], valor: x[1], texto: x[1] + "%", classe: "cinza" }; }).concat([{ rotulo: MP.responder, valor: M.responder, texto: M.responder + "%", classe: "cinza" }]), 100),
+      "Pesquisa com 1.002 adultos dos EUA." + cite("brightlocal")) +
+    ex("cpl", "Quanto custa um pedido de orçamento no anúncio de pesquisa do Google, por ofício", barras(cpl), (meu ? "O seu ofício está em destaque. " : "") + "Custo médio por pedido em mais de 3.200 campanhas. Pedido ainda não é cliente." + cite("localiq")) +
+    "</div>" +
+    ex("fed", "Os desafios que a pequena empresa americana citou nos últimos 12 meses", barras(M.fedDesafios.map(function (x, i) { return { rotulo: MP.fedDesafios[i], valor: x[1], texto: x[1] + "%", classe: i ? "cinza" : "voce" }; }), 100),
+      "Federal Reserve, pesquisa de 2026 com 6.425 pequenas empresas com empregados. Valiam várias respostas." + cite("fed")) +
+    leve("", "<p>Achar cliente é o desafio que a pequena empresa americana mais cita, e cada número deste capítulo é dinheiro ou atenção gastos antes da primeira resposta. Quem já pediu orçamento " + (emp ? "para a " + T.esc(emp) : "para você") + " passou por tudo isso, e por isso é o cliente mais barato que você vai fechar este mês.</p>");
+
+  // ---------- 06 · o que fecha o serviço ----------
+  $("sPlaybook").innerHTML = PLAYBOOK.capitulo(rx, "pt", trade, "06");
+
+  // ---------- 07 · o plano ----------
+  var semanas = fila.slice(0, 3).map(function (pt, i) { return ["Semana " + (i + 1), mai(FOLHAS[pt].semana), P[pt].nome, a[pt] + " de 100"]; });
+  semanas.push(["Semana 4", "Refaz o teste e compara a nota com a de hoje, " + d.n + " de 100.", "As quatro", ""]);
+  $("sPlano").innerHTML = capNum("07", "O plano de 30 dias") +
+    "<h2>Uma frente por semana, começando pelo maior ganho</h2>" +
+    "<p>Nada aqui pede aplicativo novo. O celular e os textos desta folha bastam para começar.</p>" +
+    '<table class="t"><thead><tr><th>Quando</th><th>O que fazer</th><th>Frente</th><th class="valor">Nota hoje</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td><td>" + l[2] + '</td><td class="valor" style="color:var(--ink)">' + l[3] + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  // ---------- 08 · respostas, fontes e próximo passo ----------
+  $("respostas").innerHTML = Teste.PERGUNTAS.filter(function (q) { return resp[q.id] !== undefined; }).map(function (q) {
+    return "<tr><td>" + T.esc(q.q) + "</td><td><b>" + T.esc(resposta(q.id)) + "</b></td></tr>";
+  }).join("");
+  $("fontes").innerHTML = rx.fontes();
+  if (cfg.WHATSAPP) {
+    var w = $("whats");
+    w.href = "https://wa.me/" + String(cfg.WHATSAPP).replace(/\D/g, "") + "?text=" + encodeURIComponent("Oi, vi a folha " + da + ".");
+    w.classList.remove("hidden");
+    $("proxTxt").textContent = "Mande uma mensagem e a equipe do Pedro olha com você. Se você marcou a caixa no teste, alguém da equipe liga em até 24 horas.";
+    w.addEventListener("click", function () { ev("whatsapp"); });
+  }
+
+  rx.copiaveis(function (k) { ev("copy", /^p\d/.test(k) ? p + k.slice(1) : k); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("page").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

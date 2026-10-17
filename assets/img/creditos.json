@@ -1,0 +1,26 @@
+{
+ "cleaning": {
+  "autor": "BOOM 💥 Photography",
+  "url": "https://www.pexels.com/photo/orange-bucket-on-the-floor-12585524/"
+ },
+ "lawn": {
+  "autor": "Magda Ehlers",
+  "url": "https://www.pexels.com/photo/red-and-black-push-lawn-mower-on-green-grass-4162016/"
+ },
+ "painting": {
+  "autor": "Ivan S",
+  "url": "https://www.pexels.com/photo/a-paint-roller-on-a-ladder-5798984/"
+ },
+ "handyman": {
+  "autor": "Noemí Jiménez",
+  "url": "https://www.pexels.com/photo/mexican-carpentry-tools-in-a-workshop-setting-37663438/"
+ },
+ "hvac": {
+  "autor": "Anıl Karakaya",
+  "url": "https://www.pexels.com/photo/plumber-installs-pipe-fittings-6419128/"
+ },
+ "other": {
+  "autor": "Tima Miroshnichenko",
+  "url": "https://www.pexels.com/photo/close-up-shot-of-carpentry-tools-6790031/"
+ }
+}

@@ -1,0 +1,250 @@
+/* O relatório executivo (Revenue Leak primeiro; a folha do teste segue o mesmo molde depois do veredito do Pedro).
+   Cara de consultoria: papel branco, capítulos numerados, um "Exhibit" por gráfico com a fonte embaixo, nota numerada
+   que leva à lista de fontes. A paleta segue a função (app.css): ardósia no método, nas fontes e nos rótulos; vermelho
+   só no dinheiro que escapa; verde no que o dono já fecha; amarelo só no botão. */
+body.rx {
+  --rx-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --rx-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --rx-trilho: #EEECE4;
+  background: #fff; color: var(--ink-2); font-family: var(--rx-sans); font-size: 16px; line-height: 1.6;
+}
+.rx .wrap { max-width: 780px; padding: 0 16px 48px; }
+.rx h1, .rx h2 { font-family: var(--rx-serif); color: var(--ink); font-weight: 600; letter-spacing: -.01em; }
+.rx b, .rx strong { color: var(--ink); }
+.rx .perda { color: var(--perda); }
+.rx .ganho { color: var(--ganho); }
+.rx .num { font-variant-numeric: tabular-nums; }
+.rx sup.ref { font-size: .68em; line-height: 0; margin-left: 1px; }
+.rx sup.ref a { color: var(--confianca); font-weight: 700; text-decoration: none; }
+.rx sup.ref + sup.ref::before { content: ","; color: var(--confianca); }
+
+/* ---------- capa ---------- */
+.capa { display: flex; flex-direction: column; padding: 22px 0 30px; }
+.capa-topo { display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); padding: 0 0 12px; border-bottom: 2px solid var(--ink); }
+.capa-topo span:last-child { color: var(--confianca); }
+.capa-arte { margin: 30px auto 6px; width: 100%; max-width: 560px; }
+.capa-arte img { display: block; width: 100%; height: auto; }
+.capa-tipo { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--confianca); margin: 22px 0 10px; }
+.capa h1 { font-size: clamp(30px, 6.4vw, 46px); line-height: 1.12; margin: 0 0 14px; }
+.capa-para { font-size: 15px; color: var(--ink-3); margin: 0 0 26px; }
+.capa-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; border-top: 1px solid var(--line); padding-top: 14px; }
+.capa-kpis b { display: block; font-size: clamp(19px, 4.4vw, 26px); font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.capa-kpis span { display: block; font-size: 12.5px; color: var(--ink-3); line-height: 1.35; margin-top: 3px; }
+.capa-pe { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
+
+/* ---------- capítulos ---------- */
+.cap { padding: 46px 0 6px; border-top: 1px solid var(--line); }
+.cap-num { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--confianca); margin: 0 0 10px; }
+.cap h2 { font-size: clamp(25px, 4.8vw, 34px); line-height: 1.16; margin: 0 0 14px; }
+.cap h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 34px 0 8px; }
+.cap .lead { font-size: 18px; line-height: 1.55; color: var(--ink-2); margin: 0 0 22px; }
+
+/* números de abertura */
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 8px 0 26px; }
+.kpi { border-top: 3px solid var(--ink); padding-top: 10px; }
+.kpi.perda { border-color: var(--perda); }
+.kpi.ganho { border-color: var(--ganho); }
+.kpi b { display: block; font-size: clamp(21px, 5vw, 32px); font-weight: 700; line-height: 1.1; color: inherit; font-variant-numeric: tabular-nums; }
+.kpi.perda b { color: var(--perda); }
+.kpi.ganho b { color: var(--ganho); }
+.kpi span { display: block; font-size: 13px; color: var(--ink-3); line-height: 1.35; margin-top: 5px; }
+
+/* achados numerados */
+.achados { list-style: none; padding: 0; margin: 4px 0 18px; counter-reset: ach; }
+.achados li { position: relative; padding: 0 0 14px 40px; margin: 0 0 14px; border-bottom: 1px solid var(--line); }
+.achados li:last-child { border-bottom: 0; margin-bottom: 0; }
+.achados li::before { counter-increment: ach; content: counter(ach); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%; background: var(--confianca); color: #fff; font-size: 13px; font-weight: 700; line-height: 26px; text-align: center; }
+
+/* o que isso quer dizer */
+.leve { background: var(--confianca-suave); border-left: 3px solid var(--confianca); padding: 14px 16px; margin: 20px 0; }
+.leve .rot { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--confianca); margin: 0 0 4px; }
+.leve p { margin: 0 0 8px; }
+.leve p:last-child { margin: 0; }
+
+/* exhibits */
+.ex { border-top: 2px solid var(--ink); padding-top: 12px; margin: 26px 0 28px; }
+.ex-rot { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--confianca); margin: 0 0 2px; }
+.ex-tit { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.35; margin: 0 0 14px; }
+.ex-fonte { font-size: 12px; color: var(--ink-3); line-height: 1.45; margin: 10px 0 0; }
+.ex-fonte a { color: var(--ink-3); }
+.ex svg { display: block; width: 100%; height: auto; }
+.ex .svg-box { max-width: 560px; }
+.rx .fx-track { background: var(--rx-trilho); border-radius: 3px; }
+.rx .fx-fill { border-radius: 3px; }
+.rx .fx-bar-top { font-size: 14.5px; }
+.fx-bar.voce .fx-fill { background: var(--confianca); }
+.fx-bar.voce .fx-bar-top { font-weight: 700; color: var(--ink); }
+.fx-bar.cinza .fx-fill { background: #B9B7AE; }
+.fx-bar.ok .fx-fill { background: var(--ganho); }
+.fx-bar .det { font-size: 13.5px; color: var(--ink-3); margin: 6px 0 0; }
+.legenda { font-size: 12.5px; color: var(--ink-2); margin: 8px 0 0; }
+.legenda i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin: 0 5px 0 0; }
+
+/* barra empilhada: o que ele fecha e o que escapa */
+.pilha { display: flex; height: 34px; border-radius: 3px; overflow: hidden; background: var(--rx-trilho); }
+.pilha i { display: block; height: 100%; }
+.pilha .ok { background: var(--ganho); }
+.pilha .fora { background: repeating-linear-gradient(135deg, var(--perda) 0 6px, #C9493E 6px 12px); }
+.pilha-rot { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; margin: 8px 0 0; }
+
+/* taxas do mês */
+.taxas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); margin: 0 0 6px; }
+.taxas div { padding: 12px; border-right: 1px solid var(--line); }
+.taxas div:last-child { border-right: 0; }
+.taxas b { display: block; font-size: 22px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.taxas span { display: block; font-size: 12.5px; color: var(--ink-3); line-height: 1.3; margin-top: 4px; }
+.rx .quadros { max-width: 360px; }
+
+/* jornada: o diagrama de alinhamento */
+.jornada { margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
+.etapa { display: grid; grid-template-columns: 132px repeat(3, minmax(0, 1fr)); gap: 0 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.etapa.cab { border-top: 2px solid var(--ink); padding: 10px 0 8px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.etapa h4 { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.3; }
+.etapa .n { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--confianca); }
+.etapa .sente { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.etapa .pensa { display: block; font-family: var(--rx-serif); font-style: italic; color: var(--ink); margin-top: 6px; }
+.etapa .vaza { display: block; color: var(--perda); font-weight: 650; margin-top: 4px; }
+.etapa .marca { display: inline-block; margin-top: 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--confianca); padding: 2px 7px; border-radius: 99px; }
+.etapa .rotm { display: none; }
+.etapa .vazio { color: var(--ink-3); }
+
+/* as quatro alavancas */
+.alavancas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 6px 0 0; }
+.alav { border: 1px solid var(--line); border-top: 3px solid var(--ink); padding: 14px 14px 12px; }
+.alav h4 { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 18px; color: var(--ink); }
+.alav .def { font-size: 14px; color: var(--ink-2); margin: 0; }
+.alav dl { margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
+.alav dt { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+.alav dd { margin: 2px 0 0; }
+.pill { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+.pill.forte { background: var(--ganho-suave); color: var(--ganho); }
+.pill.meio { background: #F1EFE7; color: var(--ink-2); }
+.pill.vaza { background: var(--perda-suave); color: var(--perda); }
+.pill.auto { background: var(--confianca-suave); color: var(--confianca); }
+
+/* o que o dono pesa num orçamento */
+.fracao { border: 1px solid var(--line); padding: 16px; margin: 10px 0 18px; text-align: center; }
+.fracao .val { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 12px; }
+.fracao .linha { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; }
+.fracao .termo { padding: 7px 12px; border-radius: 6px; font-weight: 700; font-size: 14.5px; }
+.fracao .cima .termo { background: var(--ganho-suave); color: var(--ganho); }
+.fracao .baixo .termo { background: var(--perda-suave); color: var(--perda); }
+.fracao .x { color: var(--ink-3); font-weight: 700; }
+.fracao hr { border: 0; border-top: 2px solid var(--ink); width: 86%; margin: 12px auto; }
+.fracao .pe { font-size: 13px; color: var(--ink-3); margin: 12px 0 0; }
+
+/* respostas às objeções */
+.objecoes { display: grid; gap: 12px; margin: 6px 0 0; }
+.obj { border: 1px solid var(--line); padding: 14px 16px; }
+.obj .diz { display: block; font-family: var(--rx-serif); font-style: italic; font-size: 20px; color: var(--ink); line-height: 1.3; margin: 0 0 6px; }
+.obj p { margin: 0 0 8px; font-size: 15px; }
+.rx .script { background: #F7F6F1; border-left: 3px solid var(--confianca); border-radius: 0; font-size: 15px; margin: 8px 0 4px; }
+
+/* plano e tabelas */
+.rx table.t { font-size: 14.5px; }
+.rx table.t td.valor { color: var(--ganho); font-weight: 700; white-space: nowrap; text-align: right; }
+.rx table.t th.valor { text-align: right; }
+
+/* método, fontes, quem fez */
+.rx .adjust { display: flex; align-items: center; gap: 14px; margin: 6px 0 14px; }
+.rx .adjust input { flex: 1; accent-color: var(--confianca); }
+.fontes { list-style: none; counter-reset: fnt; padding: 0; margin: 6px 0 0; font-size: 13px; line-height: 1.5; }
+.fontes li { counter-increment: fnt; position: relative; padding-left: 32px; margin: 0 0 10px; }
+.fontes li::before { content: counter(fnt); position: absolute; left: 0; top: 0; width: 22px; text-align: right; color: var(--confianca); font-weight: 700; }
+.fontes a { color: var(--ink-3); word-break: break-all; }
+.quem { display: flex; gap: 14px; align-items: center; margin: 8px 0 0; }
+.quem .ini { flex: 0 0 52px; height: 52px; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; letter-spacing: .04em; }
+.rx .so-impresso { display: none; }
+
+@media (max-width: 640px) {
+  .taxas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .taxas div:nth-child(2) { border-right: 0; }
+  .taxas div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .etapa { grid-template-columns: 1fr; gap: 8px; }
+  .etapa.cab { display: none; }
+  .etapa .rotm { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .alavancas { grid-template-columns: 1fr; }
+  .kpis { gap: 10px; }
+}
+
+/* ---------- impresso: carta, um capítulo por página ---------- */
+@page { size: Letter; margin: 0.6in 0.62in 0.7in; }
+@page { @bottom-right { content: counter(page); font: 700 8.5pt "Inter", sans-serif; color: #6B6B64; } }
+@page :first { @bottom-right { content: none; } @top-left { content: none; } }
+@media print {
+  body.rx { font-size: 10.5pt; line-height: 1.5; }
+  .rx .wrap { max-width: none; padding: 0; }
+  .capa { min-height: 9.55in; padding: 0; break-after: page; }
+  .capa-arte { max-width: 5.6in; margin-top: .45in; flex: 1 0 auto; display: flex; align-items: center; }
+  .capa h1 { font-size: 34pt; }
+  .cap { break-before: page; border-top: 0; padding-top: 0; }
+  .cap h2 { font-size: 24pt; }
+  .cap .lead { font-size: 12.5pt; }
+  .ex, .kpis, .alav, .obj, .etapa, .leve, .fracao, .achados li, .fx-bar, .taxas, .pilha-bloco, .fontes li, table.t tr, .quem { break-inside: avoid; }
+  .cap h2, .cap h3, .ex-rot, .ex-tit, .cap-num { break-after: avoid; }
+  .ex { margin: 18px 0 20px; }
+  .etapa { grid-template-columns: 1.05in repeat(3, minmax(0, 1fr)); font-size: 9pt; padding: 9px 0; }
+  .etapa.cab { display: grid; }
+  .etapa .rotm { display: none; }
+  .alavancas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .taxas { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .taxas div { border-bottom: 0 !important; border-right: 1px solid var(--line) !important; }
+  .taxas div:last-child { border-right: 0 !important; }
+  .rx .so-impresso { display: block; }
+  .rx .script { font-size: 10pt; }
+}
+
+/* ajustes da segunda passada: título equilibrado, capítulo 05 em duas colunas, impresso mais compacto */
+.rx h1, .rx h2 { text-wrap: balance; }
+.capa-arte { margin: 8px auto 26px; max-width: 640px; }
+.grade2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; }
+@media (min-width: 900px) { .grade2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grade2 .ex { margin-top: 18px; } }
+@media print {
+  .capa { justify-content: flex-start; }
+  .capa-arte { max-width: none; width: 100%; margin: .2in 0 .25in; flex: 1 0 auto; display: flex; align-items: center; justify-content: center; }
+  .capa-arte img { max-height: 4.3in; width: auto; max-width: 100%; }
+  .grade2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 .3in; }
+  .grade2 .ex { margin: 10px 0 14px; }
+  .ex { margin: 14px 0 16px; padding-top: 8px; }
+  .ex-tit { font-size: 10.5pt; margin-bottom: 8px; }
+  .fx-bar { margin: 0 0 8px; }
+  .rx .fx-bar-top { font-size: 9pt; margin-bottom: 3px; }
+  .rx .fx-track { height: 8px; }
+  .fx-bar .det { font-size: 8.5pt; margin-top: 3px; }
+  .funil .barra { height: 15px; }
+  .funil .rot { font-size: 9.5pt; }
+  .rx .quadros { max-width: 2.5in; gap: 3px; }
+  .leve { padding: 9px 12px; margin: 12px 0; }
+  .kpis { margin-bottom: 16px; }
+  .achados li { padding-bottom: 9px; margin-bottom: 9px; }
+  .alavancas { gap: 10px; }
+  .alav { padding: 10px 11px 9px; }
+  .alav h4 { font-size: 12pt; }
+  .alav .def, .alav dl { font-size: 9pt; }
+  .alav dt { margin-top: 6px; font-size: 7pt; }
+  .obj { padding: 10px 12px; }
+  .obj .diz { font-size: 13pt; }
+  .obj p { font-size: 9.5pt; }
+  .cap h3 { margin: 20px 0 6px; font-size: 11.5pt; }
+  .rx table.t { font-size: 9.5pt; }
+  .rx table.t td, .rx table.t th { padding: 6px 5px; }
+  #cpc > div { padding: 6px 0 !important; }
+  #cpc input { font-size: 9.5pt !important; padding: 5px 8px !important; }
+  #cpc .money input { padding-left: 20px !important; }
+  #cpc .money::before { font-size: 9.5pt; left: 8px; }
+}
+@media print {
+  .objecoes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  #cpc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 .3in; }
+  .etapa .marca { font-size: 6.5pt; white-space: nowrap; }
+}
+.obj .traduz { display: block; font-size: 13px; color: var(--ink-3); margin: -2px 0 8px; }
+@media print {
+  .fontes { font-size: 8.5pt; }
+  .fontes li { margin-bottom: 5px; }
+}
+.rx table.t td:first-child b { white-space: nowrap; }
+@media print {
+  [data-secao="metodo"] table.t td { padding: 4px 5px; }
+  .quem { margin-top: 14px !important; }
+}
