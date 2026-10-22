@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your plan</title>
+<link rel="stylesheet" href="../assets/app.css">
+<style>
+  .card + .card { margin-top: 16px; }
+  .capa-plano { background: var(--palco); color: var(--palco-texto); border-radius: var(--radius); padding: 26px 22px; margin: 18px 0; }
+  .capa-plano small { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--palco-texto-2); }
+  .capa-plano h2 { margin: 8px 0 10px; font-size: 26px; line-height: 1.15; }
+  .capa-plano p { margin: 0; color: var(--palco-texto-2); }
+  .rotulo { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 6px; }
+  .plano h4 { font-size: 19px; margin: 26px 0 8px; }
+  .plano p, .plano li { line-height: 1.55; }
+  .plano blockquote { margin: 12px 0; padding: 12px 14px; background: var(--sun-soft); border-left: 3px solid var(--acao); border-radius: 8px; }
+  .plano blockquote p { margin: 0; }
+  .prompt { white-space: pre-wrap; font: 14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; background: var(--sun-soft); border: 1px solid var(--line); border-radius: 10px; padding: 14px; max-height: 340px; overflow: auto; margin: 12px 0; }
+  .perguntas { padding-left: 0; list-style: none; counter-reset: q; }
+  .perguntas li { counter-increment: q; margin: 0 0 16px; padding-left: 38px; position: relative; }
+  .perguntas li::before { content: counter(q, decimal-leading-zero); position: absolute; left: 0; top: 1px; font-weight: 800; color: var(--ink-3); }
+  @media print { .no-print, .foot { display: none !important; } .card { border: 0; padding: 0; } .prompt { max-height: none; } }
+  .caso .nota { font-size: 30px; font-weight: 800; margin: 2px 0 10px; color: #17804A; }
+  .caso .contou { padding-left: 18px; margin: 0 0 14px; }
+  .caso .contou li { margin: 2px 0; }
+  .caso .passos { padding-left: 20px; margin: 6px 0 0; }
+  .caso .passos li { margin: 0 0 12px; }
+  .caso .passos b { display: block; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="brand">Pedro Mustafa</p>
+  <p class="kicker">Your plan</p>
+  <h1 id="ola">Your plan is ready</h1>
+
+  <div class="capa-plano"><small>Pedro Mustafa · your plan</small><h2 id="titulo"></h2><p id="linha"></p></div>
+  <section class="card caso" id="seu-caso" hidden>
+    <p class="rotulo">Your case</p>
+    <p class="nota"></p>
+    <p class="small"><b>What you told us</b></p>
+    <ul class="contou small"></ul>
+    <p class="rotulo">Where to start in your case</p>
+    <ol class="passos"></ol>
+  </section>
+
+
+  <section class="card">
+    <p class="rotulo">1 · Your plan, built for your business</p>
+    <div class="plano" id="plano"></div>
+    <button class="btn ghost no-print" type="button" onclick="window.print()">Save it as a PDF</button>
+  </section>
+
+  <section class="card">
+    <p class="rotulo">2 · Skills for your AI assistant</p>
+    <p id="serve"></p>
+    <p class="small"><b>Have this ready:</b> <span id="separe"></span></p>
+    <pre class="prompt" id="prompt"></pre>
+    <button class="btn ghost no-print" type="button" id="copiar">Copy</button>
+    <p class="small muted">Paste it into ChatGPT or Claude, swap what's in brackets for your own details, and send.</p>
+    <p class="small"><b>Check what comes back:</b> <span id="confira"></span></p>
+  </section>
+
+  <section class="card">
+    <p class="rotulo">3 · 4 questions to ask any agency</p>
+    <p id="q-intro"></p>
+    <ol class="perguntas" id="perguntas"></ol>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa</span> <a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="plans.js"></script>
+<script>
+(function () {
+  var D = window.PLANS;
+  var cod = (new URLSearchParams(location.search).get("p") || "").replace(/\D/g, "");
+  var p = D.plans[cod] || D.plans["02"];
+  function $(id) { return document.getElementById(id); }
+  $("titulo").textContent = p.title;
+  $("linha").textContent = p.line;
+  $("plano").innerHTML = p.html;
+  $("serve").textContent = p.purpose;
+  $("separe").textContent = p.gather;
+  $("prompt").textContent = p.prompt;
+  $("confira").textContent = p.check;
+  $("q-intro").textContent = D.questions.intro;
+  $("perguntas").innerHTML = D.questions.items.map(function (q) { return "<li>" + q + "</li>"; }).join("");
+  var bt = $("copiar");
+  bt.onclick = function () {
+    if (navigator.clipboard) navigator.clipboard.writeText(p.prompt).then(function () {
+      bt.textContent = "Copied"; setTimeout(function () { bt.textContent = "Copy"; }, 2000);
+    }, function () {});
+  };
+})();
+</script>
+<script src="../assets/config.js"></script>
+<script src="../assets/caso.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Edit video with Claude</title>
+<meta name="description" content="The 36 video editing skills for Claude, sorted by job, plus how to ask for an edit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .cover { display: block; width: 100%; max-width: 260px; margin: 6px auto 0; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+  .kit { display: grid; gap: 10px; margin: 0 0 18px; }
+  .kit .card { margin: 0; }
+  .kit h3 { margin: 0 0 4px; display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 17px; }
+  .kit p { margin: 0; font-size: 15px; color: var(--ink-2); }
+  .pill { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+  .pill.forte { background: var(--ganho-suave); color: var(--ganho); } .pill.meio { background: #F1EFE7; color: var(--ink-2); } .pill.vaza { background: var(--perda-suave); color: var(--perda); }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">Free guide · 17 pages</p>
+    <h1>Edit video with Claude: the 36 skills, sorted by job</h1>
+    <p class="lede">Tell me what you want Claude to do first, and the skills for that job show up on this screen. The full guide, with how to ask for an edit and the file that teaches Claude your style, goes to your inbox.</p>
+    <button class="btn" id="comecar" type="button">Find my skills <span class="seta">→</span></button>
+    <img class="cover" src="cover.jpg" alt="Cover of the guide Edit video with Claude, with the skills laid out as tracks on an editing timeline" width="496" height="702" style="margin-top:22px">
+    <p class="assinado"><span class="ini">PM</span>Checked one by one by Pedro Mustafa's team</p>
+  </section>
+
+  <section class="tela" id="t1">
+    <p class="pergunta">What do you want Claude to do first with your videos?</p>
+    <p class="ajuda">Start with what slows you down. One skill that removes your worst hour beats ten you never open.</p>
+    <div class="opcoes" id="trilhas"></div>
+    <button class="voltar" type="button" data-volta="t0">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t2" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t3">
+    <div class="palco" id="palco">
+      <span class="rot">Your starting kit</span>
+      <div class="numerao ganho"><span id="rN" aria-hidden="true">0</span><small id="rDe"></small></div>
+      <p id="rPara"></p>
+      <span class="etiqueta" id="rTop"></span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+
+    <h2 id="kTitulo"></h2>
+    <div class="kit" id="kit"></div>
+
+    <h2>The full guide</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number <span class="muted">(optional)</span></label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about the guide within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send me the guide</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Free. Up to 3 emails in 10 days. Reply STOP to any text to opt out. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t4">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. The guide is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="guide/">Open my starting kit now <span class="seta">→</span></a>
+    <h3 style="margin-top:28px">While it lands: how to ask for an edit</h3>
+    <p class="muted">Name the job, the footage, the look, the rules and the limit, and there's nothing left for Claude to guess:</p>
+    <div class="script">Edit interview.mp4 following styles/talking-head.md. Cut pauses over 0.4 s, keep the last take of each line, and keep it under 60 s.</div>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will reach out within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/skills-guia.js"></script>
+<script src="../assets/skills-trilhas.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "skills", total: 1, lingua: "en", ferramenta: "skills", id: id }), st = J.st, kit = null;
+  J.botoes();
+  var box = document.getElementById("trilhas");
+  box.innerHTML = Object.keys(TRILHAS).map(function (k) { return '<button type="button" data-v="' + k + '">' + T.esc(TRILHAS[k].rotulo) + "</button>"; }).join("");
+  J.opcoes(box, "trilha", "t2", function (v) {
+    kit = skillsDa(v);
+    T.event(id, "skills", "step", "1");
+    setTimeout(function () {
+      J.espera("t2", document.getElementById("espera"), [
+        "Sorting the 36 skills by job…",
+        "Putting the best-maintained ones first…",
+        "Picking where you start…"
+      ]).then(revela);
+    }, FX.reduced ? 0 : 280);
+    return false;
+  });
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "skills", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  function revela() {
+    var t = TRILHAS[st.trilha], top = kit[0];
+    document.getElementById("rDe").textContent = kit.length === 1 ? " skill" : " skills";
+    document.getElementById("rPara").textContent = "for " + t.tarefa + ", out of the 36 in the guide.";
+    document.getElementById("rTop").textContent = "Start with: " + top.name;
+    document.getElementById("rLeitura").textContent = top.what_it_does;
+    document.getElementById("kTitulo").textContent = "Your first " + Math.min(3, kit.length) + ", the best-maintained first";
+    document.getElementById("kit").innerHTML = kit.slice(0, 3).map(function (s) {
+      var c = CONFIANCA[s.confidence] || CONFIANCA.low;
+      return '<div class="card"><h3><span>' + T.esc(s.name) + '</span><span class="pill ' + c[1] + '">' + c[0] + "</span></h3><p>" + T.esc(s.what_it_does) + "</p></div>";
+    }).join("");
+    J.vem(document.getElementById("vem"), [
+      ["ja", "Your starting kit for " + t.tarefa],
+      ["chega", "All 36 skills, sorted by job, with what each one needs"],
+      ["chega", "How to ask for an edit, in five parts"],
+      ["chega", "Six questions before a skill touches your footage"],
+      ["chega", "The style file that teaches Claude your look"]
+    ]);
+    FX.mostra("t3");
+    T.event(id, "skills", "result", st.trilha);
+    T.pixel("ViewContent", { content_name: "skills" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rN"), kit.length, { dur: 600, fmt: function (v) { return String(Math.round(v)); } })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(250); })
+      .then(function () { palco[4].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var raw = document.getElementById("phone").value.trim();
+    var phone = raw ? T.phone(raw) : "";
+    var ligar = document.getElementById("ligar").checked;
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : raw && !phone ? "That number doesn't look right. Use the area code." : ligar && !phone ? "Put in a mobile number so the team can reach you." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) return;
+    if (document.getElementById("hpf").value) return;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var link = T.link("guide/", { id: id, j: st.trilha || "comeco" });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "skills", lang: "en", name: name, email: email, phone: phone, sms: ligar && !!phone,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "skills-2026-10-16",
+      inputs: { trilha: st.trilha || "" }, result: { trilha: st.trilha || "" },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      if (ligar && phone) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t4");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send me the guide";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

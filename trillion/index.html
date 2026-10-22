@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Trillion-Dollar List</title>
+<meta name="description" content="The service businesses that gain the most from the trillion-dollar bet, and the first thing to change in yours. Four questions, one minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .opcoes.varias button.marcada::after { content: "✓"; float: right; font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- 0 · capa -->
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">For service business owners</p>
+    <h1>Is your business on the trillion-dollar list?</h1>
+    <p class="lede">The fund behind Apple and Google is betting the next trillion-dollar company sells finished work instead of software. Four questions show where your business stands, and the first thing to change.</p>
+    <button class="btn" id="comecar" type="button">See where I stand <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">Your opening</span>
+      <span class="num">— <small style="font-size:16px;color:var(--palco-texto-2)">of 5 jobs</small></span>
+      <span class="trilho"></span>
+      <span>your customers still do themselves, and the first one to take over.</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Built by Pedro Mustafa</p>
+  </section>
+
+  <!-- 1 · ofício -->
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">What kind of work do you do?</p>
+    <div class="opcoes" id="oficios"></div>
+    <div class="outro hidden" id="outroBox">
+      <input type="text" id="outro" placeholder="Your trade" autocomplete="off" aria-label="Your trade">
+      <button class="btn" type="button" id="outroOk" style="margin-top:12px">Next <span class="seta">→</span></button>
+    </div>
+    <button class="voltar" type="button" data-volta="t0">‹ Back</button>
+  </section>
+
+  <!-- 2 · o que o cliente ainda faz -->
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">Which of these do your customers still do themselves?</p>
+    <p class="ajuda">Tap all that apply. If they hand you all of it already, tap none.</p>
+    <div class="opcoes varias" id="tarefas"></div>
+    <p class="eco" id="ecoTarefas"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t3">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t1">‹ Back</button>
+  </section>
+
+  <!-- 3 · ferramentas -->
+  <section class="tela" id="t3">
+    <div class="progresso" data-passo="3"></div>
+    <p class="pergunta">How many apps and tools do you pay for to run the business?</p>
+    <p class="ajuda">Scheduling, invoicing, CRM, website builder, review tools. A rough count is fine.</p>
+    <div class="opcoes" id="ferramentas">
+      <button type="button" data-v="0-2">0 to 2</button>
+      <button type="button" data-v="3-5">3 to 5</button>
+      <button type="button" data-v="6+">6 or more</button>
+    </div>
+    <button class="voltar" type="button" data-volta="t2">‹ Back</button>
+  </section>
+
+  <!-- 4 · como compram -->
+  <section class="tela" id="t4">
+    <div class="progresso" data-passo="4"></div>
+    <p class="pergunta">How do most customers buy from you?</p>
+    <div class="opcoes" id="compra">
+      <button type="button" data-v="job">One job at a time</button>
+      <button type="button" data-v="mix">A mix of one-off jobs and repeat visits</button>
+      <button type="button" data-v="plan">Mostly on a plan or a schedule</button>
+    </div>
+    <button class="voltar" type="button" data-volta="t3">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t5" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t6">
+    <div class="palco" id="palco">
+      <span class="rot">Your opening</span>
+      <div class="numerao ganho"><span id="rN" aria-hidden="true">0</span><small> of 5 jobs</small></div>
+      <p id="rFrase"></p>
+      <p class="apoio" id="rFerr"></p>
+      <div class="xbar" id="rBar">
+        <div class="rotulos"><span>They still do <b id="rAinda"></b></span><span>You already do <b id="rVoce"></b></span></div>
+        <div class="trilho"><i class="fora"></i><i class="ok"></i></div>
+      </div>
+      <span class="etiqueta" id="rTop"></span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>Your full report</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about my report within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send my full report</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Up to 5 messages in 10 days. Not required to get your report. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t7">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. Your report is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="report/">Open my report now <span class="seta">→</span></a>
+    <h3 style="margin-top:28px">While it lands: the line to add to your next quote</h3>
+    <p id="tPorque" class="muted"></p>
+    <div class="script" id="tTexto"></div>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/calc.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/trillion.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "trillion", total: 4, lingua: "en", ferramenta: "trillion", id: id }), st = J.st, R = TRILLION;
+  J.progresso();
+  J.regras({ t2: function () { return st.trade && R.TAREFAS[st.trade] ? "" : "Go back and pick the kind of work you do."; } });
+  J.botoes();
+
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "trillion", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  // 1 · ofício
+  var of = document.getElementById("oficios");
+  of.innerHTML = Object.keys(Calc.OFICIOS).map(function (k) { return '<button type="button" data-v="' + k + '">' + Calc.OFICIOS[k] + "</button>"; }).join("");
+  J.opcoes(of, "trade", "t2", function (v) {
+    if (st.tasks && st.tasksDe !== v) st.tasks = [];
+    st.tasksDe = v;
+    tarefas();
+    if (v === "other") { document.getElementById("outroBox").classList.remove("hidden"); document.getElementById("outro").focus(); return false; }
+    document.getElementById("outroBox").classList.add("hidden");
+  });
+  document.getElementById("outroOk").addEventListener("click", function () { st.tradeOther = document.getElementById("outro").value.trim().slice(0, 60); J.salva(); J.vai("t2"); });
+
+  // 2 · as tarefas do ofício, várias de uma vez
+  var tb = document.getElementById("tarefas");
+  function eco() {
+    var n = (st.tasks || []).length;
+    document.getElementById("ecoTarefas").textContent = n ? n + (n === 1 ? " job" : " jobs") + " still on your customers' plate." : "";
+  }
+  function tarefas() {
+    var lista = R.TAREFAS[st.trade] || [];
+    st.tasks = (st.tasks || []).filter(function (k) { return lista.some(function (t) { return t[0] === k; }); });
+    tb.innerHTML = lista.map(function (t) { return '<button type="button" data-v="' + t[0] + '"' + (st.tasks.indexOf(t[0]) >= 0 ? ' class="marcada"' : "") + ">" + t[1] + "</button>"; }).join("");
+    eco();
+  }
+  tb.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var k = b.getAttribute("data-v"), i = (st.tasks = st.tasks || []).indexOf(k);
+    if (i >= 0) st.tasks.splice(i, 1); else st.tasks.push(k);
+    b.classList.toggle("marcada", i < 0);
+    eco(); J.salva();
+  });
+  if (st.trade) tarefas();
+
+  // 3 e 4 · ferramentas e forma de compra; a última mostra o resultado
+  J.opcoes(document.getElementById("ferramentas"), "tools", "t4");
+  J.opcoes(document.getElementById("compra"), "plan", "t5", function () { mostrar(); return false; });
+
+  var inputs = null, r = null;
+  function oficio() { return st.trade === "other" ? (st.tradeOther || "your trade") : Calc.OFICIOS[st.trade]; }
+  function mostrar() {
+    inputs = { trade: st.trade, tradeOther: st.tradeOther || "", tasks: (st.tasks || []).slice(), tools: st.tools, plan: st.plan };
+    var err = R.check(inputs);
+    if (err) { J.vai(!R.TAREFAS[inputs.trade] ? "t1" : !R.FERRAMENTAS[inputs.tools] ? "t3" : "t4"); return; }
+    r = R.calc(inputs);
+    J.espera("t5", document.getElementById("espera"), [
+      "Checking " + oficio().toLowerCase() + " against the three tests in the bet…",
+      "Counting the jobs your customers still do themselves…",
+      "Picking the first one to take over…"
+    ]).then(revela);
+  }
+
+  function revela() {
+    var t = r.primeira;
+    document.getElementById("rFrase").textContent = r.nenhuma ? "Your customers already hand you the work around the job." : "your customers still do themselves. Each one is work they'd pay you to take off their plate.";
+    document.getElementById("rFerr").textContent = R.ferramentasFrase[inputs.tools];
+    document.getElementById("rAinda").textContent = r.n;
+    document.getElementById("rVoce").textContent = 5 - r.n;
+    document.getElementById("rTop").textContent = (r.nenhuma ? "Put in writing first: " : "First to take over: ") + t.label.charAt(0).toLowerCase() + t.label.slice(1);
+    document.getElementById("rLeitura").textContent = R.leitura(inputs, r);
+    document.getElementById("rFinal").textContent = r.n + " of 5 jobs your customers still do themselves. First to take over: " + t.label + ".";
+    J.vem(document.getElementById("vem"), [
+      ["ja", "Your opening, and the first job to take over"],
+      ["chega", "The trillion-dollar bet, in the investor's own words"],
+      ["chega", "The list: the service businesses that gain the most"],
+      ["chega", "The work your customers still do, with the line to add to every quote"],
+      ["chega", "How to sell the bigger job in the first conversation"],
+      ["chega", "What stays with you, and your next 30 days"]
+    ]);
+    FX.mostra("t6");
+    T.event(id, "trillion", "result", r.n + " · " + t.key + " · " + inputs.trade);
+    T.pixel("ViewContent", { content_name: "trillion" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rN"), r.n, { dur: 800, fmt: function (v) { return String(Math.round(v)); } })
+      .then(function () { return FX.wait(150); })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(200); })
+      .then(function () {
+        palco[4].classList.add("in");
+        var tr = document.querySelectorAll("#rBar .trilho i");
+        requestAnimationFrame(function () { tr[0].style.width = (r.n / 5 * 100) + "%"; tr[1].style.width = ((5 - r.n) / 5 * 100) + "%"; });
+        return FX.wait(900);
+      })
+      .then(function () { palco[5].classList.add("in"); palco[6].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = T.phone(document.getElementById("phone").value);
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : !phone ? "Put in a mobile number with the area code." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !T.validEmail(email) ? "email" : "phone").focus(); return; }
+    if (!r || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var link = T.link("report/", { id: id, d: T.enc(inputs) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "trillion", lang: "en", name: name, email: email, phone: phone, sms: ligar,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "trillion-2026-10-17",
+      inputs: inputs,
+      result: { opening: r.n, first: r.primeira.key, firstPhrase: r.primeira.label, firstLine: r.primeira.linha, trade: inputs.trade, tradeLabel: oficio() },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      document.getElementById("tPorque").textContent = "For " + r.primeira.label.charAt(0).toLowerCase() + r.primeira.label.slice(1) + ", put this on your next quote:";
+      document.getElementById("tTexto").textContent = r.primeira.linha;
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t7");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send my full report";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

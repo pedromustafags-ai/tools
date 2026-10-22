@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>My list of skills</title>
+<meta name="description" content="The marketing skills from the 60-second video: what each one does, what it reads, and the order to run them. Free, no sign-up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<link rel="stylesheet" href="../assets/relatorio.css">
+<style>
+  .fala { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.45; color: var(--ink-2); border-left: 3px solid var(--sun); padding: 2px 0 2px 14px; margin: 0 0 14px; }
+  .sk { border-top: 2px solid var(--ink); padding: 16px 0 10px; margin: 26px 0 0; }
+  .sk-num { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--confianca); margin: 0 0 6px; }
+  .sk h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 10px; font-size: 21px; font-family: "Source Serif 4", Georgia, serif; font-weight: 600; color: var(--ink); }
+  .sk h3 code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 17px; background: var(--sun-soft); padding: 2px 8px; border-radius: 6px; }
+  .sk dl { display: grid; grid-template-columns: 92px 1fr; gap: 6px 14px; margin: 10px 0 12px; font-size: 15px; }
+  .sk dt { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding-top: 3px; }
+  .sk dd { margin: 0; }
+  .sk .pede { background: var(--paper); border-left: 4px solid var(--confianca); padding: 10px 12px; border-radius: 8px; font-size: 15px; margin: 8px 0 12px; }
+  .sk .pede b { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--confianca); margin-bottom: 2px; }
+  .sk .acoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 4px; }
+  .sk .acoes a, .sk .acoes button { width: auto; min-height: 44px; font-size: 15px; padding: 10px 16px; }
+  .sk details { margin: 8px 0 0; }
+  .sk summary { cursor: pointer; font-weight: 700; font-size: 15px; color: var(--confianca); }
+  .sk pre { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 10px 0 8px; max-height: 420px; overflow: auto; }
+  .tag { font-family: var(--rx-sans); font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+  .tag.pub { background: var(--ganho-suave); color: var(--ganho); }
+  .tag.ini { background: var(--confianca-suave); color: var(--confianca); }
+  .tag.arq { background: #F1EFE7; color: var(--ink-2); }
+  .ordem td:first-child { font-weight: 700; color: var(--confianca); width: 28px; }
+  .ordem code, .rx p code, .rx li code, .sk dd code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: var(--sun-soft); padding: 1px 5px; border-radius: 4px; }
+  .volta { font-size: 14px; color: var(--ink-3); margin: 6px 0 0; }
+  .baixar { display: grid; gap: 10px; margin: 14px 0 6px; }
+  .portao .field label { font-size: 15px; }
+  #pronto h3 { margin-top: 0; }
+  .ordem td { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { .sk dl { grid-template-columns: 1fr; gap: 2px; } .sk dt { padding-top: 8px; } .ordem { font-size: 13.5px; } .ordem th, .ordem td { padding: 8px 4px; } }
+  @media print { .sk { break-inside: avoid; } .sk:has(details[open]) { break-inside: auto; } .sk pre { max-height: none; overflow: visible; } #fim { display: none; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <header class="capa">
+    <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>The skill list</span></div>
+    <p class="capa-tipo">From the 60-second video</p>
+    <h1>My list of marketing skills, in the order I run them</h1>
+    <p class="capa-para">Eight steps, seven skills and one file about your business that every skill reads. Four skills are public and free to install. The other three are short enough to copy from this page.</p>
+    <div class="capa-arte"><img src="../assets/img/capa-skilllist.png" alt="Line drawing of a person at a laptop, with a row of blank cards on the desk joined one to the next like steps"></div>
+    <div class="capa-kpis">
+      <div><b>4</b><span>public skills, free on GitHub</span></div>
+      <div><b>3</b><span>starter skills to copy from this page</span></div>
+      <div><b>1</b><span>file about your business that every skill reads</span></div>
+    </div>
+    <div class="capa-pe"><span>No sign-up to read it.</span><span>Updated October 2026</span></div>
+  </header>
+
+  <section class="cap" id="sAntes">
+    <p class="cap-num">01 · Before the list</p>
+    <h2>What a skill is, and what goes in it</h2>
+    <p class="lead">A skill is a folder with one instructions file, <code>SKILL.md</code>. Claude reads it whenever you ask for that kind of job, and follows the same steps every time. A saved prompt only works when you remember to paste it, and it drifts a little with every paste.</p>
+    <p>The skills do the repeat work. What goes into them is yours: what your customers said, what you can prove, how you talk. That's why the first skill on the list interviews you, and the second one collects your customers' words. Everything after that writes from those two.</p>
+    <div class="leve"><span class="rot">What this means</span><p>None of these skills makes anything up. When a draft needs a number, a result or a review you didn't give, the skill asks you for it or leaves it out.</p></div>
+  </section>
+
+  <section class="cap" id="sOrdem">
+    <p class="cap-num">02 · The order</p>
+    <h2>The order I run them in</h2>
+    <p class="lead">The video counts the steps in the order they're easiest to explain. You run them in this order: the file about your business comes first, because every other skill reads it.</p>
+    <div class="ex"><p class="ex-rot">Exhibit 1</p><p class="ex-tit">Seven skills, what each one reads and what it leaves behind</p>
+      <table class="t ordem"><thead><tr><th></th><th>Skill</th><th>When</th><th>Reads</th><th>Leaves behind</th></tr></thead><tbody>
+        <tr><td>1</td><td><b>brand-interview</b></td><td>Once, then when your offer or prices change</td><td>Your answers, one question at a time</td><td><code>brand.md</code></td></tr>
+        <tr><td>2</td><td><b>customer-research</b></td><td>The first week, then once a month</td><td><code>brand.md</code>, your reviews, competitors' reviews and ads, questions people ask online, <code>found-you.md</code></td><td><code>customer-words.md</code>, and the best lines in <code>brand.md</code></td></tr>
+        <tr><td>3</td><td><b>sales-copy</b></td><td>Every ad, page, offer or follow-up</td><td><code>brand.md</code></td><td>A draft</td></tr>
+        <tr><td>4</td><td><b>short-form-hooks</b></td><td>Every short video</td><td><code>brand.md</code></td><td>A one-page video sheet</td></tr>
+        <tr><td>5</td><td><b>edit-style-file</b></td><td>Once, if you edit your own videos</td><td>Five to ten videos you'd like yours to look like</td><td>A style file for editing</td></tr>
+        <tr><td>6</td><td><b>draft-review</b></td><td>Every draft, right before it goes out</td><td>The draft, <code>brand.md</code>, <code>customer-words.md</code></td><td>The draft, cleaned, and the claims to confirm</td></tr>
+        <tr><td>7</td><td><b>how-found-you</b></td><td>Every new customer, and a report once a month</td><td>What each customer tells you</td><td><code>found-you.md</code>, which goes back to step 2</td></tr>
+      </tbody></table>
+      <p class="ex-fonte">Step 7 closes the loop: once a month, how customers found you goes back into the research, and the research goes into the next draft.</p>
+    </div>
+  </section>
+
+  <section class="cap" id="sLista">
+    <p class="cap-num">03 · The list</p>
+    <h2>The eight steps, and the skill behind each one</h2>
+    <p class="lead">In the order of the video. Each step has what the skill does, what it reads, and what to say to Claude to start it. You never type a skill's name: ask in plain words, and Claude loads the skill that matches.</p>
+    <div id="lista"></div>
+  </section>
+
+  <section class="cap" id="sInstalar">
+    <p class="cap-num">04 · Install</p>
+    <h2>Get the files</h2>
+    <p class="lead">In Claude Code, copy each skill's folder into <code>~/.claude/skills/</code> and start a new session. In the Claude app, turn on code execution in Settings, then upload each skill's folder as a zip under Customize › Skills. The step-by-step is in the README on GitHub.</p>
+    <div class="baixar">
+      <a class="btn" id="gh" href="https://github.com/Pedro-Claude-Skills/claude-skills" target="_blank" rel="noopener">The four public skills, on GitHub <span class="seta">→</span></a>
+      <a class="btn ghost" id="zip" href="starter-skills.zip" download>Download the three starter skills (.zip)</a>
+    </div>
+    <p class="volta">Start with brand-interview. Every other skill reads the file it saves.</p>
+  </section>
+
+  <section class="cap" id="fim">
+    <p class="cap-num">05 · Or let my team run it all</p>
+    <h2>Or let my team run it all</h2>
+    <p class="lead">If you'd rather spend the week on the work, my team runs the whole list for your business: the interview, the research, the ads and pages, the review before anything goes out, the videos, and the monthly check on how customers found you.</p>
+    <form class="card portao" id="lead" novalidate>
+      <p style="margin-top:0">Leave your email and the list, the links and the starter files arrive in your inbox, so you have them on your computer.</p>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number <span class="muted">(optional)</span></label><span class="hint">Outside the U.S. and Canada, start with your country code, like +44.</span><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me within 24 hours about running this for my business.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send me the files</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Free. Up to 3 emails in 10 days. If you add your number, reply STOP to any text to opt out. <a href="../privacy/">Privacy</a></p>
+    </form>
+    <div class="card hidden" id="pronto">
+      <h3>Sent. The list and the files are on their way to <span id="tEmail"></span>.</h3>
+      <p id="tLigar" class="hidden">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+    </div>
+    <a class="btn ghost noprint hidden" id="agenda" href="#" target="_blank" rel="noopener" style="margin-top:12px">Or pick a time to talk</a>
+    <div class="quem" style="margin-top:28px">
+      <span class="ini">PM</span>
+      <div><b>Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with service business owners on how new customers find them and choose them.</span></div>
+    </div>
+  </section>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script>
+(function () {
+  var GH = "https://github.com/Pedro-Claude-Skills/claude-skills";
+  // [passo, nome do passo, a fala do vídeo, skill, tipo (pub | ini | arq | nada), o que faz, lê, deixa, o pedido, links]
+  var PASSOS = [
+    { n: 1, nome: "Skills, not saved prompts", fala: "Stop saving prompts. Set up skills: instructions your AI follows the same way, every time.",
+      faz: "Every job you repeat gets a skill: the interview, the research, the copy, the review, the video, the count of how customers found you. Chapter 01 says what a skill is, and chapter 04 how to install one.",
+      pede: "What skills do I have installed?" },
+    { n: 2, nome: "Research", fala: "Start with research. A research skill reads your reviews, your competitors' ads and what people ask about your service online.",
+      skill: "customer-research", tipo: "ini",
+      faz: "Collects what customers and the market say about your service, in their exact words, and notes where each line came from.",
+      le: "<code>brand.md</code>, your reviews, competitors' reviews (the three-star ones first) and ads, the questions people ask online, and once a month <code>found-you.md</code>",
+      deixa: "<code>customer-words.md</code>, and the strongest lines copied into <code>brand.md</code>",
+      pede: "Research what customers say about house cleaning in Leeds. Here are my reviews and two competitors." },
+    { n: 3, nome: "Your customers' exact words", fala: "Keep the exact words your customers use. They'll write half your ads for you.",
+      skill: "customer-words.md", tipo: "arq",
+      faz: "The file the research leaves behind: what customers wanted, what worried them, what they praised, the words they use for your service and the questions they ask before hiring. Quoted, never paraphrased.",
+      le: "Written by customer-research",
+      deixa: "Read by draft-review; the best lines also go into <code>brand.md</code>, which every writing skill reads",
+      pede: "Update my customer words with these three new reviews." },
+    { n: 4, nome: "Copy", fala: "A copy skill turns those words into the ad, the page and the follow-up, in your voice.",
+      skill: "sales-copy", tipo: "pub", link: GH + "/tree/main/sales-copy",
+      faz: "Writes the ad, the page, the offer, the headline or the follow-up message. It sizes the promise to the proof you have, picks the angle, answers the objections and sweeps the draft for machine-written tells.",
+      le: "<code>brand.md</code> first. If it's missing, it asks five questions or sends you to brand-interview.",
+      deixa: "A draft, with every claim it couldn't check marked for you",
+      pede: "Write a Google ad and the page it lands on, for my end-of-tenancy cleaning." },
+    { n: 5, nome: "Review", fala: "A review skill reads every draft before it goes out and cuts anything that sounds like AI.",
+      skill: "draft-review", tipo: "ini",
+      faz: "Reads any draft before it goes out: checks every claim against what you gave it, swaps vague lines for your customers' words, and rewrites the lines that read like a template.",
+      le: "The draft, <code>brand.md</code>, <code>customer-words.md</code>, and sales-copy's list of machine-written tells if you have it",
+      deixa: "The draft, cleaned, and the claims you need to confirm",
+      pede: "Review this before I post it." },
+    { n: 6, nome: "Social media", fala: "A social media skill picks the format and the hook for every video, from what's working this month.",
+      skill: "short-form-hooks", tipo: "pub", link: GH + "/tree/main/short-form-hooks",
+      faz: "Reads the idea or the script for a short video and picks the format, the spoken hook and the visual hook, with two alternatives and why. If you edit your own videos, edit-style-file sets up the look once, from a creator you'd like yours to look like.",
+      le: "<code>brand.md</code>, for who the video is for and how you talk",
+      deixa: "A one-page video sheet with the shot list",
+      pede: "What format should this video be? Here's the idea.",
+      extra: { skill: "edit-style-file", link: GH + "/tree/main/edit-style-file" } },
+    { n: 7, nome: "One file about your business", fala: "Every skill reads the same file about your business, so the ad and the page never contradict each other.",
+      skill: "brand-interview", tipo: "pub", link: GH + "/tree/main/brand-interview",
+      faz: "Interviews you about the business, the buyer, the offer, the proof and the way you talk, one question at a time, about fifteen in all. It records your words and never fills a blank with a guess.",
+      le: "Your answers, and the messages and reviews you paste",
+      deixa: "<code>brand.md</code>, the file every other skill reads first",
+      pede: "Interview me about my business." },
+    { n: 8, nome: "How they found you", fala: "Ask every new customer how they found you, and feed the answers back to research once a month.",
+      skill: "how-found-you", tipo: "ini",
+      faz: "Gives you the one question to ask at booking, logs every answer in the customer's words, and once a month counts where new customers came from and what to do more of.",
+      le: "What each new customer tells you",
+      deixa: "<code>found-you.md</code>, which customer-research reads once a month",
+      pede: "Log a new customer: Sarah, found us on Google Maps searching \"oven cleaning near me\"." }
+  ];
+  var TAG = { pub: ["pub", "Public skill"], ini: ["ini", "Starter skill"], arq: ["arq", "A file"] };
+
+  var C = window.TOOLS_CONFIG || {}, id = T.qs.get("id"), own = T.qs.get("pedro") === "1";
+  var vis = id || (function () { try { var v = sessionStorage.getItem("sl_id"); if (!v) { v = T.uid(); sessionStorage.setItem("sl_id", v); } return v; } catch (e) { return T.uid(); } })();
+  function ev(t, x) { if (!own) T.event(vis, "skilllist", t, x); }
+  ev(id ? "open" : "view");
+
+  var textos = {};
+  document.getElementById("lista").innerHTML = PASSOS.map(function (p) {
+    var h = '<div class="sk"><p class="sk-num">Step ' + p.n + " · " + p.nome + '</p><p class="fala">“' + p.fala + "”</p>";
+    if (p.skill) h += "<h3><code>" + p.skill + "</code>" + (TAG[p.tipo] ? ' <span class="tag ' + TAG[p.tipo][0] + '">' + TAG[p.tipo][1] + "</span>" : "") + "</h3>";
+    h += "<p>" + p.faz + "</p>";
+    if (p.le) h += "<dl><dt>Reads</dt><dd>" + p.le + "</dd><dt>Leaves behind</dt><dd>" + p.deixa + "</dd></dl>";
+    h += '<div class="pede"><b>Ask Claude</b>' + T.esc(p.pede) + "</div>";
+    if (p.tipo === "pub") {
+      h += '<div class="acoes"><a class="btn ghost" data-ev="github" data-k="' + p.skill + '" href="' + p.link + '" target="_blank" rel="noopener">Open ' + p.skill + " on GitHub</a>" +
+        (p.extra ? '<a class="btn ghost" data-ev="github" data-k="' + p.extra.skill + '" href="' + p.extra.link + '" target="_blank" rel="noopener">Open ' + p.extra.skill + "</a>" : "") + "</div>";
+    }
+    if (p.tipo === "ini") {
+      h += '<details data-skill="' + p.skill + '"><summary>See the whole skill</summary><pre>Loading…</pre>' +
+        '<div class="acoes"><button class="btn ghost" type="button" data-copia="' + p.skill + '">Copy the skill</button><a class="btn ghost" data-ev="file" data-k="' + p.skill + '" href="files/' + p.skill + '/SKILL.md" target="_blank" rel="noopener">Open the file</a></div></details>' +
+        '<p class="volta">Save it as <code>' + p.skill + "/SKILL.md</code> in your skills folder, or take all three in the zip in chapter 04.</p>";
+    }
+    return h + "</div>";
+  }).join("");
+
+  // o texto de cada skill inicial vem do próprio arquivo, que é o mesmo do zip
+  document.querySelectorAll("details[data-skill]").forEach(function (d) {
+    var k = d.getAttribute("data-skill"), pre = d.querySelector("pre");
+    fetch("files/" + k + "/SKILL.md").then(function (r) { if (!r.ok) throw 0; return r.text(); })
+      .then(function (t) { textos[k] = t; pre.textContent = t; })
+      .catch(function () { pre.textContent = "Open the file with the button below."; });
+    d.addEventListener("toggle", function () { if (d.open) ev("expand", k); });
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-copia]");
+    if (b) { var k = b.getAttribute("data-copia"); if (textos[k]) T.copy(b, textos[k], function () { ev("copy", k); }); return; }
+    var a = e.target.closest && e.target.closest("[data-ev]");
+    if (a) ev(a.getAttribute("data-ev"), a.getAttribute("data-k") || "");
+  });
+  document.getElementById("gh").addEventListener("click", function () { ev("github", "repo"); });
+  document.getElementById("zip").addEventListener("click", function () { ev("zip"); });
+  window.addEventListener("beforeprint", function () { document.querySelectorAll("details").forEach(function (d) { d.open = true; }); });
+  if (C.AGENDA) { var ag = document.getElementById("agenda"); ag.href = C.AGENDA; ag.classList.remove("hidden"); ag.addEventListener("click", function () { ev("book"); }); }
+
+  // o celular é opcional; dez dígitos é EUA ou Canadá, fora deles só com o código do país
+  function fone(v) {
+    var s = String(v || "").trim(), d = s.replace(/\D/g, "");
+    if (!d) return "";
+    if (/^\+/.test(s)) return d.length >= 8 && d.length <= 15 ? "+" + d : null;
+    if (/^00/.test(s)) { d = d.slice(2); return d.length >= 8 && d.length <= 15 ? "+" + d : null; }
+    if (d.length === 10 && d[0] !== "0") return "+1" + d;
+    if (d.length === 11 && d[0] === "1") return "+" + d;
+    return null;
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = fone(document.getElementById("phone").value);
+    var ligar = document.getElementById("ligar").checked;
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : phone === null ? "That number doesn't look right. Outside the U.S. and Canada, start with your country code, like +44." : ligar && !phone ? "Add a mobile number so the team can reach you, or untick the box." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !T.validEmail(email) ? "email" : "phone").focus(); return; }
+    if (document.getElementById("hpf").value) return;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var lid = T.uid();
+    var aqui = location.href.split("#")[0].split("?")[0];
+    T.sendLead({
+      id: lid, tool: "skilllist", lang: "en", name: name, email: email, phone: phone || "", sms: ligar && !!phone, ligar: ligar,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "skilllist-2026-10-19",
+      inputs: {}, result: { run: ligar, repo: GH, files: new URL("starter-skills.zip", aqui).toString() },
+      reportUrl: T.link(aqui, { id: lid })
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        if (C.PHONE_DISPLAY) document.getElementById("tFone").textContent = " from " + C.PHONE_DISPLAY + ". Save the number so you know it's us";
+      }
+      document.getElementById("lead").classList.add("hidden");
+      document.getElementById("pronto").classList.remove("hidden");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send me the files";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Stranger Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .citacao { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 21px; line-height: 1.4; color: var(--ink); border-left: 3px solid var(--sun); padding: 4px 0 4px 16px; margin: 18px 0 6px; }
+  .citacao + .quem-diz { font-size: 13.5px; color: var(--ink-3); margin: 0 0 16px 19px; }
+  .estranho { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 22px; line-height: 1.4; color: var(--ink); margin: 0 0 6px; }
+  .estranho + .quem-diz { font-size: 13.5px; color: var(--ink-3); margin: 0 0 20px; }
+  .checa td { overflow-wrap: anywhere; }
+  .checa .pill { display: inline-block; margin-top: 6px; }
+  @media (max-width: 520px) { .rx table.t { font-size: 13.5px; } .rx table.t th, .rx table.t td { padding: 8px 4px; } }
+  .t td .muted.small { display: block; }
+  .passo { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+  .passo h4 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
+  .resto { border-top: 1px solid var(--line); padding: 14px 0 4px; }
+  .resto h4 { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin: 0 0 4px; font-size: 16px; color: var(--ink); }
+  .resto p { margin: 0 0 8px; }
+  .fotos { margin: 4px 0 10px; padding-left: 22px; }
+  .fotos li { margin: 0 0 4px; }
+  .olhada { list-style: none; padding: 0; margin: 0; }
+  .olhada li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .olhada li:last-child { border-bottom: 0; }
+  .olhada .s { font-weight: 700; color: var(--ink); text-align: right; }
+  @media print { .passo, .resto, .citacao, .estranho { break-inside: avoid; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>This report link is incomplete. Run the check again and a new link will reach your inbox.</p><a class="btn" href="../">Run the Stranger Check <span class="seta">→</span></a></div>
+
+  <article id="report" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>The Stranger Check</span></div>
+      <p class="capa-tipo">The Stranger Check</p>
+      <h1 id="cH1"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-stranger.png" alt="Line drawing of a person on a street looking at a phone, between two identical houses with identical vans parked outside"></div>
+      <div class="capa-kpis">
+        <div><b id="cNota"></b><span>your stranger score</span></div>
+        <div><b class="perda" id="cContra"></b><span id="cContraR"></span></div>
+        <div><b id="cMerc"></b><span id="cMercR"></span></div>
+      </div>
+      <div class="capa-pe"><span>A private report, worked out from the answers you gave.</span><span>Eight chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="como" id="sComo"></section>
+    <section class="cap" data-secao="lista" id="sLista"></section>
+    <section class="cap" data-secao="primeiro" id="sPrimeiro"></section>
+    <section class="cap" data-secao="resto" id="sResto"></section>
+    <section class="cap" data-secao="ranking" id="sRanking"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">08 · Method, sources and next step</p>
+      <h2>How this report is put together</h2>
+      <p>Each of the eight checks gets 0 to 3 points from your answer: 3 when it matches what customers say they look for, 0 when a stranger would hold it against you. "Not sure" gets 1, because a stranger sees it whether you've checked or not. With no reviews yet, the star rating and the latest review count as zero, and replies are left out. Your score is your points over the most you could get, out of 100.</p>
+      <p>The first thing a stranger notices is the check with the fewest points. In a tie, it's the one a stranger usually sees first on the listing: reviews and stars, then photos, hours, review dates and replies, then the website and the phone. The points and the order are our reading, not a measurement.</p>
+      <p class="muted">The survey numbers come from U.S. adults; we haven't found a European survey that asks the same questions. Google's guidance applies in every country where Google Business Profile works.</p>
+      <h3>Your answers</h3>
+      <table class="t" id="inputs"></table>
+      <p class="noprint"><a href="../">Run the check again</a></p>
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Want a second look?</h3>
+      <p>Reply to the email that brought you here, and Pedro's team will go over your listing with you. If you checked the box, someone from the team will call you within 24 hours. Reply STOP to any text and they stop.</p>
+      <a class="btn noprint hidden" id="agenda" href="#" target="_blank" rel="noopener">Pick a time to talk <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with service business owners on how new customers find them and choose them, from the first search to the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Save as PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/stranger.js"></script>
+<script>
+(function () {
+  var R = STRANGER, id = T.qs.get("id"), inputs;
+  try { inputs = T.dec(T.qs.get("d")); } catch (e) { inputs = null; }
+  if (!inputs || R.check(inputs)) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(t, x) { if (!own) T.event(id, "stranger", t, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  function mai(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var E = MERCADO.estranho, r = R.calc(inputs), p = r.primeiro, chave = R.chave(r), cons = R.CONSERTO[chave];
+  var oficio = inputs.trade === "other" ? (inputs.tradeOther || "Something else") : R.OFICIOS[inputs.trade];
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  var nAplica = r.semFicha ? 8 : r.aplicam, nContra = r.semFicha ? 8 : r.contra.length;
+  var BL = "brightlocal";
+
+  // ---------- capa ----------
+  $("cH1").innerHTML = r.semFicha ? 'A stranger who searches for your business <span class="perda">finds nothing</span>'
+    : !p ? 'A stranger finds <span class="ganho">nothing to hold against</span> your listing'
+    : p.duvida ? 'First, look up your <span class="perda">' + p.curto + "</span> the way a stranger would"
+    : 'The first thing a stranger notices: <span class="perda">' + p.frase + "</span>";
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + oficio + " · " + mes;
+  $("cNota").textContent = r.nota + " / 100";
+  $("cNota").className = r.nota >= 80 ? "ganho" : r.nota < 50 ? "perda" : "";
+  $("cContra").textContent = nContra + " of " + nAplica;
+  $("cContraR").textContent = "checks that count against you";
+  var KPI = {
+    listing: ["2.7×", "more likely to be seen as reputable with a complete listing, says Google"],
+    reviews: [E.menosDe20 + "%", "of U.S. adults won't use a business with fewer than 20 reviews"],
+    stars: [E.quatro + "%", "of U.S. adults only use a business with four stars or more"],
+    latest: [E.tresMeses + "%", "of U.S. adults only care about reviews from the last three months"],
+    replies: [E.todas + "%", "of U.S. adults are likely to use a business that replies to every review"],
+    website: [E.site + "%", "of U.S. adults go to the website after reading good reviews"]
+  }[p ? p.id : ""] || [E.leem + "%", "of U.S. adults read reviews for local businesses"];
+  $("cMerc").textContent = KPI[0]; $("cMercR").textContent = KPI[1];
+  rx.cabecalho("The Stranger Check · Prepared for " + (nome || "you") + " · " + mes);
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.AGENDA) { var a = $("agenda"); a.href = cfg.AGENDA; a.classList.remove("hidden"); a.addEventListener("click", function () { ev("book"); }); }
+
+  var m = R.mercado(p ? p.id : "photos");
+  function mercadoFrase() { return m[0] + cite(m[2]); }
+
+  // ---------- 01 · resumo ----------
+  var linha = r.semFicha ? p.linha : !p ? "Nothing on this listing gives me a reason to call someone else." : p.duvida ? "" : p.linha;
+  var achados = [
+    "<b>A new customer meets your listing before your work.</b> " + E.leem + "% of U.S. adults read reviews for local businesses, and Google is still the review site most of them use (" + E.google + "%)." + cite(BL),
+    r.semFicha ? "<b>Nothing comes up when a stranger searches for you.</b> " + mercadoFrase()
+      : !p ? "<b>Every check works in your favor.</b> What keeps it that way is a steady flow: a review request and a photo after every job."
+      : p.duvida ? "<b>You haven't checked your " + p.curto + ".</b> A stranger sees that in a second, so it's the first thing to look at. " + mercadoFrase()
+      : "<b>The first thing a stranger notices on yours: " + p.frase + ".</b> " + mercadoFrase(),
+    r.semFicha ? "<b>All eight checks wait on the listing.</b> Reviews, photos, hours, website and phone all live on it."
+      : nContra ? "<b>" + nContra + " of " + nAplica + " checks " + (nContra === 1 ? "counts" : "count") + " against you:</b> " + r.contra.map(function (x) { return x.nome.toLowerCase(); }).join(", ") + "."
+      : "<b>None of the " + nAplica + " checks counts against you.</b>"
+  ];
+  // as notas seguem a ordem de leitura: a frase do dono que nunca entrou na ficha vem antes da do ranking
+  if (r.semGestao) achados.push("<b>You've never logged in to your listing.</b> Until you claim it, you can't reply to reviews or keep the hours and photos right. Claiming it costs nothing." + cite("g-criar"));
+  achados.push("<b>No one can buy their way up.</b> Google says there's no way to request or pay for a better local ranking, and that more reviews and positive ratings can help." + cite("g-ranking"));
+  $("sResumo").innerHTML = capNum("01", "Executive summary") +
+    "<h2>" + (r.semFicha ? "A stranger who searches for you finds nothing to check" : !p ? "Your listing gives a stranger no reason to look elsewhere" : p.duvida ? "Start by looking at your listing the way a stranger does" : "The first thing a stranger notices: " + p.frase) + "</h2>" +
+    (linha ? '<p class="estranho">“' + T.esc(linha) + '”</p><p class="quem-diz">A stranger, looking you up</p>' : "") +
+    '<p class="lead">' + R.faixa(r) + "</p>" +
+    '<div class="kpis"><div class="kpi ' + (r.nota >= 80 ? "ganho" : r.nota < 50 ? "perda" : "") + '"><b>' + r.nota + ' / 100</b><span>your stranger score</span></div><div class="kpi perda"><b>' + nContra + " of " + nAplica + '</b><span>checks that count against you</span></div><div class="kpi"><b>' + KPI[0] + "</b><span>" + KPI[1] + "</span></div></div>" +
+    '<h3>Key findings</h3><ol class="achados">' + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+    leve("Where to start", "<p>" + T.esc(cons.curta) + " Chapter 04 has the steps" + (cons.texto || cons.extras || chave === "photos" ? " and the words to copy" : "") + ".</p>");
+
+  // ---------- 02 · como o estranho escolhe ----------
+  var liga = { reviews: 5, stars: 3, latest: 2, replies: 1, website: 4 }[p ? p.id : ""];
+  var BAR = [[E.leem, "Read reviews for local businesses"], [E.todas, "Likely to use a business that replies to all of its reviews"],
+    [E.tresMeses, "Only care about reviews from the last three months"], [E.quatro, "Only use a business with four stars or more"],
+    [E.site, "Go to the business's website after reading good reviews"], [E.menosDe20, "Won't use a business with fewer than 20 reviews"],
+    [E.nunca, "Unlikely to use a business that never replies to reviews"]];
+  $("sComo").innerHTML = capNum("02", "How a stranger chooses") +
+    "<h2>Two businesses on the same street</h2>" +
+    '<p class="lead">Picture two businesses on the same street, at the same price. One has photos of last week\'s jobs and answers every review. The other has an old logo and a three-star review nobody replied to. A stranger calls the first one, and the second never finds out it was better.</p>' +
+    "<p>A stranger can't judge your work before hiring you, so they judge what they can see: how many people reviewed you, how recently, the rating, whether you answer, and whether the photos look like a business that's working now.</p>" +
+    ex("checa", "What U.S. adults say they check before choosing a local business",
+      barras(BAR.map(function (b, k) { return { rotulo: b[1], valor: b[0], texto: b[0] + "%", classe: k === liga ? "voce" : "cinza" }; }), 100),
+      "BrightLocal, Local Consumer Review Survey 2026: 1,002 U.S. adults. A review software company. Outside the U.S., read these as a direction." + cite(BL)) +
+    ex("fatores", "What makes a single review count with the people reading it",
+      barras(E.fatores.map(function (f) { return { rotulo: f[0], valor: f[1], texto: f[1] + "%", classe: "cinza" }; }), 100),
+      "Same survey. Respondents could pick several factors; the first six of ten are shown." + cite(BL)) +
+    "<p>Google puts its own numbers on the listing: customers are 2.7 times more likely to consider a business reputable if they find a complete Business Profile, and 70% more likely to visit. Google doesn't say how it measured this." + cite("g-perfil") + "</p>" +
+    leve("", "<p>To a new customer, that page is your work. Every check in the next chapter takes a stranger a few seconds, and every one of them is in your hands.</p>");
+
+  // ---------- 03 · item por item ----------
+  var OLHAM = {
+    reviews: E.menosDe20 + "% won't use a business with fewer than 20" + cite(BL),
+    stars: "Four stars or more for " + E.quatro + "%; 4.5 or more for " + E.quatroEMeio + "%" + cite(BL),
+    latest: "Reviews from the last three months, for " + E.tresMeses + "%" + cite(BL),
+    replies: "A reply to every review: " + E.todas + "% are likely to use a business that does" + cite(BL),
+    photos: "At least three photos of the work you do, added regularly, in Google's advice" + cite("g-fotos"),
+    hours: "Complete, accurate hours with holidays, in Google's advice" + cite("g-ranking", "g-horario"),
+    website: E.site + "% go to the website after reading good reviews" + cite(BL),
+    phone: "A number that connects to your business, in Google's rules" + cite("g-regras")
+  };
+  function pill(x) {
+    if (r.semFicha) return '<span class="pill vaza">Against you</span>';
+    if (x.pts === null) return '<span class="pill meio">Not yet</span>';
+    if (x.duvida) return '<span class="pill auto">Not checked</span>';
+    return x.pts === 3 ? '<span class="pill forte">In your favor</span>' : x.pts === 2 ? '<span class="pill meio">Close</span>' : '<span class="pill vaza">Against you</span>';
+  }
+  var linhas = r.semFicha ? R.VISTA.map(function (k) { var q = R.item(k); return { id: q.id, nome: q.nome, label: "Nothing to see: no listing", pts: 0 }; })
+    : R.VISTA.map(function (k) { return r.itens.filter(function (x) { return x.id === k; })[0]; });
+  $("sLista").innerHTML = capNum("03", "Check by check") +
+    "<h2>The eight things a stranger checks, on your listing</h2>" +
+    '<p class="lead">Your answers, in the order a stranger usually sees them, next to what customers say they look for.</p>' +
+    '<table class="t checa"><thead><tr><th>Check</th><th>On your listing</th><th>What customers look for</th></tr></thead><tbody>' +
+    linhas.map(function (x) {
+      return "<tr" + (p && x.id === p.id ? ' style="background:var(--perda-suave)"' : "") + "><td><b>" + x.nome + "</b><br>" + pill(x) + "</td><td>" + T.esc(x.label) + "</td><td class=\"muted small\">" + OLHAM[x.id] + "</td></tr>";
+    }).join("") + "</tbody></table>" +
+    '<p class="ex-fonte">Percentages: BrightLocal\'s survey of 1,002 U.S. adults, 2026. Outside the U.S., read them as a direction.</p>' +
+    "<h3>Pedro's team looks you up</h3><div id=\"olhada\">" +
+    (inputs.o ? leve("Within 24 hours", "<p>Pedro's team looks your business up the way a stranger would and fills in this part: the same eight checks, as they show today, and the first thing they noticed.</p>")
+      : leve("Want a real look?", "<p>Reply to the email that brought you here with your business name and town. Pedro's team will look you up the way a stranger would and tell you the first thing they notice.</p>")) + "</div>";
+  // a olhada da equipe, preenchida na planilha (colunas "Google:"), aparece aqui sozinha
+  var ROT = { "estrelas": "Star rating", "avaliações": "Number of reviews", "última avaliação": "Latest review", "respostas": "Replies to reviews", "fotos": "Photos", "horário": "Hours", "site": "Website", "telefone": "Phone" };
+  if (inputs.o && cfg.ENDPOINT && id && /^https?:/.test(cfg.ENDPOINT)) {
+    window.__olhada = function (o) {
+      if (!o || !o.ok || !o.itens || !o.itens.length) return;
+      var ORD = ["avaliações", "estrelas", "fotos", "horário", "última avaliação", "respostas", "site", "telefone"];
+      var itens = o.itens.filter(function (i) { return ORD.indexOf(i[0]) >= 0; }).sort(function (x, y) { return ORD.indexOf(x[0]) - ORD.indexOf(y[0]); });
+      if (!itens.length) return;
+      // fora da numeração dos Exhibits: chega depois que a página já numerou os outros
+      $("olhada").innerHTML = '<div class="ex"><p class="ex-rot">Pedro\'s team</p><p class="ex-tit">What we saw on your listing</p><ul class="olhada">' + itens.map(function (i) {
+        return "<li><span>" + T.esc(ROT[i[0]] || i[0]) + '</span><span class="s">' + T.esc(i[1]) + "</span></li>";
+      }).join("") + '</ul><p class="ex-fonte">Checked by Pedro\'s team, the way a stranger would see it.</p></div>' + (o.frase ? leve("The first thing we noticed", "<p>" + T.esc(o.frase) + "</p>") : "");
+      ev("olhada");
+    };
+    var sc = document.createElement("script");
+    sc.src = cfg.ENDPOINT + "?action=olhada&id=" + encodeURIComponent(id) + "&callback=__olhada";
+    document.body.appendChild(sc);
+  }
+
+  // ---------- 04 · o primeiro conserto ----------
+  var CITE = { reviews: "g-avaliacoes", latest: BL, replies: "g-avaliacoes", photos: "g-fotos", hours: "g-horario", website: BL, phone: "g-regras", listing: "g-criar", stars: BL };
+  var passos = cons.passos.slice();
+  if (r.semGestao && chave !== "listing") passos.unshift(["Before anything: claim your listing", "You told us you've never logged in to it. Search your business name and town on Google Maps, select your listing, then \"Claim this business\" and \"Manage now\", and follow the steps. Replying to reviews, fixing the hours and adding your own photos all need the owner's access."]);
+  var h04 = capNum("04", "The first fix") +
+    "<h2>" + T.esc(cons.titulo) + "</h2>" +
+    '<p class="lead">' + T.esc(cons.porque) + (CITE[chave] ? cite(CITE[chave]) : "") + "</p>" +
+    passos.map(function (s, n) { return '<div class="passo"><h4>Step ' + (n + 1) + " · " + T.esc(s[0]) + "</h4><p>" + T.esc(s[1]) + "</p></div>"; }).join("");
+  if (chave === "photos") {
+    var fotos = R.FOTOS[inputs.trade] || R.FOTOS.other;
+    h04 += "<h3>The photos a stranger wants to see, for " + T.esc(oficio.toLowerCase()) + "</h3><ol class=\"fotos\">" + fotos.map(function (f) { return "<li>" + T.esc(f) + "</li>"; }).join("") + "</ol>" + rx.script(fotos.map(function (f, k) { return (k + 1) + ". " + f; }).join("\n"), "fotos", "Copy the photo list");
+  }
+  if (cons.texto) h04 += "<h3>" + ({ pedido: "The review request, to send the day the job ends", boa: "A reply to a good review", media: "A reply to a mixed review", site: "The first screen of the page", caixa: "The voicemail" })[cons.texto] + "</h3>" + rx.script(R.TEXTOS[cons.texto], cons.texto);
+  (cons.extras || []).forEach(function (k) {
+    h04 += "<h3>" + ({ media: "A reply to a mixed review", ruim: "A reply to an unhappy review", retorno: "The text back after a missed call" })[k] + "</h3>" + rx.script(R.TEXTOS[k], k);
+  });
+  if (chave === "replies") h04 += '<p class="muted small">Half of U.S. adults (' + E.generica + "%) are put off by replies that read like a template, so change a detail every time." + cite(BL) + "</p>";
+  h04 += leve("This week", "<p>" + mai(R.SEMANA[chave]) + "</p>");
+  $("sPrimeiro").innerHTML = h04;
+
+  // ---------- 05 · o resto da lista ----------
+  // sem avaliação nenhuma, a nota e a data chegam com as primeiras avaliações: o conserto é o mesmo e não se repete
+  var semAval = R.semAvaliacao(inputs.a);
+  var resto = r.semFicha ? [] : r.contra.filter(function (x) { return !(p && x.id === p.id) && !(semAval && (x.id === "stars" || x.id === "latest" || x.id === "reviews")); });
+  var h05 = capNum("05", "The rest of the list");
+  if (r.semFicha) {
+    h05 += "<h2>Once the listing is up</h2><p class=\"lead\">Once it's verified, these are the checks a stranger makes, in the order they see them. Hours, website, phone and photos go in the first week; reviews come one job at a time.</p>" +
+      R.VISTA.map(function (k) { var q = R.item(k); return '<div class="resto"><h4>' + q.nome + "</h4><p>" + T.esc(R.CONSERTO[k].curta) + "</p></div>"; }).join("");
+  } else {
+    h05 += "<h2>" + (resto.length ? "What to fix after that, in order" : "Nothing else counts against you") + "</h2>" +
+      '<p class="lead">' + (resto.length ? "The other checks that count against you, worst first. One line each; the first fix in chapter 04 comes before all of them." : "Keep what's working, and keep it recent: a review request and a photo after every job.") + "</p>" +
+      resto.map(function (x) {
+        var k = x.duvida ? "unsure" : x.id, c = R.CONSERTO[k];
+        return '<div class="resto"><h4>' + x.nome + " " + pill(x) + "</h4><p><span class=\"muted\">On yours: " + T.esc(x.label) + ".</span> " + T.esc(x.duvida ? "Look it up in a private window before you change anything." : c.curta) + "</p></div>";
+      }).join("");
+    if (semAval) h05 += "<p class=\"muted\">The star rating and the latest review come with the first reviews, so the review request covers them too.</p>";
+    if (r.favor.length) h05 += "<h3>Already working for you</h3><p>" + r.favor.map(function (x) { return x.nome; }).join(", ") + ". Keep " + (r.favor.length === 1 ? "it" : "them") + " current: a stranger checks " + (r.favor.length === 1 ? "it" : "them") + " every time.</p>";
+    // o pedido de avaliação entra aqui quando a lista pede e o capítulo 04 não o trouxe
+    var pedeAval = resto.some(function (x) { return !x.duvida && (x.id === "reviews" || x.id === "latest" || x.id === "stars"); });
+    if (pedeAval && cons.texto !== "pedido") h05 += "<h3>The review request</h3><p>Send it the day each job ends, with your review link from the Business Profile." + cite("g-avaliacoes") + "</p>" + rx.script(R.TEXTOS.pedido, "pedido5");
+  }
+  $("sResto").innerHTML = h05;
+
+  // ---------- 06 · onde aparece ----------
+  $("sRanking").innerHTML = capNum("06", "Where you show up") +
+    "<h2>How Google decides who shows up, and what no one can pay for</h2>" +
+    '<p class="lead">This check looks at what a stranger sees once your listing is on the screen. Whether it gets on the screen at all is a separate question, and Google answers part of it in public.</p>' +
+    '<p class="citacao">“There\'s no way to request or pay for a better local ranking on Google.”</p><p class="quem-diz">Google Business Profile Help' + cite("g-ranking") + "</p>" +
+    ex("ranking", "The three things Google says decide local results",
+      '<table class="t"><thead><tr><th>Factor</th><th>In Google\'s words</th><th>What\'s yours to work on</th></tr></thead><tbody>' +
+      "<tr><td><b>Relevance</b></td><td>“How well a Business Profile matches what someone is searching for.”</td><td>A complete listing: the right category, the services you offer, hours, website and phone.</td></tr>" +
+      "<tr><td><b>Distance</b></td><td>“How far each business is from the customer who's searching.”</td><td>Not yours to change. Keep the area you cover accurate.</td></tr>" +
+      "<tr><td><b>Prominence</b></td><td>“How well-known a business is,” based in part on “how many websites link to your business and how many reviews you have.”</td><td>Reviews and ratings, and being mentioned on other local sites.</td></tr>" +
+      "</tbody></table>", "Google Business Profile Help, \"Tips to improve your local ranking on Google.\" Google keeps the details of the ranking confidential." + cite("g-ranking")) +
+    "<p>Google adds that “more reviews and positive ratings can help your business's local ranking,” and that “businesses with complete and accurate info are more likely to show up in local search results.”" + cite("g-ranking") + "</p>" +
+    leve("", "<p>Two of the three are in your hands, and the eight checks in this report feed both of them. Google doesn't sell a better position at any price; what moves it is on this list.</p>");
+
+  // ---------- 07 · o plano ----------
+  var seg = r.semFicha ? "add three photos of real jobs, your hours and your website to the new listing." : (resto[0] ? (resto[0].duvida ? R.SEMANA.unsure : R.SEMANA[resto[0].id]) : "add one photo of a real job to your listing after every job.");
+  var semanas = [
+    ["Week 1", mai(R.SEMANA[chave])],
+    ["Week 2", mai(seg)],
+    ["Week 3", "Send the review request after every job, and reply to each new review within a day or two. " + E.diaSeguinte + "% of U.S. adults want a reply by the next day."],
+    ["Week 4", "Look yourself up in a private window, next to the business that shows up beside you, and run this check again."]
+  ];
+  $("sPlano").innerHTML = capNum("07", "Your next 30 days") +
+    "<h2>Your next 30 days</h2>" +
+    '<p class="lead">One change a week, in the order a stranger would notice them.</p>' +
+    '<table class="t"><thead><tr><th>When</th><th>What to do</th></tr></thead><tbody>' +
+    semanas.map(function (l, k) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + (k === 2 ? cite(BL) : "") + "</td></tr>"; }).join("") + "</tbody></table>" +
+    leve("What stays with you", "<p>The work itself. The customers who've hired you already know how good it is. The listing is how the next one finds out before they call.</p>");
+
+  // ---------- 08 ----------
+  $("inputs").innerHTML = "<tr><td>What you do</td><td>" + T.esc(oficio) + "</td></tr>" +
+    "<tr><td>Your listing on Google</td><td>" + R.FICHA[inputs.listing][0] + "</td></tr>" +
+    (r.semFicha ? "" : r.itens.map(function (x) { return "<tr><td>" + x.nome + "</td><td>" + T.esc(x.label) + "</td></tr>"; }).join(""));
+  $("fontes").innerHTML = rx.fontes();
+
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("report").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

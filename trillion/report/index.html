@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Trillion-Dollar List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .citacao { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 21px; line-height: 1.4; color: var(--ink); border-left: 3px solid var(--sun); padding: 4px 0 4px 16px; margin: 18px 0 6px; }
+  .citacao + .quem-diz { font-size: 13.5px; color: var(--ink-3); margin: 0 0 16px 19px; }
+  .mapa { columns: 2; column-gap: 24px; padding-left: 20px; margin: 4px 0; }
+  .mapa li { margin: 0 0 6px; break-inside: avoid; }
+  .t td.m { text-align: center; font-size: 17px; width: 56px; }
+  .t tr.sua td { background: var(--sun-soft); font-weight: 600; }
+  .t td.ainda { color: var(--perda); font-weight: 600; white-space: nowrap; }
+  .t td.feito { color: var(--ganho); font-weight: 600; white-space: nowrap; }
+  .passo { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+  .passo h4 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
+  @media (max-width: 560px) { .mapa { columns: 1; } }
+  @media print { .passo, .citacao { break-inside: avoid; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>This report link is incomplete. Answer the four questions again and a new link will reach your inbox.</p><a class="btn" href="../">Open the list <span class="seta">→</span></a></div>
+
+  <article id="report" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>The Trillion-Dollar List</span></div>
+      <p class="capa-tipo">The Trillion-Dollar List</p>
+      <h1 id="cH1"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-trillion.png" alt="Line drawing of a homeowner resting in an armchair with coffee while two workers finish painting a wall and cleaning a window"></div>
+      <div class="capa-kpis">
+        <div><b class="ganho" id="cAinda"></b><span>jobs still on your customers' plate</span></div>
+        <div><b id="cSeis">$1 : $6</b><span>software against services, the ratio behind the bet</span></div>
+        <div><b id="cFerr"></b><span>apps and tools you pay for</span></div>
+      </div>
+      <div class="capa-pe"><span>A private report, worked out from the answers you gave.</span><span>Eight chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="aposta" id="sAposta"></section>
+    <section class="cap" data-secao="lista" id="sLista"></section>
+    <section class="cap" data-secao="oficio" id="sOficio"></section>
+    <section class="cap" data-secao="primeira" id="sPrimeira"></section>
+    <section class="cap" data-secao="venda" id="sVenda"></section>
+    <section class="cap" data-secao="fica" id="sFica"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">08 · Method, sources and next step</p>
+      <h2>How this report is put together</h2>
+      <p>The bet, the ratio and the map come from the article, quoted in its own words. The list of local businesses in chapter 03 and the five jobs in chapter 04 are our reading of the article's three tests, applied to businesses the article doesn't cover. They aren't a measurement, and your market can differ.</p>
+      <p class="muted">Your opening counts the jobs you said your customers still do themselves, out of the five we list for your trade. The first job to take over is the first of those in our order, which puts the work that repeats and follows a routine ahead of the work that takes judgement.</p>
+      <h3>Your answers</h3>
+      <table class="t" id="inputs"></table>
+      <p class="noprint"><a href="../">Answer again</a></p>
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Want a second look?</h3>
+      <p>Reply to the email that brought you here, and Pedro's team will go over it with you. If you checked the box, someone from the team will call you within 24 hours. Reply STOP to any text and they stop.</p>
+      <a class="btn noprint hidden" id="agenda" href="#" target="_blank" rel="noopener">Pick a time to talk <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with service business owners on selling the finished result, from the first message to the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Save as PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/calc.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/playbook.js"></script>
+<script src="../../assets/trillion.js"></script>
+<script>
+(function () {
+  var R = TRILLION, id = T.qs.get("id"), inputs;
+  try { inputs = T.dec(T.qs.get("d")); } catch (e) { inputs = null; }
+  if (!inputs || R.check(inputs)) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(t, x) { if (!own) T.event(id, "trillion", t, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var r = R.calc(inputs), t = r.primeira;
+  function min(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+  function jobs(n) { return n + (n === 1 ? " job" : " jobs"); }
+  var oficio = inputs.trade === "other" ? (inputs.tradeOther || "your trade") : Calc.OFICIOS[inputs.trade];
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  // ---------- capa ----------
+  $("cH1").innerHTML = r.nenhuma ? "Your customers already hand you the work around the job" : 'Your customers still do <span class="ganho">' + jobs(r.n) + "</span> they'd pay you to take over";
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + oficio + " · " + mes;
+  $("cAinda").textContent = r.n + " of 5";
+  $("cFerr").textContent = R.FERRAMENTAS[inputs.tools];
+  rx.cabecalho("The Trillion-Dollar List · Prepared for " + (nome || "you") + " · " + mes);
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.AGENDA) { var a = $("agenda"); a.href = cfg.AGENDA; a.classList.remove("hidden"); a.addEventListener("click", function () { ev("book"); }); }
+
+  // ---------- 01 · resumo ----------
+  var achados = [
+    "<b>The money is moving to whoever sells the finished work.</b> For every dollar spent on software, six are spent on services, and the fund behind Apple and Google is betting the next trillion-dollar company will sell the work itself." + cite("sequoia"),
+    "<b>A service business already sells the result.</b> The opening is the work around the job that customers still do themselves: " + (r.nenhuma ? "yours already hand you all five jobs we list for " + oficio.toLowerCase() + "." : jobs(r.n) + " of the five we list for " + oficio.toLowerCase() + "."),
+    "<b>Take over " + min(t.label) + " first.</b> " + t.porque,
+    "<b>" + R.ferramentasFrase[inputs.tools] + "</b>"
+  ];
+  $("sResumo").innerHTML = capNum("01", "Executive summary") +
+    "<h2>" + (r.nenhuma ? "Your customers already hand you the work around the job" : "Your customers still do " + jobs(r.n) + " you could do for them") + "</h2>" +
+    '<p class="lead">' + R.leitura(inputs, r) + "</p>" +
+    '<div class="kpis"><div class="kpi ganho"><b>' + r.n + ' of 5</b><span>jobs around the work your customers still do themselves</span></div><div class="kpi"><b>$1 : $6</b><span>software against services' + cite("sequoia") + '</span></div><div class="kpi"><b>' + R.FERRAMENTAS[inputs.tools] + "</b><span>apps and tools you pay for</span></div></div>" +
+    "<h3>Key findings</h3><ol class=\"achados\">" + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+    leve("Where to start", "<p>Add " + min(t.label) + " to your next three quotes, with the line in chapter 05. Chapter 06 has the words to sell it in the first conversation.</p>");
+
+  // ---------- 02 · a aposta ----------
+  $("sAposta").innerHTML = capNum("02", "The bet") +
+    "<h2>The fund behind Apple and Google is betting on finished work</h2>" +
+    '<p class="lead">In March 2026, Sequoia Capital published its case for where the next trillion-dollar company comes from. The short version: software is getting cheap to build, so the value moves to whoever delivers the work.</p>' +
+    '<p class="citacao">“The next $1T company will be a software company masquerading as a services firm.”</p><p class="quem-diz">Julien Bek, Sequoia Capital' + cite("sequoia") + "</p>" +
+    ex("seis", "For every dollar spent on software, six are spent on services", barras([
+      { rotulo: "Software", valor: 1, texto: "$1", classe: "cinza" },
+      { rotulo: "Services", valor: 6, texto: "$6", classe: "ok" }
+    ]), "The article's example: a company might spend $10K a year for QuickBooks and $120K on an accountant to close the books." + cite("sequoia")) +
+    "<h3>Two kinds of work</h3>" +
+    "<p>The article splits work into two kinds. Work that follows rules, which it calls intelligence, is what AI takes over first. Work that needs experience and taste, which it calls judgement, stays with people longer. Its own example: writing code is mostly intelligence, and knowing what to build next is judgement." + cite("sequoia") + "</p>" +
+    '<p class="citacao">“A copilot sells the tool. An autopilot sells the work.”</p><p class="quem-diz">Julien Bek, Sequoia Capital' + cite("sequoia") + "</p>" +
+    leve("", "<p>Most software for your business is a copilot: it helps, and you still do the job of running it. A service business is already the autopilot, because the customer pays for the result. The question the bet leaves you with: what work are your customers still doing themselves that you could do for them?</p>");
+
+  // ---------- 03 · a lista ----------
+  var MAPA = ["Insurance brokerage", "Accounting and audit", "Healthcare revenue cycle", "Claims adjusting", "Tax advisory", "Legal, transactional work", "IT managed services", "Supply chain and procurement", "Recruitment and staffing", "Management consulting"];
+  var sua = { cleaning: "Cleaning", lawn: "Lawn and landscaping", hvac: "HVAC, plumbing and electrical", painting: "Painting", handyman: "Handyman and remodeling" }[inputs.trade];
+  $("sLista").innerHTML = capNum("03", "The list") +
+    "<h2>The service businesses that gain the most</h2>" +
+    '<p class="lead">The article ranks industries by two things: how much of the work follows rules, and how much of it companies already pay someone outside to do. Where both are high, the customer already buys a result, and the work gets cheaper to deliver every time the tools improve.</p>' +
+    ex("mapa", "Where the article sees the biggest openings", '<ol class="mapa">' + MAPA.map(function (m) { return "<li>" + m + "</li>"; }).join("") + "</ol>",
+      "The article's map, which it labels illustrative. It names two small-business cases: every small business outsources its IT, and owners outsource the tax work that no single in-house accountant can cover." + cite("sequoia")) +
+    "<h3>On Main Street</h3>" +
+    "<p>The article stops at big industries. We applied its three tests to the local businesses our readers run: does the customer already pay someone for this, does most of the work follow a routine, and can the customer check the result without taking your word for it?</p>" +
+    ex("rua", "The three tests, read for local service businesses",
+      '<table class="t"><thead><tr><th>Business</th><th class="m">Already pays</th><th class="m">Routine</th><th class="m">Checkable</th></tr></thead><tbody>' +
+      R.RUA.map(function (l) { return "<tr" + (l[0] === sua ? ' class="sua"' : "") + "><td>" + l[0] + (l[0] === sua ? " · <span class=\"muted small\">yours</span>" : "") + '<br><span class="muted small">' + l[4] + "</span></td><td class='m'>" + l[1] + "</td><td class='m'>" + l[2] + "</td><td class='m'>" + l[3] + "</td></tr>"; }).join("") +
+      "</tbody></table>", "● strong · ◐ in part · ○ weak. Our reading of the article's tests, not a measurement. The first two rows quote the article; the rest are ours.") +
+    leve("", "<p>Every local service business passes the first test: the customer already pays someone. What separates them is how much of the work around the job follows a routine. That's the part you can take off your customers' plate, deliver the same way every time, and price into the job.</p>");
+
+  // ---------- 04 · o ofício dele ----------
+  $("sOficio").innerHTML = capNum("04", "Your trade") +
+    "<h2>The work around " + oficio.toLowerCase() + " that customers still do</h2>" +
+    '<p class="lead">These are the five jobs we see around ' + oficio.toLowerCase() + ", in the order we'd take them over. You marked the ones your customers still do themselves. Each line on the right goes straight onto a quote.</p>" +
+    '<table class="t"><thead><tr><th>Job around the work</th><th>Today</th><th>The line for your quote</th></tr></thead><tbody>' +
+    r.lista.map(function (x) {
+      var ainda = inputs.tasks.indexOf(x[0]) >= 0;
+      return "<tr" + (x[0] === t.key ? ' class="sua"' : "") + "><td>" + x[1] + "</td><td class='" + (ainda ? "ainda'>They do it" : "feito'>You do it") + "</td><td>" + T.esc(x[2]) + "</td></tr>";
+    }).join("") + "</tbody></table>" +
+    leve("", "<p>" + (r.nenhuma ? "You already take all five off your customers' plate. Make sure every quote says so in writing: work the customer can't see on the quote is work they don't count when they compare prices." : "Every job they still do is one more reason for them to shop around. Every job you take over is one they'd have to give up to switch to someone cheaper.") + "</p>");
+
+  // ---------- 05 · a primeira ----------
+  $("sPrimeira").innerHTML = capNum("05", "The first job to take over") +
+    "<h2>Start with " + min(t.label) + "</h2>" +
+    '<p class="lead">' + t.porque + "</p>" +
+    "<h3>The line for your next quote</h3>" + rx.script(t.linha, "linha", "Copy the line") +
+    '<div class="passo"><h4>Step 1 · Put it on the quote</h4><p>Add the line to your next three quotes as part of the job, with its own line on the price. Customers compare what they can see in writing.</p></div>' +
+    '<div class="passo"><h4>Step 2 · Say it in the first conversation</h4><p>Mention it while you\'re still talking about the job, before the price comes up: "And we take care of ' + min(t.label) + ', so you don\'t have to."</p></div>' +
+    '<div class="passo"><h4>Step 3 · Keep score for a month</h4><p>Count how many of the customers who saw it said yes. If most did, it stays on every quote. If nobody did, try the next job on the list in chapter 04.</p></div>' +
+    leve("", "<p>Price it as part of the job or the plan. A job you take over for free trains the customer to expect it for free.</p>");
+
+  // ---------- 06 · vender ----------
+  $("sVenda").innerHTML = PLAYBOOK.capitulo(rx, "en", inputs.trade, "06");
+
+  // ---------- 07 · o que fica, e o plano ----------
+  var semanas = [
+    ["Week 1", "Add the line for " + min(t.label) + " to every quote you send."],
+    ["Week 2", "Say it in the first conversation, before the price. Note who says yes."],
+    ["Week 3", "Do the job the same way every time, and write down how, so someone else could do it."],
+    ["Week 4", "Count the yeses. Keep it, or move to the next job in chapter 04."]
+  ];
+  $("sFica").innerHTML = capNum("07", "What stays with you") +
+    "<h2>What stays with you, and your next 30 days</h2>" +
+    '<p class="lead">The work you take over is the work that follows a routine. Three things don\'t, and they\'re why customers pick you.</p>' +
+    '<div class="objecoes">' +
+    '<div class="obj"><span class="diz">Your prices.</span><p>Knowing what a job really takes is judgement, built over years. Anyone can type up the quote. The number stays yours.</p></div>' +
+    '<div class="obj"><span class="diz">The craft.</span><p>The part of the work customers can\'t check until it\'s done, and that brings them back, is the part you\'d never hand to a routine.</p></div>' +
+    '<div class="obj"><span class="diz">The first conversation.</span><p>A new customer decides in the first conversation whether you\'re the one for the job. That stays with you, or with someone you trained to talk the way you would.</p></div>' +
+    "</div>" +
+    "<h3>Your next 30 days</h3>" +
+    '<table class="t"><thead><tr><th>When</th><th>What to do</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  // ---------- 08 ----------
+  $("inputs").innerHTML = "<tr><td>Your trade</td><td>" + T.esc(oficio) + "</td></tr>" +
+    "<tr><td>Jobs your customers still do themselves</td><td>" + (r.ainda.map(function (x) { return x[1]; }).join("; ") || "None") + "</td></tr>" +
+    "<tr><td>Apps and tools you pay for</td><td>" + R.FERRAMENTAS[inputs.tools] + "</td></tr>" +
+    "<tr><td>How most customers buy</td><td>" + R.COMPRA[inputs.plan] + "</td></tr>";
+  $("fontes").innerHTML = rx.fontes();
+
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("report").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

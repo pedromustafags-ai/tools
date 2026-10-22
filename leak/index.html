@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Revenue Leak Calculator</title>
+<meta name="description" content="How much money slips away between the quote request and the job. Six numbers from last month.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+</head>
+<body>
+<main class="wrap">
+
+  <!-- 0 · capa -->
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">For home-service business owners</p>
+    <h1>How much money slips away between the quote request and the job?</h1>
+    <p class="lede">Pick your trade, then six numbers from last month. Your answer shows up on this screen in about two minutes.</p>
+    <button class="btn" id="comecar" type="button">Find my number <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">Your estimate</span>
+      <span class="num">$—,———<small style="font-size:16px;color:var(--palco-texto-2)"> /month</small></span>
+      <span class="trilho"></span>
+      <span>You're booking —% of what your requests could bring.</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Built by Pedro Mustafa</p>
+  </section>
+
+  <!-- 1 · ofício -->
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">What kind of work do you do?</p>
+    <div class="opcoes" id="oficios"></div>
+    <div class="outro hidden" id="outroBox">
+      <input type="text" id="outro" placeholder="Your trade" autocomplete="off" aria-label="Your trade">
+      <button class="btn" type="button" id="outroOk" style="margin-top:12px">Next <span class="seta">→</span></button>
+    </div>
+    <button class="voltar" type="button" data-volta="t0">‹ Back</button>
+  </section>
+
+  <!-- 2 · pedidos -->
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">How many quote requests came in last month?</p>
+    <p class="ajuda">Calls, texts, web forms and paid leads. Count only work you'd take, in your area. e.g. 40</p>
+    <div class="numero" data-campo="requests"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t3">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t1">‹ Back</button>
+  </section>
+
+  <!-- 3 · mesmo dia -->
+  <section class="tela" id="t3">
+    <div class="progresso" data-passo="3"></div>
+    <p class="pergunta">Of those <span data-eco="requests"></span>, how many heard back from you the same day?</p>
+    <p class="ajuda">A call back, a text or an email before the day ended.</p>
+    <div class="numero" data-campo="sameDay" data-max="requests"></div>
+    <div class="deslizante"><input type="range" data-campo="sameDay" data-max="requests" aria-label="Same-day replies"></div>
+    <p class="eco" data-texto="sameDay"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t4">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t2">‹ Back</button>
+  </section>
+
+  <!-- 4 · velocidade -->
+  <section class="tela" id="t4">
+    <div class="progresso" data-passo="4"></div>
+    <p class="pergunta">When a new quote request comes in, how fast do you usually reply?</p>
+    <div class="opcoes" id="speed">
+      <button type="button" data-v="5min">Within 5 minutes</button>
+      <button type="button" data-v="1h">Within an hour</button>
+      <button type="button" data-v="day">The same day</button>
+      <button type="button" data-v="later">The next day or later</button>
+      <button type="button" data-v="never">Some don't get a reply</button>
+    </div>
+    <button class="voltar" type="button" data-volta="t3">‹ Back</button>
+  </section>
+
+  <!-- 5 · com preço -->
+  <section class="tela" id="t5">
+    <div class="progresso" data-passo="5"></div>
+    <p class="pergunta">How many of the <span data-eco="requests"></span> got a price from you?</p>
+    <p class="ajuda">Written or over the phone.</p>
+    <div class="numero" data-campo="quoted" data-max="requests"></div>
+    <div class="deslizante"><input type="range" data-campo="quoted" data-max="requests" aria-label="Requests that got a price"></div>
+    <p class="eco" data-texto="quoted"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t6">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t4">‹ Back</button>
+  </section>
+
+  <!-- 6 · follow-up -->
+  <section class="tela" id="t6">
+    <div class="progresso" data-passo="6"></div>
+    <p class="pergunta">When a quote goes quiet, how often do you follow up?</p>
+    <div class="opcoes" id="follow">
+      <button type="button" data-v="never">Never</button>
+      <button type="button" data-v="sometimes">Sometimes</button>
+      <button type="button" data-v="usually">Usually</button>
+      <button type="button" data-v="always">Every time</button>
+    </div>
+    <button class="voltar" type="button" data-volta="t5">‹ Back</button>
+  </section>
+
+  <!-- 7 · fechados -->
+  <section class="tela" id="t7">
+    <div class="progresso" data-passo="7"></div>
+    <p class="pergunta">Of the <span data-eco="quoted"></span> you priced, how many became booked jobs?</p>
+    <p class="ajuda">A job you priced on the phone counts too.</p>
+    <div class="numero" data-campo="jobs" data-max="quoted"></div>
+    <div class="deslizante"><input type="range" data-campo="jobs" data-max="quoted" aria-label="Booked jobs"></div>
+    <p class="eco" data-texto="jobs"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t8">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t6">‹ Back</button>
+  </section>
+
+  <!-- 8 · ticket -->
+  <section class="tela" id="t8">
+    <div class="progresso" data-passo="8"></div>
+    <p class="pergunta">What does an average job bring in?</p>
+    <p class="ajuda">Before costs. e.g. 450</p>
+    <div class="numero dinheiro" data-campo="avgJob" data-semmaismenos="1"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" id="mostrar">Show my number <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t7">‹ Back</button>
+  </section>
+
+  <!-- 9 · espera -->
+  <section class="tela" id="t9" aria-live="polite">
+    <div class="espera" id="espera"></div>
+  </section>
+
+  <!-- 10 · resultado -->
+  <section class="tela" id="t10">
+    <div class="palco" id="palco">
+      <span class="rot">Your estimate</span>
+      <div class="numerao perda"><span id="rTotal" aria-hidden="true">$0</span><small> /month</small></div>
+      <p id="rAno"></p>
+      <p class="apoio" id="rObjeto"></p>
+      <div class="xbar" id="rBar">
+        <div class="rotulos"><span>Booked <b id="rBooked"></b></span><span>Slipping <b id="rSlip"></b></span></div>
+        <div class="trilho"><i class="ok"></i><i class="fora"></i></div>
+        <p class="apoio" id="rPct"></p>
+      </div>
+      <span class="etiqueta" id="rBig"></span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>Your full report</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about my report within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send my full report</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Up to 5 messages in 10 days. Not required to get your report. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <!-- 11 · enviado -->
+  <section class="tela" id="t11">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. Your report is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="report/">Open my report now <span class="seta">→</span></a>
+    <h3 style="margin-top:28px">While it lands: the one text to send today</h3>
+    <p id="tPorque" class="muted"></p>
+    <div class="script" id="tTexto"></div>
+    <button class="copy" type="button" id="tCopiar">Copy the text</button>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/calc.js"></script>
+<script src="../assets/fx.js"></script>
+<script>
+(function () {
+  var TOTAL = 8, id = T.uid();
+  var st = FX.le("leak") || {};
+  function salva() { FX.guarda("leak", st); }
+  function n(v) { return Math.round(v).toLocaleString("en-US"); }
+  function vai(tela) { FX.mostra(tela); var p = +tela.slice(1); if (p >= 1 && p <= 8) T.event(id, "leak", "step", String(p)); }
+
+  // barras de progresso honestas: 7 trechos, "Question 3 of 7"
+  document.querySelectorAll(".progresso").forEach(function (el) {
+    var k = +el.getAttribute("data-passo"), h = '<div class="trilhos">';
+    for (var i = 1; i <= TOTAL; i++) h += '<span class="trecho' + (i < k ? " feito" : "") + '"><i' + (i === k ? ' style="width:50%"' : "") + "></i></span>";
+    el.innerHTML = h + '</div><span class="conta">Question ' + k + " of " + TOTAL + "</span>";
+  });
+
+  // ecos: o número anterior repetido na pergunta seguinte
+  function ecos() {
+    document.querySelectorAll("[data-eco]").forEach(function (s) { s.textContent = n(st[s.getAttribute("data-eco")] || 0); });
+    var t = {
+      sameDay: st.sameDay != null && st.requests ? "Got it: " + n(st.sameDay) + " of " + n(st.requests) + " the same day." : "",
+      quoted: st.quoted != null && st.requests ? n(st.quoted) + " of " + n(st.requests) + " got a price." : "",
+      jobs: st.jobs != null && st.quoted ? n(st.jobs) + " of " + n(st.quoted) + " quotes booked." : ""
+    };
+    document.querySelectorAll("[data-texto]").forEach(function (p) { p.textContent = t[p.getAttribute("data-texto")] || ""; });
+  }
+
+  // o campo de número com − e +, ligado ao deslizante da mesma pergunta
+  document.querySelectorAll(".numero").forEach(function (box) {
+    var k = box.getAttribute("data-campo"), sem = box.getAttribute("data-semmaismenos");
+    box.innerHTML = (sem ? "" : '<button type="button" class="menos" aria-label="Less">−</button>') +
+      '<input type="text" inputmode="numeric" autocomplete="off" aria-label="' + k + '">' +
+      (sem ? "" : '<button type="button" class="mais" aria-label="More">+</button>');
+    if (sem) box.style.gridTemplateColumns = "1fr";
+    var inp = box.querySelector("input");
+    function max() { var m = box.getAttribute("data-max"); return m ? st[m] || 0 : 99999; }
+    function set(v, deOnde) {
+      if (isNaN(v)) { delete st[k]; } else { st[k] = Math.max(0, Math.min(max(), Math.round(v))); }
+      if (deOnde !== "input") inp.value = st[k] == null ? "" : st[k];
+      document.querySelectorAll('input[type=range][data-campo="' + k + '"]').forEach(function (r) { r.max = max(); r.value = st[k] || 0; });
+      ecos(); salva();
+    }
+    inp.addEventListener("input", function () { set(T.num(inp.value), "input"); });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { var b = box.closest(".tela").querySelector("[data-proximo], #mostrar"); if (b) b.click(); } });
+    if (!sem) {
+      box.querySelector(".menos").addEventListener("click", function () { set((st[k] || 0) - 1); });
+      box.querySelector(".mais").addEventListener("click", function () { set((st[k] || 0) + 1); });
+    }
+    box._set = set;
+    box._sync = function () { inp.value = st[k] == null ? "" : st[k]; document.querySelectorAll('input[type=range][data-campo="' + k + '"]').forEach(function (r) { r.max = max(); r.value = st[k] || 0; }); };
+  });
+  document.querySelectorAll("input[type=range]").forEach(function (r) {
+    var k = r.getAttribute("data-campo"), box = document.querySelector('.numero[data-campo="' + k + '"]');
+    r.addEventListener("input", function () { box._set(+r.value, "range"); });
+  });
+  function sincroniza() { document.querySelectorAll(".numero").forEach(function (b) { b._sync(); }); ecos(); }
+
+  // valida a tela antes de avançar; o erro aparece ao lado do campo e o foco vai para ele
+  var REGRA = {
+    t2: function () { return st.requests > 0 ? "" : "Put in how many quote requests came in last month."; },
+    t3: function () { return st.sameDay == null ? "Put in how many heard back the same day. A zero is fine." : ""; },
+    t5: function () { return st.quoted == null ? "Put in how many got a price. A zero is fine." : ""; },
+    t7: function () { return !(st.jobs > 0) ? "With no booked jobs last month there's no rate to work from. Try the month before." : ""; },
+    t8: function () { return st.avgJob > 0 ? "" : "Put in what an average job brings in."; }
+  };
+  function confere(tela) {
+    var err = REGRA[tela] ? REGRA[tela]() : "";
+    var el = document.querySelector("#" + tela + " .error");
+    if (el) el.textContent = err;
+    if (err) { var i = document.querySelector("#" + tela + " .numero input"); if (i) i.focus(); }
+    return !err;
+  }
+  document.querySelectorAll("[data-proximo]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var tela = b.closest(".tela").id;
+      if (!confere(tela)) return;
+      // o que vem depois não pode passar do que veio antes
+      if (st.sameDay > st.requests) st.sameDay = st.requests;
+      if (st.quoted > st.requests) st.quoted = st.requests;
+      if (st.jobs > st.quoted) st.jobs = st.quoted;
+      salva(); sincroniza();
+      vai(b.getAttribute("data-proximo"));
+    });
+  });
+  document.querySelectorAll("[data-volta]").forEach(function (b) { b.addEventListener("click", function () { sincroniza(); FX.mostra(b.getAttribute("data-volta")); }); });
+
+  // ofício: toque avança sozinho; "Something else" abre o campo
+  var of = document.getElementById("oficios");
+  of.innerHTML = Object.keys(Calc.OFICIOS).map(function (k) { return '<button type="button" data-v="' + k + '">' + Calc.OFICIOS[k] + "</button>"; }).join("");
+  function marca(box, v) { box.querySelectorAll("button").forEach(function (x) { x.classList.toggle("marcada", x.getAttribute("data-v") === v); }); }
+  of.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.trade = b.getAttribute("data-v"); marca(of, st.trade); salva();
+    if (st.trade === "other") { document.getElementById("outroBox").classList.remove("hidden"); document.getElementById("outro").focus(); return; }
+    document.getElementById("outroBox").classList.add("hidden");
+    setTimeout(function () { vai("t2"); }, FX.reduced ? 0 : 280);
+  });
+  document.getElementById("outroOk").addEventListener("click", function () { st.tradeOther = document.getElementById("outro").value.trim().slice(0, 60); salva(); vai("t2"); });
+  var sp = document.getElementById("speed");
+  sp.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.speed = b.getAttribute("data-v"); marca(sp, st.speed); salva();
+    setTimeout(function () { vai("t5"); }, FX.reduced ? 0 : 280);
+  });
+  if (st.speed) marca(sp, st.speed);
+  var fo = document.getElementById("follow");
+  fo.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.followUp = b.getAttribute("data-v"); marca(fo, st.followUp); salva();
+    setTimeout(function () { vai("t7"); }, FX.reduced ? 0 : 280);
+  });
+  if (st.trade) marca(of, st.trade);
+  if (st.followUp) marca(fo, st.followUp);
+  sincroniza();
+
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "leak", "start"); vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  var inputs = null, r = null;
+  document.getElementById("mostrar").addEventListener("click", function () {
+    if (!confere("t8")) return;
+    inputs = { requests: st.requests, sameDay: st.sameDay, quoted: st.quoted, followUp: st.followUp || "sometimes", jobs: st.jobs, avgJob: st.avgJob };
+    var err = Calc.leakCheck(inputs);
+    if (err) { document.querySelector("#t8 .error").textContent = err; return; }
+    r = Calc.leak(inputs);
+    espera().then(revela);
+  });
+
+  // a espera mostra o caso dele, com os números dele (J §2.3, tela 8)
+  function espera() {
+    var linhas = [
+      "Lining up your " + n(inputs.requests) + " requests with the " + n(inputs.sameDay) + " you answered the same day…",
+      "Applying your close rate: " + n(inputs.jobs) + " jobs from " + n(inputs.quoted) + " quotes…",
+      "Adding up what slipped away…"
+    ];
+    var box = document.getElementById("espera");
+    box.innerHTML = linhas.map(function (l) { return '<p><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="none" stroke-width="1.5"/><path d="M6 11.5 l3.5 3.5 l7 -8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + l + "</span></p>"; }).join("");
+    FX.mostra("t9");
+    var ps = box.querySelectorAll("p");
+    return [0, 1, 2].reduce(function (p, i) { return p.then(function () { return FX.wait(900).then(function () { ps[i].classList.add("feito"); }); }); }, Promise.resolve()).then(function () { return FX.wait(250); });
+  }
+
+  // a revelação em etapas (J §2.6 e §2.8)
+  function revela() {
+    var booked = Calc.leakBooked(inputs, r), fechado = inputs.jobs * inputs.avgJob;
+    document.getElementById("rAno").textContent = "slips away between the quote request and the job. About " + T.usd(r.year) + " a year.";
+    var obj = Calc.leakObjeto(inputs, r);
+    document.getElementById("rObjeto").textContent = obj;
+    document.getElementById("rObjeto").style.display = obj ? "" : "none";
+    document.getElementById("rBooked").textContent = T.usd(fechado);
+    document.getElementById("rSlip").textContent = T.usd(r.total);
+    document.getElementById("rPct").textContent = "You're booking " + Math.round(booked * 100) + "% of what your requests could bring.";
+    document.getElementById("rBig").textContent = "Biggest leak: " + r.biggestPhrase;
+    document.getElementById("rLeitura").textContent = Calc.leakLeitura(inputs, r);
+    document.getElementById("rFinal").textContent = T.usd(r.total) + " a month slips away. You're booking " + Math.round(booked * 100) + "%.";
+    var oficio = st.trade === "other" ? (st.tradeOther || "your trade") : (Calc.OFICIOS[st.trade] || "your trade");
+    var itens = [
+      ["ja", "Your number, monthly and yearly"], ["ja", "Where it slips away most"],
+      ["chega", "Where your " + T.usd(r.total) + " goes, dollar by dollar, with the math"],
+      ["chega", "The exact text to send this week for " + r.biggestPhrase],
+      ["chega", "Your next 30 days, week by week"],
+      ["chega", "What each customer really cost you, from your own bank statement"],
+      ["chega", "How your reply speed compares with U.S. businesses that were tested"]
+    ];
+    document.getElementById("vem").innerHTML = itens.map(function (x) { return '<li class="' + x[0] + '">' + T.esc(x[1]) + "</li>"; }).join("");
+    FX.mostra("t10");
+    T.event(id, "leak", "result", Math.round(booked * 100) + "% · " + Math.round(r.total) + " · " + r.biggest + " · " + oficio);
+    T.pixel("ViewContent", { content_name: "leak" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rTotal"), r.total, { dur: 1200, fmt: T.usd })
+      .then(function () { return FX.wait(150); })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(200); })
+      .then(function () {
+        palco[4].classList.add("in");
+        var tr = document.querySelectorAll("#rBar .trilho i");
+        requestAnimationFrame(function () { tr[0].style.width = (booked * 100) + "%"; tr[1].style.width = (100 - booked * 100) + "%"; });
+        return FX.wait(900);
+      })
+      .then(function () { palco[5].classList.add("in"); palco[6].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = T.phone(document.getElementById("phone").value);
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : !phone ? "Put in a mobile number with the area code." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !T.validEmail(email) ? "email" : "phone").focus(); return; }
+    if (!r || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var d = { requests: inputs.requests, sameDay: inputs.sameDay, quoted: inputs.quoted, followUp: inputs.followUp, jobs: inputs.jobs, avgJob: inputs.avgJob, t: st.trade || "", o: st.tradeOther || "", v: st.speed || "" };
+    var link = T.link("report/", { id: id, d: T.enc(d) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    var oficio = st.trade === "other" ? (st.tradeOther || "") : (Calc.OFICIOS[st.trade] || "");
+    T.sendLead({
+      id: id, tool: "leak", lang: "en", name: name, email: email, phone: phone, sms: ligar,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "leak-2026-10-16",
+      business: oficio,
+      inputs: Object.assign({ speed: st.speed || "" }, inputs),
+      result: { amount: Math.round(r.total), year: Math.round(r.year), biggest: r.biggest, biggestPhrase: r.biggestPhrase, booked: Math.round(Calc.leakBooked(inputs, r) * 100),
+        trade: st.trade || "", tradeLabel: oficio,
+        parts: r.parts.map(function (p) { return p.key + ":" + Math.round(p.amount); }).join(" ") },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      var c = Calc.LEAK_COMECE[r.biggest];
+      document.getElementById("tPorque").textContent = c.porque;
+      document.getElementById("tTexto").textContent = c.texto;
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t11");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send my full report";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+  document.getElementById("tCopiar").addEventListener("click", function () {
+    T.copy(this, Calc.LEAK_COMECE[r.biggest].texto, function () { T.event(id, "leak", "copy", r.biggest); });
+  });
+})();
+</script>
+</body>
+</html>

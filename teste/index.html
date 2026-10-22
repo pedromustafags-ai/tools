@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Teste de três minutos</title>
+<meta name="description" content="A nota de como o seu negócio atende quem chega pelo Google e pelo telefone, e por onde começar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .prova { border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
+  .prova .veic { display: flex; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+  .prova .veic b { color: var(--ink); letter-spacing: .02em; }
+  .prova .manchete { font-size: 22px; line-height: 1.25; font-weight: 800; padding: 16px 16px 6px; margin: 0; }
+  .prova .dado { font-size: 15px; color: var(--ink-2); padding: 0 16px 16px; margin: 0; }
+  .prova .link { font-size: 13px; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--confianca-suave); color: var(--confianca); }
+  .prova .link a { color: var(--confianca); }
+  .forte { display: flex; gap: 10px; align-items: flex-start; font-size: 16px; }
+  .forte .v { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--ganho-palco); color: var(--palco); display: grid; place-items: center; font-weight: 900; font-size: 13px; }
+  .mercado-linha { border-left: 3px solid var(--palco-texto-2); padding-left: 12px; font-size: 15px; color: var(--palco-texto); }
+  .mercado-linha small { display: block; color: var(--palco-texto-2); font-size: 12.5px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- capa -->
+  <section class="tela capa ativa" id="capa">
+    <p class="para-quem">Para quem tem negócio de serviço nos EUA</p>
+    <h1>Como o seu negócio atende quem chega pelo Google e pelo telefone?</h1>
+    <p class="lede">Perguntas rápidas, uma por tela. No fim, a sua nota de 0 a 100 e o ponto onde o pedido de orçamento mais se perde.</p>
+    <button class="btn" id="comecar" type="button">Começar o teste <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">O seu resultado</span>
+      <span class="num">—%<small style="font-size:16px;color:var(--palco-texto-2)"> do caminho montado</small></span>
+      <span class="trilho"></span>
+      <span>Google · Telefone · Mensagem · Confiança</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Feito pela equipe do Pedro Mustafa</p>
+  </section>
+
+  <!-- serviço -->
+  <section class="tela" id="servicoTela">
+    <div class="progresso" id="prog0"></div>
+    <p class="pergunta">Qual é o seu serviço?</p>
+    <div class="opcoes" id="grupos">
+      <button type="button" data-v="limpeza">Limpeza</button>
+      <button type="button" data-v="pintura">Pintura</button>
+      <button type="button" data-v="grama">Grama e jardim</button>
+      <button type="button" data-v="reparos">Reparos e reforma</button>
+      <button type="button" data-v="outro">Outro serviço</button>
+    </div>
+    <div class="outro hidden" id="outroBox">
+      <input type="text" id="outro" placeholder="Qual é o seu serviço?" autocomplete="off" aria-label="Qual é o seu serviço">
+      <button class="btn" type="button" id="outroOk" style="margin-top:12px">Continuar <span class="seta">→</span></button>
+    </div>
+    <button class="voltar" type="button" id="voltaCapa">‹ Voltar</button>
+  </section>
+
+  <!-- as perguntas (uma tela que se redesenha) -->
+  <section class="tela" id="pergunta">
+    <div class="progresso" id="prog"></div>
+    <p class="pergunta" id="q"></p>
+    <div class="opcoes" id="opts"></div>
+    <button class="voltar" type="button" id="voltar">‹ Voltar</button>
+  </section>
+
+  <!-- prova, sem pergunta -->
+  <section class="tela" id="provaTela">
+    <div class="progresso" id="progProva"></div>
+    <p class="kicker">Enquanto isso, nos EUA</p>
+    <div class="prova">
+      <div class="veic"><b>INVOCA</b><span>Home Services Benchmarks · 2026</span></div>
+      <p class="manchete">"Across home services, 52% of calls are answered by a person."</p>
+      <p class="dado">No serviço de casa nos EUA, só cerca de metade das ligações cai numa pessoa. A outra metade toca, cai na caixa postal ou desliga, e quem atende fica com o cliente.</p>
+      <p class="link">Fonte: <a href="https://invoca.com/reports/the-invoca-home-services-lead-conversion-benchmarks-report-2026" target="_blank" rel="noopener">relatório da Invoca</a>, ligações a empresas de serviço de casa (empresa de software de ligação).</p>
+    </div>
+    <button class="btn" type="button" id="provaOk" style="margin-top:18px">Continuar <span class="seta">→</span></button>
+  </section>
+
+  <!-- espera -->
+  <section class="tela" id="esperaTela" aria-live="polite">
+    <div class="espera" id="espera"></div>
+  </section>
+
+  <!-- resultado -->
+  <section class="tela" id="resultado">
+    <div class="palco" id="palco">
+      <span class="rot">O seu resultado</span>
+      <p class="forte"><span class="v">✓</span><span id="rForte"></span></p>
+      <div class="numerao ganho"><span id="rPct" aria-hidden="true">0%</span><small style="display:block;margin-top:6px;font-size:18px">do caminho já está montado</small></div>
+      <p class="apoio" id="rNota"></p>
+      <div class="areas" id="rAreas"></div>
+      <p id="rOnde"></p>
+      <p class="mercado-linha" id="rMercado"></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>A sua folha</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">Seu nome</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="empresa">Nome da sua empresa</label><input id="empresa" type="text" autocomplete="organization"></div>
+      <div class="field"><label for="servico">O serviço que você mais faz</label><select id="servico"></select></div>
+      <div class="field"><label for="cidade">Cidade onde você atende</label><span class="hint">Pra equipe olhar como a sua empresa aparece no Google de lá.</span><input id="cidade" type="text" autocomplete="address-level2"></div>
+      <div class="field"><label for="phone">WhatsApp</label><span class="hint">Com DDD. Número americano ou brasileiro.</span><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Aceito que alguém da equipe do Pedro Mustafa me ligue em até 24 horas para falar do meu resultado.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Deixe vazio<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Receber a minha folha</span> <span class="seta">→</span></button>
+      <p class="sob-botao">A folha abre na hora e também chega no seu WhatsApp.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Ao enviar, você recebe a sua folha e até 5 mensagens da equipe do Pedro Mustafa no WhatsApp nos próximos 10 dias. Para parar, é só responder PARAR. <a href="../privacidade/">Privacidade</a></p>
+    </form>
+  </section>
+
+  <!-- enviado -->
+  <section class="tela" id="enviado">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Pronto, <span id="tNome"></span>.</h2>
+    <a class="btn" id="abrir" href="folha/">Abrir a minha folha <span class="seta">→</span></a>
+    <p style="margin-top:20px">A equipe do Pedro te chama no WhatsApp em até 24 horas<span id="tFone"></span>.</p>
+    <h3 style="margin-top:26px">Se for fazer uma coisa só nesta semana</h3>
+    <div class="script" id="tSemana"></div>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/servicos.js"></script>
+<script src="../assets/teste.js"></script>
+<script src="../assets/folhas.js"></script>
+<script src="../assets/fx.js"></script>
+<script>
+(function () {
+  var id = T.uid(), resp = {}, hist = [], res = null, grupo = null, outroTxt = "";
+  var GRUPOS = {
+    limpeza: ["house_cleaning", "deep_cleaning", "move_out", "post_construction"], pintura: ["interior_painting", "exterior_painting"],
+    grama: ["lawn_care"], reparos: ["handyman", "remodeling"], outro: ["other"]
+  };
+  var PROVA_DEPOIS = "caixa"; // a tela de prova entra depois do trecho do telefone
+
+  function visiveis() { return Teste.PERGUNTAS.filter(function (q) { return !q.se || q.se(resp); }); }
+
+  // barra em quatro trechos com nome; o trecho fechado ganha um visto
+  function progresso(el, atual) {
+    var qs = visiveis(), feitos = {};
+    Teste.TRECHOS.forEach(function (p) { feitos[p] = qs.filter(function (q) { return q.p === p; }).every(function (q) { return resp[q.id] !== undefined; }); });
+    var dentro = {};
+    Teste.TRECHOS.forEach(function (p) {
+      var do_ = qs.filter(function (q) { return q.p === p; }), r = do_.filter(function (q) { return resp[q.id] !== undefined; }).length;
+      dentro[p] = do_.length ? r / do_.length : 0;
+    });
+    el.innerHTML = '<div class="trilhos">' + Teste.TRECHOS.map(function (p) {
+      return '<span class="trecho' + (feitos[p] ? " feito" : "") + '"><i style="width:' + Math.round(dentro[p] * 100) + '%"></i></span>';
+    }).join("") + '</div><div class="rotulos">' + Teste.TRECHOS.map(function (p) {
+      return '<span class="' + (feitos[p] ? "feito" : "") + '">' + (feitos[p] ? "✓ " : "") + Teste.PONTOS[p].curto + "</span>";
+    }).join("") + "</div>" + (atual ? '<span class="conta">' + atual + "</span>" : "");
+  }
+
+  function render() {
+    var qs = visiveis(), i = hist.length;
+    if (i >= qs.length) return espera();
+    var q = qs[i];
+    progresso(document.getElementById("prog"), "Pergunta " + (i + 1) + " de " + qs.length);
+    document.getElementById("q").textContent = q.q;
+    var box = document.getElementById("opts");
+    box.innerHTML = "";
+    q.o.forEach(function (o, n) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = o[0];
+      b.addEventListener("click", function () {
+        b.classList.add("marcada");
+        resp[q.id] = o[1]; resp["_" + q.id] = n; hist.push(q.id);
+        T.event(id, "teste", "step", q.id);
+        setTimeout(function () {
+          if (q.id === PROVA_DEPOIS) { progresso(document.getElementById("progProva")); FX.mostra("provaTela"); return; }
+          FX.mostra("pergunta"); render();
+        }, FX.reduced ? 0 : 280);
+      });
+      box.appendChild(b);
+    });
+  }
+
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "teste", "start"); progresso(document.getElementById("prog0"), "Antes de começar"); FX.mostra("servicoTela"); });
+  FX.pulso(document.getElementById("comecar"));
+  document.getElementById("voltaCapa").addEventListener("click", function () { FX.mostra("capa"); });
+  var gb = document.getElementById("grupos");
+  gb.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    grupo = b.getAttribute("data-v");
+    gb.querySelectorAll("button").forEach(function (x) { x.classList.toggle("marcada", x === b); });
+    if (grupo === "outro") { document.getElementById("outroBox").classList.remove("hidden"); document.getElementById("outro").focus(); return; }
+    setTimeout(function () { FX.mostra("pergunta"); render(); }, FX.reduced ? 0 : 280);
+  });
+  document.getElementById("outroOk").addEventListener("click", function () { outroTxt = document.getElementById("outro").value.trim().slice(0, 60); FX.mostra("pergunta"); render(); });
+  document.getElementById("provaOk").addEventListener("click", function () { T.event(id, "teste", "prova"); FX.mostra("pergunta"); render(); });
+  document.getElementById("voltar").addEventListener("click", function () {
+    var ultimo = hist.pop();
+    if (ultimo) { delete resp[ultimo]; delete resp["_" + ultimo]; render(); }
+    else FX.mostra("servicoTela");
+  });
+
+  // a espera mostra o caso dele (J §2.4)
+  function espera() {
+    var linhas = ["Juntando o que você contou sobre o seu Google…", "Vendo o que acontece quando o cliente liga no meio de um serviço…", "Montando a sua nota e por onde começar…"];
+    var box = document.getElementById("espera");
+    box.innerHTML = linhas.map(function (l) { return '<p><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="none" stroke-width="1.5"/><path d="M6 11.5 l3.5 3.5 l7 -8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + l + "</span></p>"; }).join("");
+    FX.mostra("esperaTela");
+    var ps = box.querySelectorAll("p");
+    [0, 1, 2].reduce(function (p, i) { return p.then(function () { return FX.wait(900).then(function () { ps[i].classList.add("feito"); }); }); }, Promise.resolve())
+      .then(function () { return FX.wait(250); }).then(revela);
+  }
+
+  // o que ele respondeu de melhor e de pior em cada área
+  function respostaDe(area, melhor) {
+    var qs = visiveis().filter(function (q) { return q.p === area && resp[q.id] !== undefined; });
+    qs.sort(function (a, b) { return melhor ? resp[b.id] - resp[a.id] : resp[a.id] - resp[b.id]; });
+    var q = qs[0]; return q ? { q: q, txt: q.o[resp["_" + q.id]][0], v: resp[q.id] } : null;
+  }
+
+  function revela() {
+    res = Teste.nota(resp);
+    var forte = Teste.ORDEM.slice().sort(function (a, b) { return res.areas[b] - res.areas[a]; })[0];
+    var rf = respostaDe(forte, true), rp = respostaDe(res.ponto, false);
+    function lc(t) { return t.charAt(0).toLowerCase() + t.slice(1); }
+    document.getElementById("rForte").textContent = "O que já está mais forte: " + lc(Teste.PONTOS[forte].nome) + (rf && rf.v === 3 ? '. Você respondeu: "' + rf.txt + '".' : ".");
+    document.getElementById("rNota").textContent = "A sua nota: " + res.geral + " de 100";
+    document.getElementById("rAreas").innerHTML = Teste.TRECHOS.map(function (p) {
+      return '<div class="area"><div class="topo"><span>' + Teste.PONTOS[p].nome + (p === res.ponto ? '<span class="comece">Comece por aqui</span>' : "") + "</span><b>" + res.areas[p] + '</b></div><div class="trilho"><i data-w="' + Math.max(3, res.areas[p]) + '"></i></div></div>';
+    }).join("");
+    document.getElementById("rOnde").textContent = Teste.PONTOS[res.ponto].onde + (rp ? ' Você respondeu: "' + rp.txt + '".' : "");
+    // a linha de mercado do ponto, quando há dado conferido para alguma pergunta dele
+    var lm = null;
+    visiveis().filter(function (q) { return q.p === res.ponto; }).some(function (q) { lm = Teste.mercado(q.id, resp[q.id]); return lm; });
+    var mx = document.getElementById("rMercado");
+    if (lm) mx.innerHTML = T.esc(lm[0]) + "<small>" + T.esc(lm[1]) + "</small>"; else mx.remove();
+    var emp = "a sua empresa";
+    var itens = [["ja", "A sua nota e as quatro áreas"], ["ja", "Por onde começar"],
+      ["chega", "Os passos na ordem para " + lc(Teste.PONTOS[res.ponto].nome)],
+      ["chega", "Os textos prontos em inglês, já com o nome da sua empresa"],
+      ["chega", "A olhada no Google da sua empresa, feita pela equipe do Pedro em até 24 horas"],
+      ["chega", "O que o cliente americano confere antes de ligar, com os números da pesquisa"]];
+    document.getElementById("vem").innerHTML = itens.map(function (x) { return '<li class="' + x[0] + '">' + T.esc(x[1]) + "</li>"; }).join("");
+    var sel = document.getElementById("servico");
+    sel.innerHTML = (GRUPOS[grupo] || Object.keys(SERVICOS)).map(function (k) { return '<option value="' + k + '">' + SERVICOS[k].pt + "</option>"; }).join("");
+    document.getElementById("rFinal").textContent = "Você já tem " + res.geral + "% do caminho montado. Comece por " + lc(Teste.PONTOS[res.ponto].nome) + ".";
+    FX.mostra("resultado");
+    T.event(id, "teste", "result", res.geral + " · " + res.ponto + " · " + (grupo || ""));
+    T.pixel("ViewContent", { content_name: "teste" });
+    var pc = document.getElementById("palco").children;
+    pc[0].classList.add("in"); pc[1].classList.add("in");
+    FX.wait(300).then(function () { pc[2].classList.add("in"); return FX.countUp(document.getElementById("rPct"), res.geral, { dur: 1200, fmt: function (v) { return Math.round(v) + "%"; } }); })
+      .then(function () { pc[3].classList.add("in"); pc[4].classList.add("in"); return FX.stagger(document.querySelectorAll("#rAreas .trilho i"), 120); })
+      .then(function () { document.querySelectorAll("#rAreas .trilho i").forEach(function (i) { i.style.width = i.getAttribute("data-w") + "%"; }); return FX.wait(500); })
+      .then(function () { for (var k = 5; k < pc.length; k++) pc[k].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var empresa = document.getElementById("empresa").value.trim();
+    var cidade = document.getElementById("cidade").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = T.phone(document.getElementById("phone").value);
+    var err = !name ? "Coloque o seu nome." : !empresa ? "Coloque o nome da empresa, que entra nos textos." : !phone ? "Coloque o WhatsApp com DDD." : !T.validEmail(email) ? "Confira o e-mail." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !empresa ? "empresa" : !phone ? "phone" : "email").focus(); return; }
+    if (!res || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Enviando…";
+    var respostas = {};
+    Teste.PERGUNTAS.forEach(function (q) { if (resp[q.id] !== undefined) respostas[q.id] = q.o[resp["_" + q.id]][0]; });
+    var sv = document.getElementById("servico").value;
+    var link = T.link("folha/", { id: id, d: T.enc({ n: res.geral, a: res.areas, p: res.ponto, e: empresa, s: sv, g: grupo || "outro", r: resp }) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "teste", lang: "pt", name: name, email: email, phone: phone, business: empresa, city: cidade, ligar: ligar,
+      consent: (ligar ? document.querySelector(".caixa span").textContent + " · " : "") + document.querySelector(".legal").textContent.replace(/\s+Privacidade$/, ""), consentVersion: "teste-2026-10-16",
+      inputs: Object.assign({ grupo: grupo || "", outro: outroTxt }, respostas),
+      result: { nota: res.geral, ponto: res.ponto, pontoNome: Teste.PONTOS[res.ponto].nome, areas: res.areas, servico: SERVICOS[sv] ? SERVICOS[sv].pt : "" },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tNome").textContent = name.split(" ")[0];
+      document.getElementById("abrir").href = link;
+      document.getElementById("tSemana").textContent = "Esta semana, " + FOLHAS[res.ponto].semana;
+      var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+      if (f) document.getElementById("tFone").textContent = ", do número " + f + ". Salve o número para saber que somos nós";
+      FX.mostra("enviado");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Receber a minha folha";
+      document.getElementById("leadError").textContent = "Deu um erro do nosso lado. Tenta de novo em um minuto.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

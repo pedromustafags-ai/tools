@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Hand-Off Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .semana-linha { display: grid; gap: 4px; margin: 0 0 12px; }
+  .semana-linha .topo { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; }
+  .semana-linha .topo b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .semana-linha .pilha { height: 14px; }
+  .passo { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+  .passo h4 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
+  .custo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; margin: 10px 0 6px; }
+  .custo label { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+  .custo input { font-size: 18px; padding: 10px 12px 10px 28px; }
+  @media print { .semana-linha, .passo { break-inside: avoid; } .custo input { border: 0; padding-left: 18px; font-weight: 700; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>This report link is incomplete. Run the calculator again and a new link will reach your inbox.</p><a class="btn" href="../">Open the calculator <span class="seta">→</span></a></div>
+
+  <article id="report" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>Hand-Off Report</span></div>
+      <p class="capa-tipo">Hand-Off Report</p>
+      <h1><span class="perda" id="cHoras"></span> a week of your work could be someone else's</h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-handoff.png" alt="Line drawing of an owner doing paperwork at the kitchen table at night while the phone lights up"></div>
+      <div class="capa-kpis">
+        <div><b class="perda" id="cVai"></b><span>a week that could go</span></div>
+        <div><b class="perda" id="cAno"></b><span>of your time a year</span></div>
+        <div><b id="cDias"></b><span>full workdays a month</span></div>
+      </div>
+      <div class="capa-pe"><span>A private report, worked out from the numbers you entered.</span><span>Eight chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="semana" id="sSemana"></section>
+    <section class="cap" data-secao="primeiro" id="sPrimeiro"></section>
+    <section class="cap" data-secao="custo" id="sCusto"></section>
+    <section class="cap" data-secao="fica" id="sFica"></section>
+    <section class="cap" data-secao="mercado" id="sMercado"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">08 · Method, sources and next step</p>
+      <h2>How your number is worked out</h2>
+      <p>Hours a week, times your rate, times 50 working weeks. For calls and quotes, half the hours count as hours you could hand off, because the first conversation with a new customer and the price stay with you.</p>
+      <p class="muted">What the number leaves out: the time it takes to train someone in the first weeks, and the hours that free up for selling or for the job itself. Your real number can land higher or lower.</p>
+      <h3>Your numbers</h3>
+      <table class="t" id="inputs"></table>
+      <p class="noprint"><a href="../">Run it again with a new week</a></p>
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Want a second look at your week?</h3>
+      <p>Reply to the email that brought you here, and Pedro's team will go over it with you. If you checked the box on the calculator, someone from the team will call you within 24 hours. Reply STOP to any text and they stop.</p>
+      <a class="btn noprint hidden" id="agenda" href="#" target="_blank" rel="noopener">Pick a time to talk <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with home-service owners on the stretch between the quote request and the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Save as PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/calc.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), inputs;
+  try { inputs = T.dec(T.qs.get("d")); } catch (e) { inputs = null; }
+  if (!inputs || Calc.handoffCheck(inputs)) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(t, x) { if (!own) T.event(id, "handoff", t, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var r = Calc.handoff(inputs), P = Calc.HANDOFF_PASSOS, top = r.top, S = P[top.key], rate = inputs.rate;
+  function meio(n) { return Math.round(n * 2) / 2; }
+  function cents(n) { return n % 1 ? "$" + n.toFixed(2) : T.usd(n); }
+  function hrs(n) { var v = meio(n); return v + (v === 1 ? " hour" : " hours"); }
+  var dias = Math.round(r.handoffHours * Calc.WEEKS / 12 / 8);
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  var linhas = r.ranked.filter(function (x) { return x.hours > 0; });
+  var segunda = linhas[1] || null;
+  // o salário de quem faria a tarefa (BLS); posts não tem ocupação na série, então usa o assistente administrativo
+  var ocup = MERCADO.salarioTarefa[top.key] || MERCADO.salarioTarefa.quotes;
+
+  // ---------- capa ----------
+  $("cHoras").textContent = hrs(r.handoffHours);
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + mes;
+  $("cVai").textContent = meio(r.handoffHours) + " hrs";
+  $("cAno").textContent = T.usd(r.yearCost);
+  $("cDias").textContent = String(dias);
+  rx.cabecalho("Hand-Off Report · Prepared for " + (nome || "you") + " · " + mes);
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.AGENDA) { var a = $("agenda"); a.href = cfg.AGENDA; a.classList.remove("hidden"); a.addEventListener("click", function () { ev("book"); }); }
+
+  function pilha(vai, fica, rotulos) {
+    var t = vai + fica || 1;
+    return '<div class="pilha-bloco"><div class="pilha"><i class="fora" style="width:' + (vai / t * 100) + '%"></i><i class="ok" style="width:' + (fica / t * 100) + '%"></i></div>' +
+      (rotulos ? '<div class="pilha-rot"><span><b class="perda">' + hrs(vai) + "</b> could go</span><span><b class=\"ganho\">" + hrs(fica) + "</b> stay with you</span></div>" : "") + "</div>";
+  }
+
+  // ---------- 01 · resumo ----------
+  var custoAjuda = r.handoffHours * ocup[1] * Calc.WEEKS;
+  var achados = [
+    "<b>Most of it is " + top.short + ": " + hrs(top.handoff) + " a week, " + T.usd(top.yearCost) + " a year at your rate.</b> " + S.why,
+    "<b>Paying someone for those hours would cost about " + T.usd(custoAjuda) + " a year.</b> A " + ocup[0].toLowerCase() + " in the U.S. earns a median " + cents(ocup[1]) + " an hour" + cite("bls") + "; your hour brings in " + T.usd(rate) + ". Chapter 04 lets you change the hourly pay.",
+    "<b>" + hrs(r.keepHours) + " a week stay with you on purpose:</b> the first conversation with a new customer and the number on every quote.",
+    "<b>Owners of U.S. businesses with up to 5 employees report a median 60-hour week,</b> and surveys of owners put a fifth to a third of the week into office work." + cite("ueni", "timeetc")
+  ];
+  $("sResumo").innerHTML = capNum("01", "Executive summary") +
+    "<h2>About " + hrs(r.handoffHours) + " a week could leave your plate</h2>" +
+    '<p class="lead">You put ' + hrs(r.hours) + " a week into five kinds of office work. Keeping the first call and the price with you, " + meio(r.handoffHours) + " of those hours could go to someone else, worth " + T.usd(r.yearCost) + " a year at " + T.usd(rate) + " an hour.</p>" +
+    '<div class="kpis"><div class="kpi perda"><b>' + T.usd(r.yearCost) + '</b><span>of your time a year on work that could go</span></div><div class="kpi"><b>' + dias + '</b><span>full workdays a month</span></div><div class="kpi ganho"><b>' + meio(r.keepHours) + " hrs</b><span>a week that stay with you</span></div></div>" +
+    ex("pilha", "Your week: what could go, and what stays with you", pilha(r.handoffHours, r.keepHours, true), "From the numbers you entered. How it's worked out: chapter 08.") +
+    "<h3>Key findings</h3><ol class=\"achados\">" + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+    leve("Where to start", "<p>Hand off " + top.short + " first. Chapter 03 has the three steps, the page to write and the exact texts whoever takes it will send.</p>");
+
+  // ---------- 02 · a semana ----------
+  $("sSemana").innerHTML = capNum("02", "Your week") +
+    "<h2>Your week, line by line</h2>" +
+    '<p class="lead">Everything in this chapter comes from the hours you entered. The red part of each line is what someone else could do; the green part is what stays with you.</p>' +
+    ex("linhas", "Hours a week on each line: what could go, and what stays", linhas.map(function (x) {
+      return '<div class="semana-linha"><div class="topo"><span>' + x.label + (x.note ? ' <span class="muted small">· ' + x.note + "</span>" : "") + "</span><b>" + meio(x.hours) + " hrs</b></div>" + pilha(x.handoff, x.keep, false) + "</div>";
+    }).join("") + '<p class="legenda"><i style="background:var(--perda)"></i>Could go &nbsp; <i style="background:var(--ganho)"></i>Stays with you</p>', "") +
+    '<table class="t"><thead><tr><th>Work</th><th class="n">Hrs/wk</th><th class="n">Could go</th><th class="n">A year</th></tr></thead><tbody>' +
+    linhas.map(function (x) { return "<tr><td>" + x.label + "</td><td class='n'>" + x.hours + "</td><td class='n'>" + meio(x.handoff) + "</td><td class='n'>" + T.usd(x.yearCost) + "</td></tr>"; }).join("") +
+    "<tr><td><b>Total</b></td><td class='n'><b>" + r.hours + "</b></td><td class='n'><b>" + meio(r.handoffHours) + "</b></td><td class='n'><b>" + T.usd(r.yearCost) + "</b></td></tr></tbody></table>" +
+    ex("ano", "What each line costs you a year at your rate", barras(linhas.map(function (x, i) { return { rotulo: x.label, valor: x.yearCost, texto: T.usd(x.yearCost), classe: i ? "cinza" : "" }; })), "Hours that could go × " + T.usd(rate) + " × 50 working weeks.") +
+    leve("", "<p>Handing off " + top.short + " alone frees about " + hrs(top.handoff) + " a week" + (top.handoff * Calc.WEEKS / 12 / 8 >= 1 ? ", about " + Math.round(top.handoff * Calc.WEEKS / 12 / 8) + " full workday" + (Math.round(top.handoff * Calc.WEEKS / 12 / 8) === 1 ? "" : "s") + " a month" : "") + ". That's time back on the job, or with the people who asked you for a price.</p>");
+
+  // ---------- 03 · o que passar primeiro ----------
+  var PAGINA = "Task: [the task]\nWhen it happens: [what starts it, e.g. the day a job ends]\nSteps: 1. [ ]  2. [ ]  3. [ ]\nThe words to use: [the text that goes out]\nBring it to me when: [the cases that come back to you]\nDone looks like: [what you should see when it's done right]";
+  $("sPrimeiro").innerHTML = capNum("03", "Hand off first") +
+    "<h2>Hand off first: " + top.short + "</h2>" +
+    '<p class="lead">' + S.why + "</p>" +
+    S.steps.map(function (s, n) { return '<div class="passo"><h4>Step ' + (n + 1) + "</h4><p>" + T.esc(s) + "</p></div>"; }).join("") +
+    "<h3>The page to write before you hand it off</h3>" +
+    "<p>Write it down the way you'd explain it to a new hire on day one. That page is the hand-off, whoever ends up doing the work: a part-time helper, a family member, or a service.</p>" +
+    rx.script(PAGINA, "pagina", "Copy the page") +
+    "<h3>The texts whoever takes it will send</h3>" +
+    S.textos.map(function (t, i) { return "<p><b>" + t[0] + "</b></p>" + rx.script(t[1], "texto" + i); }).join("");
+
+  // ---------- 04 · quanto custa passar ----------
+  var sal = MERCADO.salarioTarefa;
+  function custoHtml(paga) {
+    var ano = r.handoffHours * paga * Calc.WEEKS;
+    return "Paying " + cents(paga) + " an hour for " + hrs(r.handoffHours) + " a week costs about <b>" + T.usd(ano) + "</b> a year. The same hours of your time are worth <b>" + T.usd(r.yearCost) + "</b>" +
+      (ano < r.yearCost ? ", so every hour you hand off and spend on the job instead is worth about <b>" + T.usd(rate - paga) + "</b> more." : ".");
+  }
+  $("sCusto").innerHTML = capNum("04", "What it would cost") +
+    "<h2>What it would cost to pay someone for those hours</h2>" +
+    '<p class="lead">The question that decides a hand-off is what someone else costs for the same hours. Government wage data gives an independent starting point for each kind of work on your list.</p>' +
+    ex("salarios", "Median hourly pay in the U.S. for the people who usually do this work, next to your hour", barras(Object.keys(sal).map(function (k) { return { rotulo: sal[k][0], valor: sal[k][1], texto: cents(sal[k][1]), classe: k === top.key ? "voce" : "cinza" }; }).concat([{ rotulo: "Your hour", valor: rate, texto: T.usd(rate), classe: "ok" }])),
+      "Median wage for employees, May 2025, before payroll taxes and benefits. A part-time helper or a service prices differently." + cite("bls")) +
+    '<div class="custo noprint"><label>What you\'d pay an hour<div class="money"><input type="text" inputmode="decimal" id="paga" value="' + ocup[1] + '"></div></label><span></span></div>' +
+    '<p id="custoTxt">' + custoHtml(ocup[1]) + "</p>" +
+    leve("", "<p>The math only works if the hours you free up go to work that pays more than what you hand off: the job itself, or answering the next customer before someone else does.</p>");
+  $("paga").addEventListener("input", function () { var v = T.num(this.value); if (v > 0) { $("custoTxt").innerHTML = custoHtml(v); ev("adjust", String(v)); } });
+
+  // ---------- 05 · o que fica com ele, e como passar o resto ----------
+  $("sFica").innerHTML = capNum("05", "What stays with you") +
+    "<h2>The three things you never hand off, and how to hand off the rest</h2>" +
+    '<div class="objecoes">' +
+    '<div class="obj"><span class="diz">Your prices.</span><p>The number on the quote is how the business makes money, and you\'re the one who knows what a job really takes. Someone else can type the quote up and send it. The number stays yours.</p></div>' +
+    '<div class="obj"><span class="diz">The first voice your customers hear.</span><p>A new customer decides on the first call whether you\'re the one for the job. Call-backs and reminders can go to someone else. The first conversation stays with you, or with a person you trained to answer the way you would.</p></div>' +
+    '<div class="obj"><span class="diz">Your customer list.</span><p>The list, the accounts and the logins stay in your name. Anyone who helps you gets access, never ownership, so if they leave, your customers stay.</p></div>' +
+    "</div>" +
+    "<h3>How to hand off without losing quality</h3>" +
+    '<ol class="achados">' +
+    "<li><b>Write the page before you hand it off.</b> The page in chapter 03 is how the work gets done your way when you're not looking.</li>" +
+    "<li><b>Check everything for two weeks, then spot-check.</b> For the first two weeks you see every text, invoice or post before it goes out. After that, look at a handful each week.</li>" +
+    "<li><b>One person owns each task.</b> Two people half-owning follow-ups means nobody does them on a busy day.</li>" +
+    "<li><b>Fifteen minutes a week on the numbers.</b> Quotes sent, follow-ups done, invoices paid. When a number drops, the page needs a fix.</li>" +
+    "</ol>";
+
+  // ---------- 06 · como ele se compara ----------
+  var M = MERCADO;
+  $("sMercado").innerHTML = capNum("06", "How you compare") +
+    "<h2>Where an owner's week goes</h2>" +
+    '<p class="lead">Every comparison in this chapter comes from a published survey, with the source under each chart and the full reference at the end. Most of these surveys come from companies that sell help to small businesses, and the notes say so.</p>' +
+    '<div class="kpis"><div class="kpi"><b>60 hrs</b><span>median work week reported by owners of U.S. businesses with up to 5 employees' + cite("ueni") + '</span></div><div class="kpi"><b>22% to 36%</b><span>of the owner\'s week on office work, in two surveys of U.S. owners' + cite("ueni", "timeetc") + '</span></div><div class="kpi"><b>' + meio(r.hours) + ' hrs</b><span>your week on these five lines, from your answers</span></div></div>' +
+    '<p class="ex-fonte">The two surveys asked different questions. The 60 hours and the share of the week don\'t multiply into a number of hours.</p>' +
+    '<div class="grade2">' +
+    ex("fed", "Operational challenges U.S. small businesses named in the last 12 months", barras(M.fedDesafios.map(function (x, i) { return { rotulo: x[0], valor: x[1], texto: x[1] + "%", classe: i === 1 ? "voce" : "cinza" }; }), 100),
+      "Federal Reserve Banks, 2026 survey of 6,425 small employer firms. Several answers allowed." + cite("fed")) +
+    ex("ligacoes", "Share of calls to home service businesses answered by a person", barras(M.ligacoes.map(function (x) { return { rotulo: x[0], valor: x[1], texto: x[1] + "%", classe: "cinza" }; }), 100),
+      "The base is businesses that pay for call tracking, usually larger than an owner-run shop." + cite("invoca")) +
+    "</div>" +
+    leve("", "<p>Hiring or keeping good people is the second challenge small businesses name most, which is why the page in chapter 03 comes before the hand-off. And when about half of calls to home service businesses reach nobody, call-backs are often the first hours worth paying someone for.</p>");
+
+  // ---------- 07 · o plano ----------
+  var semanas = [
+    ["Week 1", "Write the page for " + top.short + " and save the texts from chapter 03.", ""],
+    ["Week 2", "Hand it off. You see everything before it goes out.", hrs(top.handoff) + " back"],
+    ["Week 3", "Spot-check a few each day." + (segunda ? " Write the page for " + segunda.short + "." : ""), ""],
+    ["Week 4", "Run the calculator again with the new week and compare the two numbers.", ""]
+  ];
+  $("sPlano").innerHTML = capNum("07", "Your 30-day plan") +
+    "<h2>One task off your plate in four weeks</h2>" +
+    "<p>Nothing here needs new software. A page, a few saved texts and fifteen minutes a week are enough to start.</p>" +
+    '<table class="t"><thead><tr><th>When</th><th>What to do</th><th class="valor">Each week</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + '</td><td class="valor">' + l[2] + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  // ---------- 08 ----------
+  $("inputs").innerHTML = Calc.TASKS.map(function (t) { return "<tr><td>" + t.label + "</td><td class='n'>" + (inputs[t.key] || 0) + " hrs/wk</td></tr>"; }).join("") +
+    "<tr><td>What an hour of your time brings in</td><td class='n'>" + T.usd(rate) + "</td></tr>";
+  $("fontes").innerHTML = rx.fontes();
+
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("report").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>
