@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Website Swap Sheet</title>
+<meta name="description" content="The lines on your website that sound like AI wrote them, and what to say instead.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<link rel="stylesheet" href="../assets/swap.css">
+<style>
+  .previa .corte { text-decoration: line-through; text-decoration-color: var(--perda-palco); color: var(--palco-texto-2); }
+  .previa .troca { color: var(--ganho-palco); font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">For home-service business owners</p>
+    <h1>The lines on your website that sound like AI wrote them, and what to say instead</h1>
+    <p class="lede">Pick your trade. Two swaps show up on this screen, and the full sheet with all eight goes to your inbox.</p>
+    <button class="btn" id="comecar" type="button">Pick my trade <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">One swap</span>
+      <span class="corte">Quality service at a fair price.</span>
+      <span class="troca">We call back within the hour, [7 days a week].</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Built by Pedro Mustafa</p>
+  </section>
+
+  <section class="tela" id="t1">
+    <p class="pergunta">What kind of work do you do?</p>
+    <p class="ajuda">The sheet is written for the lines that show up on sites in your trade.</p>
+    <div class="opcoes" id="oficios"></div>
+    <button class="voltar" type="button" data-volta="t0">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t2" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t3">
+    <div class="palco" id="palco">
+      <span class="rot">Your swap sheet</span>
+      <div class="numerao ganho"><span id="rN" aria-hidden="true">0</span><small> swaps</small></div>
+      <p id="rPara"></p>
+      <p class="apoio">From the top of your homepage to the footer, plus three tests for any line the sheet doesn't cover.</p>
+      <span class="etiqueta">Start with the first line people read</span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+
+    <h2>Two of the eight, right now</h2>
+    <div id="preview"></div>
+
+    <h2>Your full sheet</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="site">Your website <span class="muted">(optional)</span></label><input id="site" type="url" inputmode="url" autocomplete="url" placeholder="yourbusiness.com"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about my sheet within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send my full sheet</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Up to 5 messages in 10 days. Not required to get your sheet. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t4">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. Your sheet is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="sheet/">Open my sheet now <span class="seta">→</span></a>
+    <h3 style="margin-top:28px">While it lands: one test for any line on your site</h3>
+    <p class="muted" id="tTeste"></p>
+    <div class="script" id="tTexto"></div>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/swaps.js"></script>
+<script src="../assets/swap.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "swap", total: 1, lingua: "en", ferramenta: "swap", id: id }), st = J.st, trade = null;
+  J.botoes();
+  var of = document.getElementById("oficios");
+  of.innerHTML = SWAPS.trades.map(function (t) { return '<button type="button" data-v="' + t.id + '">' + T.esc(t.label) + "</button>"; }).join("");
+  J.opcoes(of, "trade", "t2", function (v) {
+    trade = SWAPS.trades.filter(function (t) { return t.id === v; })[0];
+    T.event(id, "swap", "step", "1");
+    setTimeout(function () {
+      J.espera("t2", document.getElementById("espera"), [
+        "Pulling the lines that show up on " + T.minuscula(trade.label) + " websites…",
+        "Matching each one with what an owner would say…",
+        "Picking the two to show you first…"
+      ]).then(revela);
+    }, FX.reduced ? 0 : 280);
+    return false;
+  });
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "swap", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  function revela() {
+    var nomeOficio = trade.id === "other" ? "your business" : T.minuscula(trade.label);
+    document.getElementById("rPara").textContent = "for " + (trade.id === "other" ? "your website" : nomeOficio + " websites") + ".";
+    document.getElementById("rLeitura").textContent = "Customers decide whether to call in your first two lines. The swaps trade lines that fit on any truck in town for lines a customer can check tonight.";
+    document.getElementById("preview").innerHTML = trade.pairs.slice(0, 2).map(function (x, i) { return Swap.pair(x, i, false); }).join("");
+    J.vem(document.getElementById("vem"), [
+      ["ja", "Two swaps for the top of your homepage"],
+      ["chega", "All eight swaps, from the headline to the footer, with why each one works"],
+      ["chega", "A map of where each line sits on your homepage"],
+      ["chega", "Three tests for any line the sheet doesn't cover"],
+      ["chega", "What the research says about text that sounds machine-written"],
+      ["chega", "Your next 30 days, week by week"]
+    ]);
+    FX.mostra("t3");
+    T.event(id, "swap", "result", trade.id);
+    T.pixel("ViewContent", { content_name: "swap" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rN"), trade.pairs.length, { dur: 700, fmt: function (v) { return String(Math.round(v)); } })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(250); })
+      .then(function () { palco[4].classList.add("in"); palco[5].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var tel = document.getElementById("phone").value, phone = T.phone(tel);
+    var site = document.getElementById("site").value.trim();
+    var err = !trade ? "Pick your trade first." : !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : !phone ? (T.phoneErro(tel) || "Put in a mobile number with the area code.") : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { var f = !name ? "name" : !T.validEmail(email) ? "email" : !phone ? "phone" : ""; if (f) document.getElementById(f).focus(); return; }
+    if (document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var link = T.link("sheet/", { id: id, t: trade.id });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "swap", lang: "en", name: name, email: email, phone: phone, sms: ligar, business: site,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "swap-2026-10-16",
+      inputs: { trade: trade.id, site: site },
+      result: { trade: trade.id, tradeLabel: T.minuscula(trade.label) },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      var t = SWAPS.tests[1];
+      document.getElementById("tTeste").textContent = t.name + ": " + t.question;
+      document.getElementById("tTexto").textContent = t.example;
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t4");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send my full sheet";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

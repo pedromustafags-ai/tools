@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Revenue Leak Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>This report link is incomplete. Run the calculator again and a new link will reach your inbox.</p><a class="btn" href="../">Open the calculator <span class="seta">→</span></a></div>
+
+  <article id="report" class="hidden">
+    <!-- capa: a ilustração do ofício dele (arte/gerar_capas.py + arte/traco.py), sem foto -->
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>Revenue Leak Report</span></div>
+      <p class="capa-tipo" id="capaTipo">Revenue Leak Report</p>
+      <h1><span class="perda" id="cTotal"></span> a month slips away between the quote request and the booked job</h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img id="arte" alt=""></div>
+      <div class="capa-kpis">
+        <div><b class="ganho" id="cBooked"></b><span>booked last month</span></div>
+        <div><b class="perda" id="cSlip"></b><span>slipping away each month</span></div>
+        <div><b class="perda" id="cAno"></b><span>over a year at this pace</span></div>
+      </div>
+      <div class="capa-pe"><span>A private report, worked out from the numbers you entered.</span><span>Eight chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="resumo" id="sResumo"></section>
+    <section class="cap" data-secao="numeros" id="sNumeros"></section>
+    <section class="cap" data-secao="jornada" id="sJornada"></section>
+    <section class="cap" data-secao="alavancas" id="sAlavancas"></section>
+    <section class="cap" data-secao="mercado" id="sMercado"></section>
+    <section class="cap" data-secao="playbook" id="sPlaybook"></section>
+
+    <section class="cap" data-secao="plano">
+      <div id="sPlano"></div>
+      <h3>What each customer really cost you</h3>
+      <p>Put in what you paid each lead site, agency, ad or software last month, and how many customers actually came from it. Divide one by the other and you get what each customer cost you, from your own bank statement.</p>
+      <p class="small" id="cpcRef" style="color:var(--confianca)"></p>
+      <div id="cpc"></div>
+      <button class="copy noprint" id="addRow" type="button">Add a line</button>
+    </section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">08 · Method, sources and next step</p>
+      <h2>How your number is worked out</h2>
+      <p id="mtRate"></p>
+      <p>Requests that never got a price are counted at that same rate, so that part of the number comes straight from you.</p>
+      <p>For slow replies and quiet quotes the calculator assumes one thing: a request answered the next day, or a quote nobody followed up on, books <b id="mtPen"></b> less often than one handled on time. The research in chapter 05 puts the real cost of a late reply higher than that, so the assumption leans low on purpose. You know your customers better than any calculator. Move it and the whole report updates.</p>
+      <div class="adjust noprint">
+        <input type="range" id="pen" min="10" max="50" step="5" value="25" aria-label="How much less often a slow or unfollowed request books">
+        <b id="penOut">25%</b>
+      </div>
+      <p class="so-impresso">Assumption used in this copy: <b id="penPrint">25%</b>.</p>
+      <p class="muted">What the number leaves out: calls that rang while you were on a job and never left a message, customers who came back on their own, and the reviews and referrals each job brings. Your real number can land higher or lower.</p>
+
+      <h3>Your numbers</h3>
+      <table class="t" id="inputs"></table>
+      <p class="noprint"><a href="../" id="rerun2">Run it again with a new month</a></p>
+
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+
+      <h3>Want a second look at your number?</h3>
+      <p>Reply to the email that brought you here, and Pedro's team will go over it with you. If you checked the box on the calculator, someone from the team will call you within 24 hours. Reply STOP to any text and they stop.</p>
+      <a class="btn noprint hidden" id="agenda" href="#" target="_blank" rel="noopener">Pick a time to talk <span class="seta">→</span></a>
+
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with home-service owners on the stretch between the quote request and the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Save as PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/calc.js"></script>
+<script src="../../assets/fx.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/playbook.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), d;
+  try { d = T.dec(T.qs.get("d")); } catch (e) { d = null; }
+  var inputs = d && { requests: d.requests, sameDay: d.sameDay, quoted: d.quoted, followUp: d.followUp, jobs: d.jobs, avgJob: d.avgJob };
+  if (!inputs || Calc.leakCheck(inputs)) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(tipo, dado) { if (!own) T.event(id, "leak", tipo, dado); }
+  ev("open");
+
+  var R = inputs.requests, S = inputs.sameDay, Q = inputs.quoted, J = inputs.jobs, V = inputs.avgJob, FECHADO = J * V;
+  var TRADES = ["cleaning", "lawn", "painting", "handyman", "hvac", "other"];
+  var trade = TRADES.indexOf(d.t) >= 0 ? d.t : "other";
+  var oficio = d.t === "other" ? (d.o || "") : (Calc.OFICIOS[d.t] || "");
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  function $(k) { return document.getElementById(k); }
+  function n(v) { return Math.round(v).toLocaleString("en-US"); }
+  function pct(a, b) { return b > 0 ? Math.round(a / b * 100) : 0; }
+  function um(v) { return Math.round(v * 10) / 10; }
+  function servicos(v) { var k = um(v); return k + (k === 1 ? " job" : " jobs"); }
+  function maiuscula(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // as peças do molde (assets/relatorio.js): fonte e quadro numerados, capítulo, barras e texto para copiar
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras, script = rx.script;
+  function porChave(r) { var p = {}; r.parts.forEach(function (x) { p[x.key] = x; }); return p; }
+  var ALAVANCA = { reply: "Fast", unquoted: "Reachable", follow: "Persistent", quote: "Personal" };
+  var QUIETO = { never: "Quiet quotes get no follow-up", sometimes: "Quiet quotes get a follow-up only sometimes", usually: "Quiet quotes usually get a follow-up", always: "Every quiet quote gets a follow-up" };
+  var VELOCIDADE = { "5min": "within 5 minutes", "1h": "within an hour", day: "the same day", later: "the next day or later" };
+
+  // ---------- capa ----------
+  $("arte").src = "../../assets/img/capa-" + trade + ".png";
+  $("arte").alt = "Line drawing of a " + (trade === "other" ? "business owner" : (oficio || "trade").toLowerCase().split(/[ ,&]/)[0]) + " at work while the phone lights up";
+  $("capaTipo").textContent = "Revenue Leak Report" + (oficio ? " · " + oficio : "");
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + mes;
+  // cabeçalho das páginas impressas (a capa fica sem)
+  var cab = document.createElement("style");
+  cab.textContent = "@page { @top-left { content: " + JSON.stringify("Revenue Leak Report · Prepared for " + (nome || "you") + " · " + mes) + '; font: 600 8pt "Inter", sans-serif; color: #6B6B64; } } @page :first { @top-left { content: none; } }';
+  document.head.appendChild(cab);
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.AGENDA) { var a = $("agenda"); a.href = cfg.AGENDA; a.classList.remove("hidden"); a.addEventListener("click", function () { ev("book"); }); }
+
+  // ---------- 01 · resumo ----------
+  function detalhe(x) {
+    if (x.key === "reply") return "If the requests that waited booked as often as the ones answered the same day, that's about " + servicos(x.jobs).replace(" job", " more job") + " a month.";
+    if (x.key === "unquoted") return n(x.count) + " of your " + n(R) + " requests never got a price. At your own close rate, that's about " + servicos(x.jobs) + " a month that never had the chance to say yes.";
+    return "If every quiet quote got one text, that's about " + servicos(x.jobs).replace(" job", " more job") + " a month.";
+  }
+  function pilha(a, b) {
+    var t = a + b, pa = t > 0 ? a / t * 100 : 0;
+    return '<div class="pilha-bloco"><div class="pilha"><i class="ok" style="width:' + pa + '%"></i><i class="fora" style="width:' + (100 - pa) + '%"></i></div>' +
+      '<div class="pilha-rot"><span><b class="ganho">' + T.usd(a) + "</b> booked</span><span><b class=\"perda\">" + T.usd(b) + "</b> slipped away</span></div></div>";
+  }
+  function resumo(r) {
+    var booked = Calc.leakBooked(inputs, r), top = r.parts[0], p = porChave(r), achados = [];
+    if (r.biggest === "quote") achados.push("<b>Your process holds up.</b> Replies, prices and follow-ups leave " + T.usd(r.total) + " a month on the table, under 5% of what you book. What's left to gain is in how the quote reads.");
+    else achados.push("<b>Most of it slips away at " + r.biggestPhrase + ": " + T.usd(top.amount) + " a month, " + Math.round(top.share * 100) + "% of the total.</b> " + detalhe(top));
+    if (S < R) achados.push("<b>" + n(R - S) + " of your " + n(R) + " requests waited past the same day for a first reply.</b> In research on 11.6 million marketplace interactions, a reply one hour late cut the chance of being hired by about half, and a reply one day late cut it by about 90%." + cite("ms"));
+    else achados.push("<b>Every request got a reply the same day.</b> In two published tests, only 29% to 37% of businesses replied within an hour, and 23% to 40% never replied at all." + cite("hbr", "valve"));
+    if (R > Q && r.biggest !== "unquoted") achados.push("<b>" + n(R - Q) + " of your " + n(R) + " requests never got a price</b>, worth about " + T.usd(p.unquoted.amount) + " a month at your own close rate.");
+    achados.push("<b>" + QUIETO[inputs.followUp] + ".</b> " + MERCADO.seguimento.texto + cite("piedpiper"));
+    var h = capNum("01", "Executive summary") +
+      "<h2>You book " + Math.round(booked * 100) + "% of what your requests could bring</h2>" +
+      '<p class="lead">' + T.esc(Calc.leakLeitura(inputs, r)) + "</p>" +
+      '<div class="kpis"><div class="kpi perda"><b>' + T.usd(r.total) + '</b><span>slipping away each month</span></div><div class="kpi perda"><b>' + T.usd(r.year) + '</b><span>over a year at this pace</span></div><div class="kpi ganho"><b>' + Math.round(booked * 100) + "%</b><span>of the possible revenue you already book</span></div></div>" +
+      ex("pilha", "Last month: what you booked, and what slipped away", pilha(FECHADO, r.total), "From the numbers you entered. How the slipping part is worked out: chapter 08.") +
+      "<h3>Key findings</h3><ol class=\"achados\">" + achados.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol>" +
+      leve("Where to start", "<p>" + T.esc(Calc.LEAK_CURTO[r.biggest]) + " Chapter 07 has the exact text to send, and a plan for the next four weeks.</p>");
+    $("sResumo").innerHTML = h;
+  }
+
+  // ---------- 02 · os números do mês ----------
+  function funil() {
+    var etapas = [["Quote requests", R, ""], ["Got a price", Q, R - Q > 0 ? n(R - Q) + " never got a price" : ""], ["Booked jobs", J, Q - J > 0 ? n(Q - J) + " priced, not booked" : ""]];
+    return '<div class="funil">' + etapas.map(function (e) {
+      return (e[2] ? '<p class="queda">↓ ' + e[2] + "</p>" : "") + '<div class="linha"><div class="rot"><span>' + e[0] + "</span><b>" + n(e[1]) + '</b></div><div class="barra" data-w="' + Math.max(2, e[1] / R * 100) + '"></div></div>';
+    }).join("") + "</div>";
+  }
+  function taxas() {
+    function t(v, s) { return "<div><b>" + v + "%</b><span>" + s + "</span></div>"; }
+    return '<div class="taxas" style="margin-top:18px">' + t(pct(S, R), "of requests got a reply the same day") + t(pct(Q, R), "of requests got a price") + t(pct(J, Q), "of quotes became jobs") + t(pct(J, R), "of requests became jobs") + "</div>";
+  }
+  function quadros() {
+    if (R <= 120) { var q = ""; for (var i = 0; i < R; i++) q += '<i class="' + (i < S ? "cheio" : "") + '"></i>'; return '<div class="quadros" aria-hidden="true">' + q + "</div>"; }
+    return '<div class="fx-track" style="margin:10px 0 6px"><div class="fx-fill" style="background:var(--ganho)" data-w="' + (S / R * 100) + '"></div></div>';
+  }
+  // cascata: do que ele fecha até o que os pedidos poderiam trazer, um vazamento por degrau
+  function cascata(r) {
+    var p = porChave(r), passos = [["reply", "Slow", "replies"], ["unquoted", "Never", "priced"], ["follow", "Quiet", "quotes"]];
+    var W = 360, H = 232, top = 26, base = 186, cols = 5, cw = (W - 12) / cols, bw = 40, max = FECHADO + r.total || 1;
+    function y(v) { return base - v / max * (base - top); }
+    function x(i) { return 6 + i * cw + (cw - bw) / 2; }
+    var g = '<line x1="0" x2="' + W + '" y1="' + base + '" y2="' + base + '" stroke="var(--ink)" stroke-width="1"/>';
+    function rot(i, a, b) { return '<text x="' + (x(i) + bw / 2) + '" y="' + (base + 16) + '" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">' + a + '</text><text x="' + (x(i) + bw / 2) + '" y="' + (base + 29) + '" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">' + b + "</text>"; }
+    function val(i, v, cor, yy) { return '<text x="' + (x(i) + bw / 2) + '" y="' + (yy - 6) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="' + cor + '">' + v + "</text>"; }
+    g += '<rect x="' + x(0) + '" y="' + y(FECHADO) + '" width="' + bw + '" height="' + (base - y(FECHADO)) + '" fill="var(--ganho)"/>' + val(0, T.usd(FECHADO), "var(--ganho)", y(FECHADO)) + rot(0, "Booked", "today");
+    var acc = FECHADO;
+    passos.forEach(function (s, k) {
+      var v = p[s[0]].amount, i = k + 1;
+      g += '<line x1="' + (x(i - 1) + bw) + '" x2="' + x(i) + '" y1="' + y(acc) + '" y2="' + y(acc) + '" stroke="var(--ink-3)" stroke-dasharray="3 3"/>';
+      g += '<rect x="' + x(i) + '" y="' + y(acc + v) + '" width="' + bw + '" height="' + Math.max(1, y(acc) - y(acc + v)) + '" fill="var(--perda)"/>' + val(i, "+" + T.usd(v), "var(--perda)", y(acc + v)) + rot(i, s[1], s[2]);
+      acc += v;
+    });
+    g += '<line x1="' + (x(3) + bw) + '" x2="' + x(4) + '" y1="' + y(acc) + '" y2="' + y(acc) + '" stroke="var(--ink-3)" stroke-dasharray="3 3"/>';
+    g += '<rect x="' + x(4) + '" y="' + y(FECHADO) + '" width="' + bw + '" height="' + (base - y(FECHADO)) + '" fill="var(--ganho)"/><rect x="' + x(4) + '" y="' + y(acc) + '" width="' + bw + '" height="' + (y(FECHADO) - y(acc)) + '" fill="var(--perda)" opacity=".35"/>' + val(4, T.usd(acc), "var(--ink)", y(acc)) + rot(4, "Within", "reach");
+    return '<div class="svg-box" style="max-width:520px"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Waterfall from booked revenue to the revenue within reach">' + g + "</svg></div>";
+  }
+  function numeros(r) {
+    var top = r.parts[0], p = porChave(r);
+    var linhas = r.parts.map(function (x) {
+      var det;
+      if (x.key === "reply") det = x.count > 0 ? n(x.count) + " of your " + n(R) + " requests waited past the same day. If those booked as often as the ones you answered that day, that's about " + servicos(x.jobs).replace(" job", " more job") + " a month." : "Every request got a reply the same day.";
+      if (x.key === "unquoted") det = x.count > 0 ? n(x.count) + " of your " + n(R) + " requests never got a price. At your own close rate, that's about " + servicos(x.jobs) + " a month." : "Every request got a price.";
+      if (x.key === "follow") det = inputs.followUp === "always" ? "You follow up on every quiet quote." : Calc.FOLLOW_FRASE[inputs.followUp] + " If every quiet quote got one text, that's about " + servicos(x.jobs).replace(" job", " more job") + " a month.";
+      return { rotulo: x.title, valor: x.amount, texto: x.amount > 0.5 ? T.usd(x.amount) + " a month" : "Nothing slips here", classe: x.amount > 0.5 ? "" : "ok", det: T.esc(det) };
+    });
+    var titulo = r.biggest === "quote" ? "Your process holds up; what's left is in how the quote reads" : "Most of it slips away at " + r.biggestPhrase;
+    $("sNumeros").innerHTML = capNum("02", "Your numbers") +
+      "<h2>Of your " + n(R) + " requests last month, " + (J === 1 ? "1 became a job" : n(J) + " became jobs") + "</h2>" +
+      '<p class="lead">Everything in this chapter comes from the numbers you entered: where last month\'s requests went, and how much each stage holds.</p>' +
+      ex("funil", "From request to booked job, last month", funil() + taxas(), "") +
+      ex("quadros", "Same-day replies: " + n(S) + " of " + n(R), quadros(), R <= 120 ? "Each square is one request. Filled: answered the same day." : pct(S, R) + "% answered the same day.") +
+      "<h3>Where the money slips away</h3>" +
+      ex("onde", titulo, barras(linhas), "Dollar amounts use your close rate and your average job. The assumption behind slow replies and quiet quotes is in chapter 08, and you can change it there.") +
+      ex("cascata", "From what you book today to what your requests could bring, per month", cascata(r), "Each step adds one leak back, at your own close rate and average job.") +
+      leve("What this means", "<p>" + (r.biggest === "quote" ? "Your month is tight. The next gain comes from how the quote reads, covered in chapter 06." : "Closing the biggest leak alone would take you from " + T.usd(FECHADO) + " to about " + T.usd(FECHADO + top.amount) + " a month, with the same requests and the same ad spend.") + "</p>");
+  }
+
+  // ---------- 03 · a jornada do cliente ----------
+  function etapas(r) {
+    var p = porChave(r);
+    function vaza(k) { return p[k].amount > 0.5 ? '<span class="vaza">' + T.usd(p[k].amount) + " a month slips here</span>" : ""; }
+    return [
+      { nome: "Looking", sente: "Worried", nivel: -1, cliente: "Something breaks, or a project can't wait. Searches, asks a neighbor, reads reviews and keeps a short list.", pensa: "Who can I trust in my house?",
+        voce: "Nothing yet. Your profile and your reviews do the talking before you know this customer exists.",
+        pesquisa: "47% won't use a business with fewer than 20 reviews, and 74% only count reviews from the last three months." + cite("brightlocal") + " Being licensed and insured weighs more than price." + cite("hiri") },
+      { nome: "Calling", sente: "Hopeful", nivel: 0, cliente: "Calls, texts or fills in a form for the first name on the list. The second name is one tap away.", pensa: "I just want someone to pick up.",
+        voce: "You're on a job. The call rings out or lands in voicemail.",
+        pesquisa: "Across home services, about half of calls (52%) reach a person." + cite("invoca") },
+      { nome: "Waiting", sente: "Anxious", nivel: -2, verdade: true, cliente: "Waits for an answer and keeps checking the phone.", pensa: "Did they even see my message?",
+        voce: n(S) + " of " + n(R) + " requests got a reply the same day." + vaza("reply"),
+        pesquisa: "29% to 37% of businesses tested replied within an hour, and 23% to 40% never replied." + cite("hbr", "valve") + " A reply one hour late cut the chance of being hired by about half." + cite("ms"), leak: "reply" },
+      { nome: "Pricing", sente: "Tense", nivel: 0, cliente: "Shows you the job or sends photos, then waits for a number.", pensa: "How much is this going to cost me?",
+        voce: n(Q) + " of " + n(R) + " requests got a price." + vaza("unquoted"),
+        pesquisa: '<span class="vazio">No published benchmark measures this step. Your own close rate tells us what those requests were worth.</span>', leak: "unquoted" },
+      { nome: "Deciding", sente: "Unsure", nivel: -1, cliente: "Compares, talks it over at home, and sometimes goes quiet.", pensa: "Is this the right price? Can it wait?",
+        voce: n(J) + " of " + n(Q) + " quotes booked (" + pct(J, Q) + "%). " + Calc.FOLLOW_FRASE[inputs.followUp] + vaza("follow"),
+        pesquisa: MERCADO.seguimento.texto + cite("piedpiper"), leak: "follow" },
+      { nome: "The job", sente: "Relieved", nivel: 2, verdade: true, cliente: "Lets you into the house and watches the work.", pensa: "Are they doing this right?",
+        voce: "Arriving when you said, explaining as you go, and leaving the place clean.", pesquisa: '<span class="vazio">Your craft. The research here is your own reviews.</span>' },
+      { nome: "After", sente: "Deciding whether to tell anyone", nivel: 1.4, cliente: "Pays, and decides whether to recommend you.", pensa: "Would I call them again?",
+        voce: "A walk-through of the finished work, and the review request the same day.",
+        pesquisa: "83% of people asked to leave a review wrote one." + cite("brightlocal") }
+    ];
+  }
+  function jornada(r) {
+    var E = etapas(r), p = porChave(r), onde = { reply: 3, unquoted: 4, follow: 5 };
+    var linhas = rx.etapas(E, ["Step", "The customer", "Your business", "What the research shows", "Step"]);
+    var C = E.map(function (e) { return { curto: e.nome, nivel: e.nivel, verdade: e.verdade, marca: e.leak && p[e.leak].amount > 0.5 ? T.usd(p[e.leak].amount) : "" }; });
+    var maior = r.biggest === "quote" ? "" : " In your month, the biggest leak sits at step " + onde[r.biggest] + ", " + E[onde[r.biggest] - 1].nome.toLowerCase() + ": " + T.usd(p[r.biggest].amount) + " a month.";
+    $("sJornada").innerHTML = capNum("03", "The customer's path") +
+      "<h2>The road every booked job travels</h2>" +
+      '<p class="lead">Every job you book travels the same road, from the moment something goes wrong at a customer\'s home to the review that brings in the next one. Laying what the customer goes through next to what your business does shows where the two drift apart, and that is where the money in this report goes.</p>' +
+      ex("curva", "How the customer feels along the way, and where your month leaks", rx.curva(C, '<i style="background:var(--perda);border-radius:50%"></i>Where your month leaks, per month &nbsp; <i style="background:var(--confianca)"></i>The two moments that decide how a customer remembers you', "How the customer feels at each step, with the money that slips away at three of them"), "The curve is our map of a typical home-service purchase, drawn from how these jobs usually unfold. The dollar markers come from your numbers.") +
+      linhas +
+      leve("What this means", "<p>Two moments decide how a customer remembers a service: the first reply, and the finished job. People also judge the whole experience by its most intense moment and by how it ended, so the last ten minutes of a job count as much as the first call." + maior + "</p>");
+  }
+
+  // ---------- 04 · as quatro alavancas ----------
+  function alavancas(r) {
+    var p = porChave(r), s = S / R, un = (R - Q) / R, f = inputs.followUp;
+    function estado(k) { return k === "forte" ? '<span class="pill forte">Strong</span>' : k === "meio" ? '<span class="pill meio">Room to grow</span>' : k === "vaza" ? '<span class="pill vaza">Leaking</span>' : '<span class="pill auto">Self-check</span>'; }
+    function quanto(k) { return p[k].amount > 0.5 ? " About <b class=\"perda\">" + T.usd(p[k].amount) + "</b> a month." : ""; }
+    var L = [
+      { nome: "Reachable", est: un === 0 ? "forte" : un < 0.15 ? "meio" : "vaza", def: "Someone picks up, and every request gets a time for a price.",
+        voce: (R - Q > 0 ? n(R - Q) + " of " + n(R) + " requests never got a price." : "Every request got a price.") + quanto("unquoted"),
+        pesquisa: "About half of calls to home service businesses reach a person." + cite("invoca"),
+        passo: "Offer two times in the first reply, the first one today or tomorrow." },
+      { nome: "Fast", est: s >= 0.9 ? "forte" : s >= 0.6 ? "meio" : "vaza", def: "The first answer goes out the same day, ideally within the hour.",
+        voce: n(S) + " of " + n(R) + " requests got a reply the same day (" + pct(S, R) + "%)." + (VELOCIDADE[d.v] ? " You said you usually reply " + VELOCIDADE[d.v] + "." : "") + quanto("reply"),
+        pesquisa: "A reply one hour late cut the chance of being hired by about half; one day late, by about 90%." + cite("ms"),
+        passo: "Reply from the truck before you know the price. The text in chapter 07 takes ten seconds." },
+      { nome: "Personal", est: "auto", def: "The customer can tell a person answered, and the quote speaks to their job.",
+        voce: "Not measured by the calculator. Check one thing: does your first reply use their name and mention their job?",
+        pesquisa: "When people believed a fast reply was automatic, its advantage disappeared." + cite("ms"),
+        passo: "Use their name, repeat the problem in their words, and attach a photo of a job like theirs." },
+      { nome: "Persistent", est: f === "always" ? "forte" : f === "usually" ? "meio" : "vaza", def: "No quote goes quiet without hearing from you again.",
+        voce: Calc.FOLLOW_FRASE[f] + quanto("follow"),
+        pesquisa: MERCADO.seguimento.texto + cite("piedpiper"),
+        passo: "Agree on the next step before you leave the visit, then one text on day three to every quote that hasn't heard back." }
+    ];
+    var medidas = L.filter(function (x) { return x.est !== "auto"; });
+    var chaveDe = { Reachable: "unquoted", Fast: "reply", Persistent: "follow" };
+    var forte = medidas.slice().sort(function (a, b) { return p[chaveDe[a.nome]].amount - p[chaveDe[b.nome]].amount; })[0];
+    var fecho = r.biggest === "quote" ? "<p>All three measured levers hold up. The one left to work on is <b>Personal</b>: how the quote reads and how clearly it speaks to the customer's job.</p>" :
+      "<p>Your strongest lever is <b>" + forte.nome + "</b>. Your biggest gap is <b>" + ALAVANCA[r.biggest] + "</b>, worth about " + T.usd(p[r.biggest].amount) + " a month. Work on one lever at a time, starting with the gap, and measure again after four weeks.</p>";
+    $("sAlavancas").innerHTML = capNum("04", "The four levers") +
+      "<h2>Four levers decide how many of the same requests become jobs</h2>" +
+      '<p class="lead">None of them needs more leads or a bigger ad budget. Each one changes how many of the requests you already get end up on your calendar. Here is where you stand on each, from your own answers.</p>' +
+      '<div class="alavancas">' + L.map(function (x) {
+        return '<div class="alav"><h4>' + x.nome + estado(x.est) + '</h4><p class="def">' + x.def + "</p><dl><dt>Your number</dt><dd>" + x.voce + "</dd><dt>What the research shows</dt><dd>" + x.pesquisa + "</dd><dt>The move</dt><dd>" + x.passo + "</dd></dl></div>";
+      }).join("") + "</div>" +
+      leve("What this means", fecho);
+  }
+
+  // ---------- 05 · como ele se compara ----------
+  function espera(pen) {
+    var itens = MERCADO.espera.barras.map(function (b) { return { rotulo: b[0], valor: b[1], texto: b[1] === 10 ? "about 10" : String(b[1]), classe: "cinza" }; });
+    itens.push({ rotulo: "What this report assumes for a next-day reply", valor: 100 - pen, texto: String(100 - pen), classe: "voce" });
+    return barras(itens, 100);
+  }
+  function mercado(pen) {
+    var f = MERCADO.frase[d.v];
+    var cpl = MERCADO.porPedido.map(function (x) { return { rotulo: x[0], valor: x[1], texto: "$" + x[1], classe: x[2] === trade ? "voce" : "cinza" }; });
+    var meu = MERCADO.porPedido.some(function (x) { return x[2] === trade; });
+    $("sMercado").innerHTML = capNum("05", "How you compare") +
+      "<h2>" + T.esc(f ? f.titulo : "How your numbers sit against published research") + "</h2>" +
+      '<p class="lead">Every comparison in this chapter comes from a published study or survey, with the source under each chart and the full reference at the end. Where the research measured something close to your numbers but not identical, the note says so.</p>' +
+      '<div class="grade2">' + ex("janela", "How fast tested businesses replied to a new request", rx.janela(f ? f.x : null), "Both studies sent a test request and timed the first reply. Your position comes from your answer on the calculator." + cite("hbr", "valve")) +
+      ex("espera", "What waiting costs: chance of being hired, compared with replying right away", '<div id="esperaBox">' + espera(pen) + "</div>", T.esc(MERCADO.espera.auto) + " Freelancers on a marketplace, not home services." + cite("ms")) +
+      ex("ligacoes", "Share of calls to home service businesses answered by a person", barras(MERCADO.ligacoes.map(function (x) { return { rotulo: x[0], valor: x[1], texto: x[1] + "%", classe: "cinza" }; }), 100), "The base is businesses that pay for call tracking, usually larger than an owner-run shop." + cite("invoca")) +
+      ex("avaliacoes", "What U.S. consumers say about reviews when choosing a local business", barras(MERCADO.avaliacoes.map(function (x) { return { rotulo: x[0], valor: x[1], texto: x[1] + "%", classe: "cinza" }; }), 100), "Survey of 1,002 U.S. adults." + cite("brightlocal")) +
+      ex("cpl", "What one lead costs on Google search ads, by trade", barras(cpl), (meu ? "Your trade is highlighted. " : "") + "Average cost per lead across more than 3,200 campaigns. A lead isn't a customer yet." + cite("localiq")) +
+      ex("porcliente", "What one paying customer cost HVAC, plumbing and electrical contractors on Google, February 2026", barras(MERCADO.porCliente.map(function (x) { return { rotulo: x[0], valor: x[1], texto: "$" + x[1], classe: "cinza" }; })), "888 contractors and 126,650 leads. Other trades weren't in the sample." + cite("searchlight")) + "</div>" +
+      ex("fed", "Operational challenges U.S. small businesses named in the last 12 months", barras(MERCADO.fedDesafios.map(function (x, i) { return { rotulo: x[0], valor: x[1], texto: x[1] + "%", classe: i ? "cinza" : "voce" }; }), 100),
+        "Federal Reserve Banks, 2026 survey of 6,425 small employer firms. Several answers allowed." + cite("fed")) +
+      leve("What this means", "<p>Reaching customers is the challenge small businesses name most, and every number in this chapter is money or attention spent before your first reply. The requests already in your phone got past all of it, which makes the next job from them the cheapest one you'll book this month.</p>");
+  }
+
+  // ---------- 06 · o que fecha o serviço ----------
+  function playbook() { $("sPlaybook").innerHTML = PLAYBOOK.capitulo(rx, "en", trade, "06"); }
+
+  // ---------- 07 · o plano ----------
+  function plano(r) {
+    var c = Calc.LEAK_COMECE[r.biggest], p = porChave(r);
+    var resto = ["reply", "unquoted", "follow"].filter(function (k) { return k !== r.biggest; });
+    var linhas = [["Week 1", Calc.LEAK_CURTO[r.biggest], ALAVANCA[r.biggest], r.biggest === "quote" ? "" : p[r.biggest].amount]];
+    resto.slice(0, 2).forEach(function (k, j) { linhas.push(["Week " + (j + 2), Calc.LEAK_CURTO[k], ALAVANCA[k], p[k].amount]); });
+    linhas.push(["Week 4", "Run the calculator again with the new month and compare the two numbers.", "All four", ""]);
+    $("sPlano").innerHTML = capNum("07", "Your 30-day plan") +
+      "<h2>Start with " + r.biggestPhrase + ", this week</h2>" +
+      "<p>" + T.esc(c.porque) + "</p>" + script(c.texto, "comece") +
+      '<p class="small muted" style="margin-top:12px">Nothing here needs new software. Your phone and the texts in this report are enough to start.</p>' +
+      "<h3>Week by week</h3>" +
+      '<table class="t"><thead><tr><th>When</th><th>What to do</th><th>Lever</th><th class="valor">Worth a month</th></tr></thead><tbody>' +
+      linhas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td><td>" + l[2] + '</td><td class="valor">' + (l[3] > 0.5 ? "+" + T.usd(l[3]) : "") + "</td></tr>"; }).join("") +
+      "</tbody></table>";
+  }
+
+  // ---------- custo por cliente, com os números dele ----------
+  var cpc = $("cpc"), usou = false;
+  function cpcRow(nomeLinha) {
+    var el = document.createElement("div");
+    el.style.cssText = "border-top:1px solid var(--line);padding:12px 0";
+    el.innerHTML = "<input type='text' placeholder='" + nomeLinha + "' aria-label='Who you paid' style='font-size:16px;padding:9px 12px;margin:0 0 8px'>" +
+      "<div style='display:grid;grid-template-columns:1fr 1fr;gap:8px'>" +
+      "<label class='small muted'>Paid last month<div class='money'><input type='text' inputmode='decimal' style='font-size:16px;padding:9px 12px 9px 26px'></div></label>" +
+      "<label class='small muted'>Customers from it<input type='text' inputmode='numeric' style='font-size:16px;padding:9px 12px'></label></div>" +
+      "<p class='small' style='margin:8px 0 0'>Each customer cost you: <b class='res'>fill in both</b></p>";
+    var ins = el.querySelectorAll("input");
+    function upd() {
+      var pago = T.num(ins[1].value), veio = T.num(ins[2].value), out = el.querySelector(".res");
+      if (isNaN(pago) || isNaN(veio)) { out.textContent = "fill in both"; return; }
+      out.textContent = veio > 0 ? T.usd(pago / veio) : "no customer yet from the " + T.usd(pago);
+      if (!usou) { usou = true; ev("cpc"); }
+    }
+    ins[1].addEventListener("input", upd); ins[2].addEventListener("input", upd);
+    cpc.appendChild(el);
+  }
+  ["Lead site", "Ads", "Agency or software"].forEach(cpcRow);
+  $("addRow").addEventListener("click", function () { cpcRow("Anyone else"); });
+
+  // ---------- capa, método e o que muda com a suposição ----------
+  function capa(r) {
+    $("cTotal").textContent = T.usd(r.total);
+    $("cBooked").textContent = T.usd(FECHADO);
+    $("cSlip").textContent = T.usd(r.total);
+    $("cAno").textContent = T.usd(r.year);
+  }
+  function metodo(r, pen) {
+    $("mtRate").innerHTML = "Your close rate: <b>" + n(J) + "</b> jobs from <b>" + n(Q) + "</b> quotes, so about <b>" + Math.round(r.closeRate * 100) + "%</b> of your quotes become jobs.";
+    $("mtPen").textContent = pen + "%"; $("penOut").textContent = pen + "%"; $("penPrint").textContent = pen + "%";
+  }
+  var cresce = rx.cresce;
+  var vistas = {};
+  function tudo(pen, primeira) {
+    var r = Calc.leak(inputs, pen / 100);
+    capa(r); resumo(r); numeros(r); jornada(r); alavancas(r);
+    if (primeira) { mercado(pen); playbook(); } else { $("esperaBox").innerHTML = espera(pen); }
+    plano(r); metodo(r, pen);
+    window._r = r;
+    Object.keys(vistas).forEach(function (s) { cresce(document.querySelector('[data-secao="' + s + '"]')); });
+  }
+  tudo(25, true);
+
+  // o mercado mostra a referência de custo do ofício dele ao lado da ferramenta de custo por cliente
+  $("cpcRef").innerHTML = "<b>For reference:</b> " + T.esc(MERCADO.custo[trade] || MERCADO.custo.other);
+  // os números dele e a lista de fontes, na ordem em que o texto citou
+  var FW = { never: "Never", sometimes: "Sometimes", usually: "Usually", always: "Every time" };
+  $("inputs").innerHTML = (oficio ? "<tr><td>Trade</td><td class='n'>" + T.esc(oficio) + "</td></tr>" : "") +
+    "<tr><td>Quote requests last month</td><td class='n'>" + n(R) + "</td></tr><tr><td>Replied the same day</td><td class='n'>" + n(S) + "</td></tr>" +
+    (VELOCIDADE[d.v] ? "<tr><td>Usual first reply</td><td class='n'>" + maiuscula(VELOCIDADE[d.v]) + "</td></tr>" : "") +
+    "<tr><td>Got a price</td><td class='n'>" + n(Q) + "</td></tr><tr><td>Follow-up on quiet quotes</td><td class='n'>" + FW[inputs.followUp] + "</td></tr>" +
+    "<tr><td>Booked jobs</td><td class='n'>" + n(J) + "</td></tr><tr><td>Average job</td><td class='n'>" + T.usd(V) + "</td></tr>";
+  $("fontes").innerHTML = rx.fontes();
+
+  var mexeu = false, pen = $("pen");
+  pen.addEventListener("input", function () { tudo(+pen.value, false); cresce(document); if (!mexeu) { mexeu = true; ev("adjust", pen.value); } });
+  rx.copiaveis(function (k) { ev("copy", k === "comece" ? window._r.biggest : k); });
+  $("rerun2").addEventListener("click", function () { ev("rerun"); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("report").classList.remove("hidden");
+
+  // gráficos crescem quando entram na tela; cada capítulo visto vira um evento
+  vistas = rx.observa(function (sec) { ev("section", sec); });
+})();
+</script>
+</body>
+</html>

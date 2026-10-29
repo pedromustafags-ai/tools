@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- A página de vídeo dos quizzes do InLead: o componente de vídeo do InLead só aceita iframe, e ele chama esta página
+     com ?v=<nome>. Motion toca sozinho, mudo e em loop; o vídeo do Pedro abre na capa e toca com som no toque.
+     Os arquivos moram em ../assets/video/ (fora do git do MVB-OS; a fonte é ~/Movies/agente-edicao/). -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Vídeo</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #F7F5EF; overflow: hidden; }
+  video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #F7F5EF; }
+  .play { position: fixed; left: 50%; top: 50%; width: 22vmin; height: 22vmin; min-width: 64px; min-height: 64px;
+          transform: translate(-50%, -50%); border: 0; border-radius: 50%; background: rgba(255, 255, 255, .92);
+          box-shadow: 0 6px 24px rgba(19, 36, 26, .25); cursor: pointer; }
+  .play::after { content: ""; position: absolute; left: 54%; top: 50%; transform: translate(-50%, -50%);
+                 border-style: solid; border-width: 4.5vmin 0 4.5vmin 7.5vmin; border-color: transparent transparent transparent #17804A; }
+  .play:focus-visible { outline: 3px solid #17804A; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<video id="v" playsinline preload="metadata"></video>
+<button id="play" class="play" type="button" aria-label="Assistir" hidden></button>
+<script>
+(function () {
+  // 0 = motion da casa (mudo, em loop); 1 = vídeo do Pedro (play com som). Só esses nomes tocam.
+  var VIDEOS = {"m1-pt": 0, "m1-en": 0, "m2-pt": 0, "m2-en": 0,
+                "capa-pt": 1, "convite-pt": 1, "plano-pt": 1, "cover-en": 1, "invite-en": 1, "plan-en": 1};
+  var id = new URLSearchParams(location.search).get("v");
+  if (!Object.prototype.hasOwnProperty.call(VIDEOS, id)) return;
+  var v = document.getElementById("v"), b = document.getElementById("play");
+  v.poster = "../assets/video/" + id + ".jpg";
+  v.src = "../assets/video/" + id + ".mp4";
+  if (VIDEOS[id] === 0) {
+    v.muted = true; v.loop = true; v.autoplay = true;
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+    return;
+  }
+  b.hidden = false;
+  function tocar() { b.hidden = true; var p = v.play(); if (p && p.catch) p.catch(function () { b.hidden = false; }); }
+  b.addEventListener("click", tocar);
+  v.addEventListener("click", function () { if (v.paused) tocar(); else { v.pause(); b.hidden = false; } });
+  v.addEventListener("ended", function () { v.currentTime = 0; b.hidden = false; });
+})();
+</script>
+</body>
+</html>

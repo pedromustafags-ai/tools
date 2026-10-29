@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Edit video with Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .capa-arte.livro img { max-width: 300px; margin: 0 auto; border: 1px solid var(--line); box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+  .skill-l { border-top: 1px solid var(--line); padding: 12px 0; }
+  .skill-l h4 { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin: 0 0 4px; font-size: 16px; color: var(--ink); }
+  .skill-l p { margin: 0 0 4px; font-size: 14.5px; }
+  .skill-l .precisa { font-size: 13px; color: var(--ink-3); }
+  .skill-l a { font-size: 13px; color: var(--confianca); word-break: break-all; }
+  .pergs { counter-reset: q; list-style: none; padding: 0; }
+  .pergs li { counter-increment: q; position: relative; padding: 8px 0 8px 40px; border-bottom: 1px solid var(--line); }
+  .pergs li::before { content: "Q" counter(q); position: absolute; left: 0; top: 8px; font-weight: 700; color: var(--confianca); }
+  @media print { .skill-l { break-inside: avoid; } .capa-arte.livro img { max-height: 4.6in; width: auto; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <article id="guia">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>Your starting kit</span></div>
+      <p class="capa-tipo">Edit video with Claude · free guide</p>
+      <h1 id="cTitulo"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte livro"><img src="../cover.jpg" alt="Cover of the guide Edit video with Claude, with the skills laid out as tracks on an editing timeline" width="496" height="702"></div>
+      <div class="capa-kpis">
+        <div><b class="ganho" id="cN"></b><span id="cNr"></span></div>
+        <div><b>36</b><span>skills in the full guide, sorted by job</span></div>
+        <div><b>17</b><span>pages in the full guide</span></div>
+      </div>
+      <div class="capa-pe"><span>Checked on October 7, 2026, one repository at a time.</span><span>Four chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="kit" id="sKit"></section>
+    <section class="cap" data-secao="pedir" id="sPedir"></section>
+    <section class="cap" data-secao="estilo" id="sEstilo"></section>
+
+    <section class="cap" data-secao="guia">
+      <p class="cap-num">04 · The full guide and next step</p>
+      <h2>The other 35, and the rest of the method</h2>
+      <p>The full guide has all 36 skills on nine tracks, what each one needs, the confidence meter for each, the six questions before a skill touches your footage and the style file template. Open it on your computer if you can: the install steps are easier to copy from there.</p>
+      <a id="open" class="btn" href="https://drive.google.com/file/d/1LchbMYR3hMjg5-pC2KbgVO50Hb19IJwy/view" target="_blank" rel="noopener">Open the full guide (PDF) <span class="seta">→</span></a>
+      <p class="so-impresso">The full guide: drive.google.com/file/d/1LchbMYR3hMjg5-pC2KbgVO50Hb19IJwy</p>
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Want the videos done for your business instead?</h3>
+      <p>Reply to the email that brought you here with "done," and Pedro's team will tell you how that works.</p>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with home-service owners on the stretch between the quote request and the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Save this kit as PDF</button>
+    </section>
+  </article>
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/skills-guia.js"></script>
+<script src="../../assets/skills-trilhas.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), j = TRILHAS[T.qs.get("j")] ? T.qs.get("j") : "comeco", own = T.qs.get("pedro") === "1";
+  function ev(a, x) { if (!own) T.event(id, "skills", a, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var t = TRILHAS[j], kit = skillsDa(j);
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  $("cTitulo").innerHTML = 'Your starting kit for <span class="ganho">' + T.esc(t.tarefa) + "</span>";
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + mes;
+  $("cN").textContent = String(kit.length);
+  $("cNr").textContent = (kit.length === 1 ? "skill" : "skills") + " for " + t.tarefa;
+  rx.cabecalho("Edit video with Claude · Your starting kit · " + mes);
+
+  // ---------- 01 · o kit ----------
+  var V = MERCADO.videoIa;
+  $("sKit").innerHTML = capNum("01", "Your starting kit") +
+    "<h2>The skills for " + T.esc(t.tarefa) + ", the best-maintained first</h2>" +
+    '<p class="lead">A skill is a folder of instructions Claude loads when a task needs it. Install one, and Claude knows how to do that job without you explaining it again. Start with the first one on this list; the meter says how much to trust each before it touches real footage.</p>' +
+    kit.map(function (s) {
+      var c = CONFIANCA[s.confidence] || CONFIANCA.low;
+      return '<div class="skill-l"><h4><span>' + T.esc(s.name) + '</span><span class="pill ' + c[1] + '">' + c[0] + "</span></h4><p>" + T.esc(s.what_it_does) + "</p>" +
+        (s.needs ? '<p class="precisa">Needs: ' + T.esc(s.needs) + "</p>" : "") + '<a href="' + s.url + '" target="_blank" rel="noopener">' + T.esc(s.url) + "</a></div>";
+    }).join("") +
+    ex("video", "Marketers who make video, and those who already used AI to create or edit it", barras([
+      { rotulo: "Businesses that use video in their marketing", valor: V.video, texto: V.video + "%", classe: "cinza" },
+      { rotulo: "Video marketers who used an AI tool to create or edit video", valor: V.ia, texto: V.ia + "%", classe: "voce" }
+    ], 100), "Survey of 266 respondents, late 2025, by a video production company. A small sample." + cite("wyzowl")) +
+    leve("Where to start", "<p>Install " + T.esc(kit[0].name) + " first and run it on one video you already edited by hand, so you can compare the two.</p>");
+
+  // ---------- 02 · como pedir ----------
+  $("sPedir").innerHTML = capNum("02", "How to ask") +
+    "<h2>A good ask names five things</h2>" +
+    '<p class="lead">You never call a skill like a command. You say what you want, Claude matches it to a skill, and the skill takes it from there. Claude can only act on what you put in words.</p>' +
+    '<table class="t"><thead><tr><th>Part</th><th>What it is</th></tr></thead><tbody>' +
+    [["The job", "Edit, cut, caption, clean. One verb."], ["The footage", "The file by name, so Claude doesn't pick one."], ["The look", "The style file to follow."], ["The rules", "Numbers you can check in the render."], ["The limit", "Length, format, or what must stay."]]
+      .map(function (r) { return "<tr><td><b>" + r[0] + "</b></td><td>" + r[1] + "</td></tr>"; }).join("") + "</tbody></table>" +
+    rx.script("Edit interview.mp4 following styles/talking-head.md. Cut pauses over 0.4 s, keep the last take of each line, and keep it under 60 s.", "pedido", "Copy the ask") +
+    "<h3>Six questions before a skill touches your footage</h3>" +
+    '<ol class="pergs"><li>Does it say when it should run?</li><li>Does it need a paid key, and do you know what one edit costs?</li><li>Does it send your video to an outside service?</li><li>Does it change your project file, and is there a backup?</li><li>When was it last updated?</li><li>Can you read what it runs before it runs?</li></ol>';
+
+  // ---------- 03 · o arquivo de estilo ----------
+  var ESTILO = "Style file\n\nCreator: [name, handle, the videos you watched, the date]\nOpening: [what's on screen in the first 3 seconds]\nFrame: [vertical or horizontal, how close the face is]\nRhythm and cuts: [cuts per minute, punch-ins, pauses kept or removed]\nCaptions: [font, size, position, words per line, how keywords stand out]\nMusic and sound: [how loud under the voice, where it drops]\nColor: [warm or cool, one look or many]\nEnding: [the last 3 seconds]\nNever: [what this creator never does]";
+  $("sEstilo").innerHTML = capNum("03", "Your style file") +
+    "<h2>The skills handle the how. The look comes from a reference.</h2>" +
+    '<p class="lead">Ask for an edit "like" a creator and Claude guesses. Hand it a file that says how their videos actually look, and it follows. Pick one creator, watch 5 to 10 of their most viewed videos, and write down only what you can see or measure.</p>' +
+    "<p>Write a number when you can count it and a description when you can't, with the video and the second where you saw it. Leave a line empty instead of guessing. After each render, what you say is off goes into the file, and the next edit starts there.</p>" +
+    rx.script(ESTILO, "estilo", "Copy the template");
+
+  $("fontes").innerHTML = rx.fontes();
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("open").addEventListener("click", function () { ev("pdf"); });
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

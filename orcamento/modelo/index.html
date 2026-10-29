@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>O seu orçamento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .doc { background: #fff; border: 1px solid var(--line); padding: 28px 24px; font-size: 15px; line-height: 1.45; color: #111; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; margin: 10px 0 14px; }
+  .doc h1 { font-family: inherit; font-size: 24px; margin: 0 0 2px; letter-spacing: 0; }
+  .doc .co { font-size: 13px; color: #555; margin: 0 0 18px; }
+  .doc .row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 2px solid #111; padding-top: 12px; margin-bottom: 14px; }
+  .doc h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin: 18px 0 6px; color: #333; }
+  .doc ul { margin: 0; padding-left: 18px; }
+  .doc li { margin: 0 0 4px; }
+  .doc .price { font-size: 28px; font-weight: 800; margin: 4px 0; }
+  .doc .sign { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 10px; font-size: 14px; }
+  [contenteditable] { outline: none; border-radius: 3px; }
+  [contenteditable]:focus { background: #FFF8DC; }
+  .ph { background: #FFF3C4; }
+  @media print {
+    .ph { background: none; }
+    .doc { border: 0; padding: 0; font-size: 10pt; line-height: 1.4; }
+    .doc h1 { font-size: 18pt; }
+    .doc h3 { margin: 12px 0 4px; font-size: 8.5pt; }
+    .doc .price { font-size: 20pt; }
+    .doc .sign { margin-top: 14px; }
+    /* "Salvar o orçamento em PDF": só o orçamento, sem o resto da folha */
+    body.so-doc main > *:not(#page), body.so-doc #page > *:not(.cap-doc), body.so-doc .cap-doc > *:not(#doc) { display: none !important; }
+    body.so-doc .cap-doc { break-before: auto; }
+  }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>Esse link está incompleto. Abre a calculadora de novo e a gente te manda um link novo.</p><a class="btn" href="../">Abrir a calculadora <span class="seta">→</span></a></div>
+
+  <div id="page" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>O seu orçamento</span></div>
+      <p class="capa-tipo" id="capaTipo">Calculadora de preço</p>
+      <h1 id="cTitulo"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-orcamento.png" alt="Desenho em traço de um prestador de serviço na porta de uma casa, escrevendo o orçamento na prancheta"></div>
+      <div class="capa-kpis" id="cKpis"></div>
+      <div class="capa-pe"><span>Uma folha particular, montada com as suas respostas.</span><span>Seis capítulos · fontes no fim</span></div>
+    </header>
+
+    <section class="cap" data-secao="minimo" id="sMinimo"></section>
+
+    <section class="cap cap-doc" data-secao="orcamento">
+      <div id="sDocTopo"></div>
+      <div class="doc" id="doc">
+        <h1 contenteditable="true" id="dCompany"></h1>
+        <p class="co" contenteditable="true"><span class="ph">[Licensed and insured]</span> · <span class="ph">[(555) 123-4567]</span> · <span class="ph">[you@email.com]</span></p>
+        <div class="row">
+          <div><b>Quote for</b><br><span contenteditable="true" class="ph">[Customer name]</span><br><span contenteditable="true" class="ph">[Street address, city]</span></div>
+          <div><b>Date</b><br><span contenteditable="true" id="dDate"></span><br><b>Good until</b><br><span contenteditable="true" id="dValid"></span></div>
+        </div>
+        <h3>Service</h3>
+        <p contenteditable="true" id="dService" style="margin:0"></p>
+        <p contenteditable="true" style="margin:4px 0 0"><span class="ph">[Date]</span>, arriving between <span class="ph">[8 and 9 a.m.]</span>. About <span id="dHours"></span> of work.</p>
+        <h3>What's included</h3>
+        <ul contenteditable="true" id="dIn"></ul>
+        <h3>What isn't included</h3>
+        <ul contenteditable="true" id="dOut"></ul>
+        <p contenteditable="true" style="margin-top:10px">If we find something that isn't on this list, we'll tell you the price before we do it.</p>
+        <h3>Price</h3>
+        <p class="price" contenteditable="true" id="dPrice"></p>
+        <p contenteditable="true" style="margin:0">Payment: <span class="ph">[Zelle, card or check]</span>. <span class="ph">[A deposit of $50]</span> holds your date, and the rest is due when the job is done.</p>
+        <h3>Insurance</h3>
+        <p contenteditable="true" style="margin:0"><span class="ph">[We carry general liability insurance with (company), policy (number)]</span>. A certificate is available on request.</p>
+        <p class="sign" contenteditable="true">To book, reply YES to this message or call <span class="ph">[(555) 123-4567]</span>.<br><span class="ph">[Your name]</span>, <span id="dCompany2"></span></p>
+      </div>
+      <button class="btn noprint" type="button" id="printDoc">Salvar o orçamento em PDF <span class="seta">→</span></button>
+      <div id="sDocPe"></div>
+    </section>
+
+    <section class="cap" data-secao="playbook" id="sPlaybook"></section>
+    <section class="cap" data-secao="reajuste" id="sReajuste"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">06 · Método, fontes e próximo passo</p>
+      <h2>Como o seu mínimo é calculado</h2>
+      <p>Mínimo = custos do serviço (ajudante, material e deslocamento) + a parte dos custos fixos do mês que cabe a cada serviço + o que você quer ganhar (as horas vezes o ganho por hora) + a reserva do imposto, arredondado para cima de 5 em 5 dólares.</p>
+      <p>A reserva do imposto é calculada sobre o seu ganho: para guardar 25% e ainda ficar com o que pediu, o ganho é dividido por 0,75. O número certo para o seu caso é com o seu contador.</p>
+      <p class="muted">O que a conta deixa de fora: o preço da concorrência e o que o cliente da sua região aceita pagar. O mínimo diz onde está o chão; o preço pode ficar acima dele.</p>
+      <h3>As suas respostas</h3>
+      <table class="t" id="respostas"></table>
+      <p class="noprint"><a href="../">Fazer a conta de novo</a></p>
+      <h3>Fontes</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Quer que a equipe olhe o seu orçamento antes de mandar?</h3>
+      <p id="proxTxt">Responda a mensagem do WhatsApp que trouxe você até aqui. Se você marcou a caixa, alguém da equipe liga em até 24 horas.</p>
+      <a class="btn noprint hidden" id="whats" href="#" target="_blank" rel="noopener">Falar com a equipe do Pedro <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Preparado pela equipe do Pedro Mustafa</b><br><span class="muted small">Marketing para quem tem negócio de serviço nos EUA.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Salvar esta folha em PDF</button>
+    </section>
+  </div>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/calc.js"></script>
+<script src="../../assets/servicos.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script src="../../assets/playbook.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), d;
+  try { d = T.dec(T.qs.get("d")); } catch (e) { d = null; }
+  if (!d || !SERVICOS[d.s]) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(a, x) { if (!own) T.event(id, "preco", a, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("pt"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var sv = SERVICOS[d.s], emp = d.e || "", of = SERVICO_OFICIO[d.s] || ["other", ""], trade = of[0];
+  function brl(n) { return "US$ " + Math.round(n).toLocaleString("pt-BR"); }
+  function cents(n) { return "US$ " + n.toFixed(2).replace(".", ","); }
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  // a conta inteira volta quando o link traz as respostas (links de antes de 16/10 só trazem o mínimo)
+  var temConta = d.g > 0, inputs = null, r = null;
+  if (temConta) {
+    inputs = { servico: d.s, horas: d.h, ganhoHora: d.g, ajudante: d.a || 0, material: d.m || 0, deslocamento: d.x || 0, fixos: d.f || 0, servicosMes: d.n || 0, imposto: d.i == null ? 25 : d.i };
+    if (Calc.precoCheck(inputs)) temConta = false; else r = Calc.preco(inputs);
+  }
+  var minimo = Math.round(d.p);
+  var sal = null;
+  if (of[1]) { var tab = MERCADO.salarioOficio[of[1]], uf = d.u && tab[d.u] ? d.u : "EUA"; sal = { nome: tab.nome, uf: uf, onde: uf === "EUA" ? "nos EUA" : "em " + uf, w: tab[uf], eua: tab.EUA }; }
+
+  // ---------- capa ----------
+  $("capaTipo").textContent = "Calculadora de preço · " + sv.pt;
+  $("cTitulo").innerHTML = "O seu mínimo para " + T.esc(sv.pt.toLowerCase()) + ': <span class="ganho">' + brl(minimo) + "</span>";
+  $("cPara").textContent = "Preparado para " + (nome || (emp ? "a " + emp : "você")) + " · " + mes;
+  $("cKpis").innerHTML = '<div><b class="ganho">' + brl(minimo) + "</b><span>por serviço, no mínimo</span></div>" +
+    (temConta ? "<div><b>" + brl(r.porHora) + "</b><span>por hora de serviço</span></div>" : "<div><b>" + (d.h || 3) + " h</b><span>de trabalho no serviço</span></div>") +
+    (sal ? "<div><b>" + cents(sal.w) + "</b><span>por hora, " + sal.nome + " empregado " + sal.onde + "</span></div>" : "<div><b>1</b><span>modelo em inglês, pronto para editar</span></div>");
+  rx.cabecalho("O seu orçamento" + (emp ? " · " + emp : "") + " · " + mes);
+
+  // ---------- 01 · o mínimo ----------
+  var h1 = capNum("01", "O seu mínimo");
+  if (temConta) {
+    var linhas = r.linhas.filter(function (l) { return l.valor > 0; });
+    var COR = { "O que você põe no bolso": "ok", "Reserva pro imposto": "voce" };
+    h1 += "<h2>" + brl(minimo) + " por serviço, e de onde vem cada dólar</h2>" +
+      '<p class="lead">O mínimo cobre os custos do serviço, a parte dos custos fixos do mês e a reserva do imposto, e deixa no seu bolso os ' + cents(inputs.ganhoHora) + " por hora que você pediu. Cobrando menos que isso, sobra menos, ou não sobra nada.</p>" +
+      '<div class="kpis"><div class="kpi ganho"><b>' + brl(minimo) + '</b><span>por serviço, no mínimo</span></div><div class="kpi"><b>' + brl(r.porHora) + '</b><span>por hora de serviço</span></div><div class="kpi ganho"><b>' + brl(inputs.ganhoHora * inputs.horas) + "</b><span>ficam no seu bolso, livres</span></div></div>" +
+      ex("linhas", "O seu mínimo, linha por linha", barras(linhas.map(function (l) { return { rotulo: l.rotulo.replace("pro ", "para o "), valor: l.valor, texto: brl(l.valor), classe: COR[l.rotulo] || "cinza" }; })), "A partir das suas respostas. Como a conta é feita: capítulo 06.");
+    if (sal) {
+      var abaixo = inputs.ganhoHora < sal.w;
+      h1 += ex("salario", "O seu ganho por hora, ao lado do salário de quem trabalharia para você", barras([
+        { rotulo: "Salário de " + sal.nome + " empregado " + sal.onde, valor: sal.w, texto: cents(sal.w), classe: "cinza" },
+        { rotulo: "Salário de " + sal.nome + " empregado, média dos EUA", valor: sal.eua, texto: cents(sal.eua), classe: "cinza" },
+        { rotulo: "O que você pediu para você, por hora", valor: inputs.ganhoHora, texto: cents(inputs.ganhoHora), classe: abaixo ? "" : "ok" },
+        { rotulo: "O que o seu mínimo paga por hora de serviço", valor: r.porHora, texto: brl(r.porHora), classe: "voce" }
+      ]), "Mediana por hora de quem é empregado no ofício, maio de 2025, antes de encargos e benefícios." + cite("bls")) +
+        leve("", "<p>" + (abaixo ? "Você pediu " + cents(inputs.ganhoHora) + " por hora para você, menos do que um " + sal.nome + " empregado ganha " + sal.onde + ". Se o seu mínimo não paga o que você pagaria a alguém para fazer o serviço, quem está pagando a diferença é você." :
+          "O seu ganho por hora fica acima do salário de um " + sal.nome + " empregado " + sal.onde + ". Abaixo do seu mínimo, você estaria trabalhando por menos do que pagaria a alguém.") + "</p>");
+    } else {
+      h1 += leve("", "<p>Esse é o piso. O preço que você cobra pode ficar acima dele, e nunca abaixo. Se o serviço vale mais, suba.</p>");
+    }
+  } else {
+    h1 += "<h2>" + brl(minimo) + " por serviço, no mínimo</h2><p class=\"lead\">Esse é o piso que saiu da sua conta. O preço que você cobra pode ficar acima dele, e nunca abaixo.</p>";
+  }
+  $("sMinimo").innerHTML = h1;
+
+  // ---------- 02 · o orçamento ----------
+  $("sDocTopo").innerHTML = capNum("02", "O orçamento pronto") +
+    "<h2>O seu orçamento em inglês, pronto para editar</h2>" +
+    "<p>O preço já está com o seu mínimo, " + brl(minimo) + ". Se esse serviço vale mais, suba. Nunca mande abaixo dele.</p>" +
+    '<ol class="achados noprint"><li>Toque em qualquer texto do orçamento e troque. O que está em amarelo é o que você precisa preencher.</li><li>Confira o que está incluso e o que não está. Apague o que você não faz e acrescente o que faz.</li><li>Só deixe "Licensed" se você tem licença, e só deixe "insured" se tem seguro. O americano pede o número da apólice.</li><li>Toque em "Salvar o orçamento em PDF". Sai só o orçamento, sem o resto da folha. No iPhone, escolha Imprimir, abra a prévia e toque em Compartilhar para salvar em Arquivos.</li><li>Mande o PDF por SMS ou e-mail, com a mensagem abaixo. Guarde este link: ele serve para todo orçamento novo.</li></ol>';
+  function fmt(dt) { return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear(); }
+  function li(arr) { return arr.map(function (x) { return "<li>" + T.esc(x).replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>') + "</li>"; }).join(""); }
+  var now = new Date(), valid = new Date(now.getTime() + 14 * 864e5);
+  $("dCompany").textContent = emp || "[Your company]";
+  $("dCompany2").textContent = emp || "[Your company]";
+  $("dDate").textContent = fmt(now);
+  $("dValid").textContent = fmt(valid);
+  $("dService").innerHTML = T.esc(sv.en).replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>');
+  $("dHours").textContent = (d.h || 3) + (d.h == 1 ? " hour" : " hours");
+  $("dIn").innerHTML = li(sv.included);
+  $("dOut").innerHTML = li(sv.excluded);
+  $("dPrice").textContent = "$" + minimo.toLocaleString("en-US");
+  var msg = "Hi [customer name], here's the quote for your " + sv.en.toLowerCase().replace(/^\[service name\]$/, "[service]") + ". Everything that's included is on the list, and so is what isn't. Any questions, just text me.\n[Your name], " + (emp || "[your company]");
+  $("sDocPe").innerHTML = "<h3>A mensagem para mandar junto</h3><p>Em inglês, por SMS ou e-mail. O americano lê SMS bem mais que WhatsApp.</p>" + rx.script(msg, "mensagem") +
+    '<p class="muted small" style="margin-top:10px">O que ela diz: "Oi, [nome], aqui está o orçamento de [serviço]. Está listado tudo o que está incluso e o que não está. Qualquer dúvida, me manda mensagem."</p>';
+  var editou = false;
+  $("doc").addEventListener("input", function () { if (!editou) { editou = true; ev("edit"); } });
+
+  // ---------- 03 · como apresentar o preço ----------
+  $("sPlaybook").innerHTML = PLAYBOOK.capitulo(rx, "pt", trade, "03");
+
+  // ---------- 04 · o reajuste ----------
+  var reajuste = "Hi [customer name], it's [your name] from " + (emp || "[your company]") + ". Thank you for having us in your home for [two years]. Starting [date], your " + sv.your.replace(/^\[service\]$/, "service") + " will be $[new price]. That covers what went up, [supplies, gas and insurance], and everything you get stays the same. Any questions, just text me.";
+  $("sReajuste").innerHTML = capNum("04", "O reajuste") +
+    "<h2>O reajuste de quem já é cliente</h2>" +
+    '<p class="lead">Para o cliente antigo que paga menos que o seu mínimo. Avise com 30 dias, por escrito, com a data em que o preço novo começa. Para cliente novo, o preço novo vale desde já: é o orçamento do capítulo 02.</p>' +
+    rx.script(reajuste, "reajuste") +
+    '<p class="muted small" style="margin-top:10px">O que ela diz: "Oi, [nome], aqui é [seu nome], da [empresa]. Obrigado por receber a gente na sua casa nesses [dois anos]. A partir de [data], o seu serviço passa a custar $[preço novo]. Isso cobre o que subiu, [produto, gasolina e seguro], e tudo o que você recebe continua igual. Qualquer dúvida, me manda mensagem."</p>' +
+    "<h3>A ordem para reajustar</h3>" +
+    '<ol class="achados"><li><b>Comece por quem paga abaixo do seu mínimo.</b> Quem já paga acima dele pode esperar.</li><li><b>O cliente que te indica outros merece uma conversa antes da mensagem.</b> Ligue, agradeça e conte a data.</li><li><b>Mantenha o preço novo quando alguém reclamar.</b> Explique o que subiu e o que continua igual; baixar na hora ensina a reclamar.</li></ol>';
+
+  // ---------- 05 · o plano ----------
+  var semanas = [
+    ["Semana 1", "Mande todo orçamento novo a partir deste modelo, nunca abaixo de " + brl(minimo) + "."],
+    ["Semana 2", "Faça a lista dos clientes que pagam menos que o mínimo."],
+    ["Semana 3", "Mande o reajuste para eles, com 30 dias de aviso."],
+    ["Semana 4", "Refaça a conta com os números reais do mês e ajuste o mínimo."]
+  ];
+  $("sPlano").innerHTML = capNum("05", "O plano de 30 dias") +
+    "<h2>Um preço que se sustenta em quatro semanas</h2>" +
+    "<p>Nada aqui pede aplicativo novo. Este link e o celular bastam para começar.</p>" +
+    '<table class="t"><thead><tr><th>Quando</th><th>O que fazer</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  // ---------- 06 ----------
+  var R = [["Serviço", sv.pt], ["Estado", d.u ? (d.u === "EUA" ? "Outro estado" : d.u) : ""], ["Horas de trabalho", d.h ? d.h + " h" : ""]];
+  if (temConta) R = R.concat([["Ganho por hora, livre", cents(inputs.ganhoHora)], ["Ajudante", brl(inputs.ajudante)], ["Material e produtos", brl(inputs.material)], ["Deslocamento", brl(inputs.deslocamento)],
+    ["Custos fixos do mês", brl(inputs.fixos)], ["Serviços por mês", String(inputs.servicosMes || "")], ["Reserva de imposto", inputs.imposto + "%"]]);
+  $("respostas").innerHTML = R.filter(function (x) { return x[1]; }).map(function (x) { return "<tr><td>" + x[0] + "</td><td class='n'>" + T.esc(x[1]) + "</td></tr>"; }).join("");
+  $("fontes").innerHTML = rx.fontes();
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.WHATSAPP) {
+    var w = $("whats");
+    w.href = "https://wa.me/" + String(cfg.WHATSAPP).replace(/\D/g, "") + "?text=" + encodeURIComponent("Oi, quero que olhem o meu orçamento" + (emp ? " da " + emp : "") + ".");
+    w.classList.remove("hidden");
+    $("proxTxt").textContent = "Mande uma mensagem e a equipe do Pedro olha com você. Se você marcou a caixa, alguém da equipe liga em até 24 horas.";
+    w.addEventListener("click", function () { ev("whatsapp"); });
+  }
+
+  // os dois jeitos de imprimir: só o orçamento (para o cliente) ou a folha inteira
+  var semCab = document.createElement("style");
+  semCab.textContent = "@page { @top-left { content: none; } @bottom-right { content: none; } }";
+  $("printDoc").addEventListener("click", function () {
+    document.body.classList.add("so-doc"); document.head.appendChild(semCab);
+    ev("print", "orcamento"); window.print();
+  });
+  window.addEventListener("afterprint", function () { document.body.classList.remove("so-doc"); if (semCab.parentNode) semCab.parentNode.removeChild(semCab); });
+  $("pdf").addEventListener("click", function () { ev("print", "folha"); window.print(); });
+  rx.copiaveis(function (k) { ev("copy", k); });
+  $("page").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>

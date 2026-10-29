@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Calculadora de preço</title>
+<meta name="description" content="Quanto você devia cobrar, no mínimo, por esse serviço? E o modelo de orçamento em inglês, já preenchido.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .rot-campo { display: block; font-size: 15px; font-weight: 650; margin: 14px 0 6px; }
+  .rot-campo small { display: block; font-weight: 400; color: var(--ink-3); font-size: 13.5px; }
+  .pct { position: relative; }
+  .pct::after { content: "%"; position: absolute; right: 70px; top: 50%; transform: translateY(-50%); font-size: 22px; font-weight: 700; color: var(--ink-3); pointer-events: none; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">Para quem tem negócio de serviço nos EUA</p>
+    <h1>Quanto você devia cobrar, no mínimo, por esse serviço?</h1>
+    <p class="lede">Seis perguntas: o serviço, o estado, as horas, quanto você quer ganhar e os custos. O mínimo aparece nesta tela, e o modelo de orçamento em inglês chega no seu WhatsApp, já preenchido.</p>
+    <button class="btn" id="comecar" type="button">Calcular o meu mínimo <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">O seu mínimo</span>
+      <span class="num">US$ ———<small style="font-size:16px;color:var(--palco-texto-2)"> por serviço</small></span>
+      <span class="trilho"></span>
+      <span>Ao lado do salário oficial de quem trabalharia para você, no seu estado.</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Feito pela equipe do Pedro Mustafa</p>
+  </section>
+
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">Qual é o serviço?</p>
+    <div class="opcoes" id="servicos"></div>
+    <button class="voltar" type="button" data-volta="t0">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">Em que estado você atende?</p>
+    <p class="ajuda">Para comparar o seu ganho com o salário do ofício onde você trabalha.</p>
+    <div class="opcoes duas" id="estados"></div>
+    <button class="voltar" type="button" data-volta="t1">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t3">
+    <div class="progresso" data-passo="3"></div>
+    <p class="pergunta">Quantas horas você trabalha nesse serviço?</p>
+    <p class="ajuda">Conte também o tempo de ir e voltar. Ex.: 4</p>
+    <div class="numero" data-campo="horas" data-max="400" data-decimal="1" data-passo-num="0.5" data-rotulo="Horas de trabalho no serviço"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t4">Próxima <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t2">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t4">
+    <div class="progresso" data-passo="4"></div>
+    <p class="pergunta">Quanto você quer ganhar por hora, livre?</p>
+    <p class="ajuda">O que fica no seu bolso depois de pagar tudo. Ex.: 35</p>
+    <div class="numero dinheiro" data-campo="ganhoHora" data-semmaismenos="1" data-decimal="1" data-rotulo="Ganho por hora"></div>
+    <p class="eco" id="ecoSalario"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t5">Próxima <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t3">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t5">
+    <div class="progresso" data-passo="5"></div>
+    <p class="pergunta">Quanto esse serviço custa para você fazer?</p>
+    <p class="ajuda">O que não tiver, deixe em branco.</p>
+    <label class="rot-campo">Ajudante<small>Quanto você paga a quem vai junto nesse serviço.</small></label>
+    <div class="numero dinheiro" data-campo="ajudante" data-semmaismenos="1" data-decimal="1" data-rotulo="Ajudante"></div>
+    <label class="rot-campo">Material e produtos</label>
+    <div class="numero dinheiro" data-campo="material" data-semmaismenos="1" data-decimal="1" data-rotulo="Material e produtos"></div>
+    <label class="rot-campo">Deslocamento<small>Gasolina e pedágio de ida e volta.</small></label>
+    <div class="numero dinheiro" data-campo="deslocamento" data-semmaismenos="1" data-decimal="1" data-rotulo="Deslocamento"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t6">Próxima <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t4">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t6">
+    <div class="progresso" data-passo="6"></div>
+    <p class="pergunta">E os custos fixos do mês?</p>
+    <p class="ajuda">Seguro, telefone, aplicativos, licença, parcela do carro. Se não tiver, deixe em branco.</p>
+    <label class="rot-campo">Custos fixos do mês</label>
+    <div class="numero dinheiro" data-campo="fixos" data-semmaismenos="1" data-decimal="1" data-rotulo="Custos fixos do mês"></div>
+    <label class="rot-campo">Quantos serviços você faz por mês<small>Para dividir os custos fixos entre eles.</small></label>
+    <div class="numero" data-campo="servicosMes" data-max="999" data-rotulo="Serviços por mês"></div>
+    <label class="rot-campo">Quanto você separa para o imposto<small>Uma parte do seu ganho. O número certo para o seu caso é com o seu contador.</small></label>
+    <div class="numero pct" data-campo="imposto" data-max="59" data-rotulo="Reserva de imposto em porcentagem"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn mostrar" type="button" id="mostrar">Ver o meu mínimo <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t5">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t7" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t8">
+    <div class="palco" id="palco">
+      <span class="rot">O seu mínimo</span>
+      <div class="numerao ganho"><span id="rMin" aria-hidden="true">US$ 0</span><small style="display:block;margin-top:6px">por serviço</small></div>
+      <p>Cobrando menos que isso, sobra menos do que você quer ganhar por hora, ou não sobra nada.</p>
+      <p class="apoio" id="rHora"></p>
+      <div class="areas" id="rLinhas"></div>
+      <span class="etiqueta" id="rEtiqueta"></span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>O seu orçamento completo</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">Seu nome</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="empresa">Nome da sua empresa</label><span class="hint">Vai no topo do orçamento.</span><input id="empresa" type="text" autocomplete="organization"></div>
+      <div class="field"><label for="phone">WhatsApp</label><span class="hint">Escolha o país e digite com DDD.</span><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Aceito que alguém da equipe do Pedro Mustafa me ligue em até 24 horas para falar do meu preço.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Deixe vazio<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Receber o meu orçamento</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Abre na hora e também chega no seu WhatsApp.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Ao enviar, você recebe o modelo e até 5 mensagens da equipe do Pedro Mustafa no WhatsApp nos próximos 10 dias. Para parar, é só responder PARAR. <a href="../privacidade/">Privacidade</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t9">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Pronto, <span id="tNome"></span>.</h2>
+    <a class="btn" id="abrir" href="modelo/">Abrir o meu orçamento <span class="seta">→</span></a>
+    <p style="margin-top:20px">A equipe do Pedro te chama no WhatsApp em até 24 horas.</p>
+    <h3 style="margin-top:26px">A regra que vale a partir de hoje</h3>
+    <div class="script" id="tRegra"></div>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/calc.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/servicos.js"></script>
+<script src="../assets/mercado.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "preco", total: 6, lingua: "pt", ferramenta: "preco", id: id }), st = J.st;
+  if (st.imposto == null) st.imposto = 25;
+  var ESTADOS = [["FL", "Flórida"], ["MA", "Massachusetts"], ["NJ", "Nova Jersey"], ["NY", "Nova York"], ["TX", "Texas"], ["GA", "Geórgia"], ["CA", "Califórnia"], ["CT", "Connecticut"], ["EUA", "Outro estado"]];
+  function brl(n) { return "US$ " + Math.round(n).toLocaleString("pt-BR"); }
+  function cents(n) { return "US$ " + n.toFixed(2).replace(".", ","); }
+  // o salário oficial do ofício no estado dele (BLS), quando o serviço tem ocupação na série
+  function salario() {
+    var o = (SERVICO_OFICIO[st.servico] || [])[1]; if (!o) return null;
+    var tab = MERCADO.salarioOficio[o], uf = st.estado && tab[st.estado] ? st.estado : "EUA";
+    return { nome: tab.nome, uf: uf, onde: uf === "EUA" ? "nos EUA" : "em " + uf, w: tab[uf] };
+  }
+  function ecos() {
+    var s = salario(), el = document.getElementById("ecoSalario");
+    el.textContent = s && st.ganhoHora > 0 ? "Para comparar: um " + s.nome + " empregado ganha em média " + cents(s.w) + " por hora " + s.onde + "." : "";
+  }
+  J.progresso();
+  J.numeros(ecos);
+  J.regras({
+    t3: function () { return st.horas > 0 ? "" : "Coloque quantas horas de trabalho o serviço leva."; },
+    t4: function () { return st.ganhoHora > 0 ? "" : "Coloque quanto você quer ganhar por hora."; },
+    t6: function () { return st.fixos > 0 && !(st.servicosMes > 0) ? "Coloque quantos serviços você faz por mês, para dividir os custos fixos." : !(st.imposto >= 0 && st.imposto < 60) ? "A reserva de imposto precisa ficar entre 0 e 59%." : ""; }
+  });
+  J.botoes();
+  var sv = document.getElementById("servicos");
+  sv.innerHTML = Object.keys(SERVICOS).map(function (k) { return '<button type="button" data-v="' + k + '">' + T.esc(SERVICOS[k].pt) + "</button>"; }).join("");
+  J.opcoes(sv, "servico", "t2");
+  var es = document.getElementById("estados");
+  es.innerHTML = ESTADOS.map(function (e) { return '<button type="button" data-v="' + e[0] + '">' + e[1] + "</button>"; }).join("");
+  J.opcoes(es, "estado", "t3");
+  J.sincroniza();
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "preco", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  var inputs = null, r = null;
+  document.getElementById("mostrar").addEventListener("click", function () {
+    if (!J.confere("t6")) return;
+    inputs = { servico: st.servico || "other", horas: st.horas, ganhoHora: st.ganhoHora, ajudante: st.ajudante || 0, material: st.material || 0,
+      deslocamento: st.deslocamento || 0, fixos: st.fixos || 0, servicosMes: st.servicosMes || 0, imposto: st.imposto == null ? 25 : st.imposto };
+    var err = Calc.precoCheck(inputs);
+    if (err) { document.querySelector("#t6 .error").textContent = err; return; }
+    r = Calc.preco(inputs);
+    var custos = inputs.ajudante + inputs.material + inputs.deslocamento;
+    J.espera("t7", document.getElementById("espera"), [
+      "Somando " + brl(custos) + " de custos do serviço…",
+      "Separando a reserva de " + inputs.imposto + "% para o imposto…",
+      "Arredondando para cima…"
+    ]).then(revela);
+  });
+
+  function revela() {
+    var s = salario();
+    document.getElementById("rHora").textContent = "Dá " + brl(r.porHora) + " por hora de serviço, e " + brl(inputs.ganhoHora * inputs.horas) + " ficam no seu bolso.";
+    var linhas = r.linhas.filter(function (l) { return l.valor > 0; }), max = r.minimo || 1;
+    document.getElementById("rLinhas").innerHTML = linhas.map(function (l) {
+      return '<div class="area"><div class="topo"><span>' + l.rotulo.replace("pro ", "para o ") + "</span><b>" + brl(l.valor) + '</b></div><div class="trilho"><i data-w="' + (l.valor / max * 100) + '"></i></div></div>';
+    }).join("");
+    if (s) {
+      document.getElementById("rEtiqueta").textContent = "Salário de " + s.nome + " " + s.onde + ": " + cents(s.w) + " por hora";
+      document.getElementById("rLeitura").textContent = inputs.ganhoHora < s.w
+        ? "Você está pedindo " + cents(inputs.ganhoHora) + " por hora para você, menos do que um " + s.nome + " empregado ganha " + s.onde + ". O seu mínimo precisa pagar pelo menos o que você pagaria a alguém para fazer o serviço."
+        : "O seu mínimo paga a sua hora acima do salário de um " + s.nome + " empregado " + s.onde + ". Abaixo dele, você estaria trabalhando por menos do que pagaria a alguém.";
+    } else {
+      document.getElementById("rEtiqueta").textContent = "Nunca mande abaixo do mínimo";
+      document.getElementById("rLeitura").textContent = "Esse é o piso. O preço que você cobra pode ficar acima dele, e nunca abaixo. Se o serviço vale mais, suba.";
+    }
+    document.getElementById("rFinal").textContent = "O seu mínimo é " + brl(r.minimo) + " por serviço.";
+    J.vem(document.getElementById("vem"), [
+      ["ja", "O seu mínimo, linha por linha"],
+      ["chega", "O modelo de orçamento em inglês, com esse serviço e esse preço"],
+      ["chega", "O seu ganho por hora ao lado do salário oficial do ofício no seu estado"],
+      ["chega", "Como apresentar o preço, e o que responder quando o cliente acha caro"],
+      ["chega", "A mensagem de reajuste para quem já é cliente"],
+      ["chega", "O plano de 30 dias"]
+    ]);
+    FX.mostra("t8");
+    T.event(id, "preco", "result", Math.round(r.minimo) + " · " + (st.servico || "") + " · " + (st.estado || ""));
+    T.pixel("ViewContent", { content_name: "preco" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rMin"), r.minimo, { dur: 1000, fmt: brl })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(200); })
+      .then(function () {
+        palco[4].classList.add("in");
+        requestAnimationFrame(function () { document.querySelectorAll("#rLinhas .trilho i").forEach(function (i) { i.style.width = i.getAttribute("data-w") + "%"; }); });
+        return FX.wait(700);
+      })
+      .then(function () { palco[5].classList.add("in"); palco[6].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var empresa = document.getElementById("empresa").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var tel = document.getElementById("phone").value, phone = T.phone(tel);
+    var err = !name ? "Coloque o seu nome." : !empresa ? "Coloque o nome da empresa, que vai no topo do orçamento." : !phone ? (T.phoneErro(tel) || "Confira o país e coloque o WhatsApp com DDD.") : !T.validEmail(email) ? "Confira o e-mail." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !empresa ? "empresa" : !phone ? "phone" : "email").focus(); return; }
+    if (!r || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Enviando…";
+    var d = { s: inputs.servico, e: empresa, p: r.minimo, h: inputs.horas, g: inputs.ganhoHora, u: st.estado || "", a: inputs.ajudante, m: inputs.material, x: inputs.deslocamento, f: inputs.fixos, n: inputs.servicosMes, i: inputs.imposto };
+    var link = T.link("modelo/", { id: id, d: T.enc(d) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "preco", lang: "pt", name: name, email: email, phone: phone, business: empresa, ligar: ligar,
+      consent: (ligar ? document.querySelector(".caixa span").textContent + " · " : "") + document.querySelector(".legal").textContent.replace(/\s+Privacidade$/, ""), consentVersion: "preco-2026-10-16",
+      inputs: Object.assign({ estado: st.estado || "" }, inputs),
+      result: { minimo: r.minimo, servico: SERVICOS[inputs.servico].pt },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tNome").textContent = name.split(" ")[0];
+      document.getElementById("abrir").href = link;
+      document.getElementById("tRegra").textContent = "Nenhum orçamento sai abaixo de " + brl(r.minimo) + " para " + SERVICOS[inputs.servico].pt.toLowerCase() + ". Se o serviço vale mais, o preço sobe.";
+      FX.mostra("t9");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Receber o meu orçamento";
+      document.getElementById("leadError").textContent = "Deu um erro do nosso lado. Tenta de novo em um minuto.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

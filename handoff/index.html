@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Hand-Off Calculator</title>
+<meta name="description" content="What in your week should someone else be doing? Six numbers, one minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+</head>
+<body>
+<main class="wrap">
+
+  <!-- 0 · capa -->
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">For home-service business owners</p>
+    <h1>What in your week should someone else be doing?</h1>
+    <p class="lede">Five lines of your week and what an hour of your time brings in. Your number shows up on this screen in about a minute.</p>
+    <button class="btn" id="comecar" type="button">Find my hours <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">Your estimate</span>
+      <span class="num">—— hrs<small style="font-size:16px;color:var(--palco-texto-2)"> /week</small></span>
+      <span class="trilho"></span>
+      <span>$—,——— a year of your time on work someone else could do.</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Built by Pedro Mustafa</p>
+  </section>
+
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">In a normal week, how many hours go to calls and texts with customers?</p>
+    <p class="ajuda">Answering, calling back, scheduling, reminders. A rough guess is fine. e.g. 8</p>
+    <div class="numero" data-campo="calls" data-max="80" data-decimal="1" data-rotulo="Hours a week on calls and texts"></div>
+    <p class="eco" data-texto="soma"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t2">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t0">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">And writing up and sending quotes?</p>
+    <p class="ajuda">Measuring, pricing, typing it up, sending it. e.g. 5</p>
+    <div class="numero" data-campo="quotes" data-max="80" data-decimal="1" data-rotulo="Hours a week on quotes"></div>
+    <p class="eco" data-texto="soma"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t3">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t1">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t3">
+    <div class="progresso" data-passo="3"></div>
+    <p class="pergunta">Following up on quotes that went quiet and leads that didn't answer?</p>
+    <p class="ajuda">e.g. 3</p>
+    <div class="numero" data-campo="followups" data-max="80" data-decimal="1" data-rotulo="Hours a week on follow-ups"></div>
+    <p class="eco" data-texto="soma"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t4">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t2">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t4">
+    <div class="progresso" data-passo="4"></div>
+    <p class="pergunta">Invoices and chasing late payments?</p>
+    <p class="ajuda">e.g. 3</p>
+    <div class="numero" data-campo="invoices" data-max="80" data-decimal="1" data-rotulo="Hours a week on invoices"></div>
+    <p class="eco" data-texto="soma"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t5">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t3">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t5">
+    <div class="progresso" data-passo="5"></div>
+    <p class="pergunta">Posts and marketing?</p>
+    <p class="ajuda">Social media, your Google listing, ads. e.g. 2</p>
+    <div class="numero" data-campo="posts" data-max="80" data-decimal="1" data-rotulo="Hours a week on posts and marketing"></div>
+    <p class="eco" data-texto="soma"></p>
+    <p class="error" role="alert"></p>
+    <button class="btn" type="button" data-proximo="t6">Next <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t4">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t6">
+    <div class="progresso" data-passo="6"></div>
+    <p class="pergunta">What does an hour of your time bring in?</p>
+    <p class="ajuda">An hour on the job. Not sure? Use what you'd charge for an hour of work. e.g. 85</p>
+    <div class="numero dinheiro" data-campo="rate" data-semmaismenos="1" data-decimal="1" data-rotulo="What an hour of your time brings in"></div>
+    <p class="error" role="alert"></p>
+    <button class="btn mostrar" type="button" id="mostrar">Show my number <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t5">‹ Back</button>
+  </section>
+
+  <section class="tela" id="t7" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t8">
+    <div class="palco" id="palco">
+      <span class="rot">Your estimate</span>
+      <div class="numerao perda"><span id="rHoras" aria-hidden="true">0</span><small> hrs /week</small></div>
+      <p id="rAno"></p>
+      <p class="apoio" id="rDias"></p>
+      <div class="xbar" id="rBar">
+        <div class="rotulos"><span>Could go <b id="rVai"></b></span><span>Stays with you <b id="rFica"></b></span></div>
+        <div class="trilho"><i class="fora"></i><i class="ok"></i></div>
+      </div>
+      <span class="etiqueta" id="rTop"></span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>Your full report</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about my report within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send my full report</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Up to 5 messages in 10 days. Not required to get your report. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t9">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. Your report is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="report/">Open my report now <span class="seta">→</span></a>
+    <h3 style="margin-top:28px">While it lands: the first thing to write down</h3>
+    <p id="tPorque" class="muted"></p>
+    <div class="script" id="tTexto"></div>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/calc.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "handoff", total: 6, lingua: "en", ferramenta: "handoff", id: id }), st = J.st;
+  var LINHAS = ["calls", "quotes", "followups", "invoices", "posts"];
+  function meio(n) { return Math.round(n * 2) / 2; }
+  function soma() { return LINHAS.reduce(function (a, k) { return a + (st[k] || 0); }, 0); }
+  // o eco soma as horas que ele já contou
+  function ecos() {
+    var s = soma(), t = LINHAS.some(function (k) { return st[k] != null; }) ? "So far: " + meio(s) + " hours a week." : "";
+    document.querySelectorAll('[data-texto="soma"]').forEach(function (p) { p.textContent = t; });
+  }
+  J.progresso();
+  J.numeros(ecos);
+  var REGRA = {};
+  LINHAS.forEach(function (k, i) { REGRA["t" + (i + 1)] = function () { return st[k] == null ? "Put in the hours, even a rough guess. A zero is fine." : ""; }; });
+  REGRA.t5 = function () { return st.posts == null ? "Put in the hours, even a rough guess. A zero is fine." : soma() > 0 ? "" : "Put in the hours for at least one line."; };
+  REGRA.t6 = function () { return st.rate > 0 ? "" : "Put in what an hour of your time brings in."; };
+  J.regras(REGRA);
+  J.botoes();
+  J.sincroniza();
+
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "handoff", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  var inputs = null, r = null;
+  document.getElementById("mostrar").addEventListener("click", function () {
+    if (!J.confere("t6")) return;
+    inputs = { calls: st.calls || 0, quotes: st.quotes || 0, followups: st.followups || 0, invoices: st.invoices || 0, posts: st.posts || 0, rate: st.rate };
+    var err = Calc.handoffCheck(inputs);
+    if (err) { document.querySelector("#t6 .error").textContent = err; return; }
+    r = Calc.handoff(inputs);
+    J.espera("t7", document.getElementById("espera"), [
+      "Adding up your " + meio(r.hours) + " hours a week…",
+      "Keeping the first call and your prices with you…",
+      "Pricing the rest at " + T.usd(inputs.rate) + " an hour…"
+    ]).then(revela);
+  });
+
+  function revela() {
+    var vai = meio(r.handoffHours), fica = meio(r.keepHours), dias = Math.round(r.handoffHours * Calc.WEEKS / 12 / 8);
+    document.getElementById("rAno").textContent = "of your work could be someone else's. At your rate, that's " + T.usd(r.yearCost) + " of your time a year.";
+    document.getElementById("rDias").textContent = dias >= 1 ? "About " + dias + " full workday" + (dias === 1 ? "" : "s") + " a month." : "";
+    document.getElementById("rDias").style.display = dias >= 1 ? "" : "none";
+    document.getElementById("rVai").textContent = vai + " hrs";
+    document.getElementById("rFica").textContent = fica + " hrs";
+    document.getElementById("rTop").textContent = "Hand off first: " + r.top.short;
+    document.getElementById("rLeitura").textContent = Calc.HANDOFF_PASSOS[r.top.key].why;
+    document.getElementById("rFinal").textContent = vai + " hours a week could go. " + T.usd(r.yearCost) + " a year.";
+    J.vem(document.getElementById("vem"), [
+      ["ja", "Your hours, and what they're worth a year"], ["ja", "What to hand off first"],
+      ["chega", "Your week line by line, with what each part costs you"],
+      ["chega", "The steps and the texts to hand off " + r.top.short],
+      ["chega", "What it would cost to pay someone for those hours, from government wage data"],
+      ["chega", "The three things you never hand off, and why"],
+      ["chega", "Your next 30 days, week by week"]
+    ]);
+    FX.mostra("t8");
+    T.event(id, "handoff", "result", vai + "h · " + Math.round(r.yearCost) + " · " + r.top.key);
+    T.pixel("ViewContent", { content_name: "handoff" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rHoras"), vai, { dur: 1000, fmt: function (v) { return String(meio(v)); } })
+      .then(function () { return FX.wait(150); })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(200); })
+      .then(function () {
+        palco[4].classList.add("in");
+        var tr = document.querySelectorAll("#rBar .trilho i"), t = r.hours || 1;
+        requestAnimationFrame(function () { tr[0].style.width = (r.handoffHours / t * 100) + "%"; tr[1].style.width = (r.keepHours / t * 100) + "%"; });
+        return FX.wait(900);
+      })
+      .then(function () { palco[5].classList.add("in"); palco[6].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var tel = document.getElementById("phone").value, phone = T.phone(tel);
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : !phone ? (T.phoneErro(tel) || "Put in a mobile number with the area code.") : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !T.validEmail(email) ? "email" : "phone").focus(); return; }
+    if (!r || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var link = T.link("report/", { id: id, d: T.enc(inputs) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "handoff", lang: "en", name: name, email: email, phone: phone, sms: ligar,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "handoff-2026-10-16",
+      inputs: inputs,
+      result: { hours: meio(r.handoffHours), cost: Math.round(r.yearCost), allCost: Math.round(r.allYearCost), top: r.top.key, topPhrase: r.top.short },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      var s = Calc.HANDOFF_PASSOS[r.top.key];
+      document.getElementById("tPorque").textContent = "For " + r.top.short + ", start here:";
+      document.getElementById("tTexto").textContent = s.steps[0];
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t9");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send my full report";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

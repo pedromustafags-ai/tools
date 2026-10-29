@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Stranger Check</title>
+<meta name="description" content="What a new customer sees when they look your business up on Google: a score out of 100 and the first thing a stranger notices. About two minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .palco .rot2 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--palco-texto-2); font-weight: 700; margin-top: 4px; }
+  .palco .fonte-linha { font-size: 13.5px; color: var(--palco-texto-2); margin: 0; line-height: 1.45; }
+  .palco .fonte-linha i { font-style: normal; opacity: .8; }
+  .dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dupla .field { margin: 0; }
+  .opcional { font-weight: 400; color: var(--ink-3); }
+  @media (max-width: 420px) { .dupla { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- 0 · capa -->
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">For service business owners</p>
+    <h1>What does a stranger see when they look you up on Google?</h1>
+    <p class="lede">New customers check your Google listing before they ever see your work. Ten taps, about two minutes: a score out of 100, and the first thing a stranger notices.</p>
+    <button class="btn" id="comecar" type="button">Look me up like a stranger <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">Your stranger score</span>
+      <span class="num">— <small style="font-size:16px;color:var(--palco-texto-2)">/ 100</small></span>
+      <span class="trilho"></span>
+      <span>and the first thing a stranger notices on your Google listing.</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Built by Pedro Mustafa</p>
+  </section>
+
+  <!-- 1 · ofício -->
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">What kind of work do you do?</p>
+    <div class="opcoes" id="oficios"></div>
+    <div class="outro hidden" id="outroBox">
+      <input type="text" id="outro" placeholder="What you do" autocomplete="off" aria-label="What you do">
+      <button class="btn" type="button" id="outroOk" style="margin-top:12px">Next <span class="seta">→</span></button>
+    </div>
+    <button class="voltar" type="button">‹ Back</button>
+  </section>
+
+  <!-- 2 · a ficha existe? -->
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">Search your business name on Google. Does your own listing show up?</p>
+    <p class="ajuda">The box with your name, your stars, your photos and a Call button.</p>
+    <div class="opcoes" id="ficha"></div>
+    <button class="voltar" type="button">‹ Back</button>
+  </section>
+
+  <!-- 3 a 10 · os oito itens, montados pelo script -->
+  <div id="itens"></div>
+
+  <section class="tela" id="t11" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t12">
+    <div class="palco" id="palco">
+      <span class="rot">Your stranger score</span>
+      <div class="numerao" id="rNum"><span id="rN" aria-hidden="true">0</span><small> / 100</small></div>
+      <p id="rFaixa"></p>
+      <div class="xbar" id="rBar">
+        <div class="rotulos"><span>Against you <b id="rContra"></b></span><span>In your favor <b id="rFavor"></b></span></div>
+        <div class="trilho"><i class="fora"></i><i class="ok"></i></div>
+      </div>
+      <span class="rot2" id="rRot2">The first thing a stranger notices</span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem" id="rQuem">A stranger, looking you up</span></p>
+      <span class="etiqueta" id="rTop"></span>
+      <p class="fonte-linha" id="rMercado"></p>
+    </div>
+    <p id="rFinal" aria-live="polite" style="position:absolute;left:-9999px"></p>
+
+    <h2>Your full report</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">First name</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <div class="field"><label for="phone">Mobile number</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field">
+        <label>Want a real look? <span class="opcional">(optional)</span></label>
+        <span class="hint">Pedro's team looks your business up the way a stranger would and adds what they see to your report within 24 hours.</span>
+        <div class="dupla">
+          <div class="field"><input id="empresa" type="text" autocomplete="organization" placeholder="Business name" aria-label="Business name"></div>
+          <div class="field"><input id="cidade" type="text" autocomplete="address-level2" placeholder="Town or city" aria-label="Town or city"></div>
+        </div>
+      </div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Yes, someone from Pedro Mustafa's team can call or text me about my report within 24 hours.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Send my full report</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Arrives in your inbox in under a minute.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Up to 5 messages in 10 days. Not required to get your report. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a href="../privacy/">Privacy</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t13">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Sent. Your report is on its way to <span id="tEmail"></span>.</h2>
+    <a class="btn" id="abrir" href="report/">Open my report now <span class="seta">→</span></a>
+    <p id="tOlhada" class="hidden" style="margin-top:22px"></p>
+    <h3 style="margin-top:28px">While it lands: the first fix</h3>
+    <p id="tPorque" class="muted"></p>
+    <div class="script hidden" id="tTexto"></div>
+    <p id="tLigar" class="hidden" style="margin-top:22px">Someone from Pedro's team will call you within 24 hours<span id="tFone"></span>.</p>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacy/">Privacy</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/mercado.js"></script>
+<script src="../assets/stranger.js"></script>
+<script>
+(function () {
+  var R = STRANGER, ITENS = R.ITENS, PRIMEIRA = 3; // o primeiro item é a tela t3
+  var id = T.uid(), J = JOGO({ chave: "stranger", total: 10, lingua: "en", ferramenta: "stranger", id: id }), st = J.st;
+  st.a = st.a || {};
+
+  // as oito telas dos itens
+  document.getElementById("itens").outerHTML = ITENS.map(function (q, k) {
+    return '<section class="tela" id="t' + (k + PRIMEIRA) + '"><div class="progresso" data-passo="' + (k + PRIMEIRA) + '"></div>' +
+      '<p class="pergunta">' + T.esc(q.q) + "</p>" + (q.ajuda ? '<p class="ajuda">' + T.esc(q.ajuda) + "</p>" : "") +
+      '<div class="opcoes" data-item="' + q.id + '">' + q.o.map(function (o) { return '<button type="button" data-v="' + o[0] + '">' + T.esc(o[1]) + "</button>"; }).join("") + "</div>" +
+      '<button class="voltar" type="button">‹ Back</button></section>';
+  }).join("");
+  J.progresso();
+
+  // o caminho: as telas visitadas, para o Back voltar pelo mesmo caminho (sem avaliação, três telas ficam de fora)
+  var hist = [], atual = "t0";
+  function vai(t) { hist.push(atual); atual = t; J.vai(t); }
+  document.querySelectorAll(".voltar").forEach(function (b) {
+    b.addEventListener("click", function () { if (!hist.length) return; atual = hist.pop(); FX.mostra(atual); });
+  });
+  function pula(q) { return R.semAvaliacao(st.a) && (q.id === "stars" || q.id === "latest" || q.id === "replies"); }
+  function depoisDo(k) { for (var n = k + 1; n < ITENS.length; n++) if (!pula(ITENS[n])) return "t" + (n + PRIMEIRA); return null; }
+
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "stranger", "start"); vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  // 1 · ofício
+  var of = document.getElementById("oficios");
+  of.innerHTML = Object.keys(R.OFICIOS).map(function (k) { return '<button type="button" data-v="' + k + '">' + R.OFICIOS[k] + "</button>"; }).join("");
+  J.opcoes(of, "trade", "t2", function (v) {
+    if (v === "other") { document.getElementById("outroBox").classList.remove("hidden"); document.getElementById("outro").focus(); return false; }
+    document.getElementById("outroBox").classList.add("hidden");
+    hist.push(atual); atual = "t2";
+  });
+  document.getElementById("outroOk").addEventListener("click", function () { st.tradeOther = document.getElementById("outro").value.trim().slice(0, 60); J.salva(); vai("t2"); });
+
+  // 2 · a ficha
+  var fi = document.getElementById("ficha");
+  fi.innerHTML = Object.keys(R.FICHA).map(function (k) { return '<button type="button" data-v="' + k + '">' + R.FICHA[k][0] + "</button>"; }).join("");
+  fi.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.listing = b.getAttribute("data-v"); J.marca(fi, st.listing); J.salva();
+    setTimeout(function () { if (st.listing === "none") mostrar(); else vai("t" + PRIMEIRA); }, FX.reduced ? 0 : 280);
+  });
+  if (st.listing) J.marca(fi, st.listing);
+
+  // 3 a 10 · os itens
+  document.querySelectorAll("[data-item]").forEach(function (box) {
+    var qid = box.getAttribute("data-item"), k = ITENS.indexOf(R.item(qid));
+    if (st.a[qid]) J.marca(box, st.a[qid]);
+    box.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      st.a[qid] = b.getAttribute("data-v"); J.marca(box, st.a[qid]); J.salva();
+      setTimeout(function () { var p = depoisDo(k); if (p) vai(p); else mostrar(); }, FX.reduced ? 0 : 280);
+    });
+  });
+
+  var inputs = null, r = null, chave = "";
+  function oficio() { return st.trade === "other" ? (st.tradeOther || "Something else") : R.OFICIOS[st.trade]; }
+  function mostrar() {
+    var a = {};
+    ITENS.forEach(function (q) { if (st.a[q.id] && !pula(q)) a[q.id] = st.a[q.id]; });
+    inputs = { trade: st.trade, tradeOther: st.tradeOther || "", listing: st.listing, a: st.listing === "none" ? {} : a };
+    var err = R.check(inputs);
+    if (err) {
+      if (!R.OFICIOS[inputs.trade]) return vai("t1");
+      if (!R.FICHA[inputs.listing]) return vai("t2");
+      for (var k = 0; k < ITENS.length; k++) if (!pula(ITENS[k]) && !a[ITENS[k].id]) return vai("t" + (k + PRIMEIRA));
+      return;
+    }
+    r = R.calc(inputs); chave = R.chave(r);
+    hist.push(atual); atual = "t11";
+    J.espera("t11", document.getElementById("espera"), [
+      "Looking at your listing the way a stranger would…",
+      "Checking it against what customers say they look for…",
+      "Picking the first thing a stranger notices…"
+    ]).then(revela);
+  }
+
+  function revela() {
+    atual = "t12";
+    var p = r.primeiro, cons = R.CONSERTO[chave], m = R.mercado(p ? p.id : "photos");
+    var num = document.getElementById("rNum");
+    num.className = "numerao " + (r.nota >= 80 ? "ganho" : r.nota < 50 ? "perda" : "");
+    document.getElementById("rFaixa").textContent = R.faixa(r);
+    var contra = r.semFicha ? 8 : r.contra.length, favor = r.semFicha ? 0 : r.favor.length;
+    document.getElementById("rContra").textContent = contra;
+    document.getElementById("rFavor").textContent = favor;
+    var rot2 = document.getElementById("rRot2"), quem = document.getElementById("rQuem");
+    if (!p) { rot2.textContent = "What a stranger notices"; document.getElementById("rLeitura").textContent = "“Nothing on this listing gives me a reason to call someone else.”"; }
+    else if (p.duvida) { rot2.textContent = "Check this first"; quem.textContent = "Pedro"; document.getElementById("rLeitura").textContent = "You haven't checked your " + p.curto + ". A stranger sees that in a second, so it's the first thing to look at."; }
+    else document.getElementById("rLeitura").textContent = "“" + p.linha + "”";
+    document.getElementById("rTop").textContent = (p ? "Fix first: " : "Keep it up: ") + cons.etiqueta;
+    document.getElementById("rMercado").innerHTML = T.esc(m[0]) + " <i>" + T.esc(m[1]) + ".</i>";
+    document.getElementById("rFinal").textContent = "Your stranger score: " + r.nota + " out of 100. " + (p ? "The first thing a stranger notices: " + p.frase + "." : "");
+    J.vem(document.getElementById("vem"), [
+      ["ja", "Your score, and the first thing a stranger notices"],
+      ["chega", "All eight checks, side by side with what customers say they look for"],
+      ["chega", "The fix for the first one, step by step, with the words to copy"],
+      ["chega", "A real look at your listing by Pedro's team, if you add your business name below"],
+      ["chega", "How Google decides who shows up, and what no one can pay for"],
+      ["chega", "Your next 30 days"]
+    ]);
+    FX.mostra("t12");
+    T.event(id, "stranger", "result", r.nota + " · " + chave + " · " + inputs.trade);
+    T.pixel("ViewContent", { content_name: "stranger" });
+    var pc = document.getElementById("palco").children;
+    pc[0].classList.add("in"); pc[1].classList.add("in");
+    FX.countUp(document.getElementById("rN"), r.nota, { dur: 900, fmt: function (v) { return String(Math.round(v)); } })
+      .then(function () { return FX.wait(150); })
+      .then(function () { pc[2].classList.add("in"); pc[3].classList.add("in"); return FX.wait(200); })
+      .then(function () {
+        var tot = contra + favor || 1, tr = document.querySelectorAll("#rBar .trilho i");
+        requestAnimationFrame(function () { tr[0].style.width = (contra / tot * 100) + "%"; tr[1].style.width = (favor / tot * 100) + "%"; });
+        return FX.wait(800);
+      })
+      .then(function () { for (var k = 4; k < pc.length; k++) pc[k].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  // o celular: dez dígitos é EUA ou Canadá; fora deles, só com o código do país (+ ou 00)
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var tel = document.getElementById("phone").value, phone = T.phone(tel);
+    var empresa = document.getElementById("empresa").value.trim().slice(0, 100);
+    var cidade = document.getElementById("cidade").value.trim().slice(0, 80);
+    var err = !name ? "Put in your first name." : !T.validEmail(email) ? "That email doesn't look right." : !phone ? (T.phoneErro(tel) || "Put in a mobile number.") : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !T.validEmail(email) ? "email" : "phone").focus(); return; }
+    if (!r || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Sending…";
+    var link = T.link("report/", { id: id, d: T.enc(Object.assign({}, inputs, { o: empresa ? 1 : 0 })) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    var p = r.primeiro;
+    T.sendLead({
+      id: id, tool: "stranger", lang: "en", name: name, email: email, phone: phone, sms: ligar, business: empresa, city: cidade,
+      consent: ligar ? document.querySelector(".caixa span").textContent : "", consentVersion: "stranger-2026-10-19",
+      inputs: inputs,
+      result: { score: r.nota, first: chave, firstPhrase: p ? p.frase : (r.semFicha ? "no Google listing at all" : ""), against: r.semFicha ? 8 : r.contra.length, applies: r.aplicam, trade: inputs.trade, tradeLabel: oficio() },
+      reportUrl: link
+    }).then(function () {
+      var cons = R.CONSERTO[chave];
+      document.getElementById("tEmail").textContent = email;
+      document.getElementById("abrir").href = link;
+      if (empresa) {
+        var o = document.getElementById("tOlhada");
+        o.innerHTML = "Pedro's team will look up <b>" + T.esc(empresa) + "</b>" + (cidade ? " in <b>" + T.esc(cidade) + "</b>" : "") + " the way a stranger would, and add what they see to your report within 24 hours.";
+        o.classList.remove("hidden");
+      }
+      document.getElementById("tPorque").textContent = cons.porque;
+      if (cons.texto) { var tx = document.getElementById("tTexto"); tx.textContent = R.TEXTOS[cons.texto]; tx.classList.remove("hidden"); }
+      if (ligar) {
+        document.getElementById("tLigar").classList.remove("hidden");
+        var f = (window.TOOLS_CONFIG || {}).PHONE_DISPLAY;
+        if (f) document.getElementById("tFone").textContent = " from " + f + ". Save the number so you know it's us";
+      }
+      FX.mostra("t13");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Send my full report";
+      document.getElementById("leadError").textContent = "Something went wrong on our side. Try again in a minute.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

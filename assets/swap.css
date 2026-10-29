@@ -1,0 +1,18 @@
+.choices.trades { grid-template-columns: 1fr 1fr; }
+@media (min-width: 560px) { .choices.trades { grid-template-columns: 1fr 1fr 1fr; } }
+.pair { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin: 0 0 14px; break-inside: avoid; }
+.pair .where { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 10px; }
+.pair .cut, .pair .write { border-radius: 10px; padding: 10px 12px; margin: 0 0 8px; font-size: 16px; }
+.pair .cut { background: var(--leak-soft); color: #5c1410; }
+.pair .cut s { text-decoration-color: var(--leak); }
+.pair .write { background: var(--keep-soft); color: #14260f; font-weight: 600; }
+.pair .lab { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 3px; text-decoration: none; }
+.pair .cut .lab { color: var(--leak); }
+.pair .write .lab { color: var(--keep); }
+.pair .why { font-size: 14px; color: var(--ink-2); margin: 4px 0 0; }
+.pair .ph { background: #FFF3C4; border-radius: 3px; padding: 0 2px; }
+.pair .copy { margin-top: 8px; }
+.tests { display: grid; gap: 10px; }
+.tests .card { margin: 0; }
+@media print { .pair { border: 1px solid #ccc; } .pair .copy { display: none; } }
+@media print { .rx #pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .rx #pairs .pair { margin: 0; } }

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>As três mensagens</title>
+<meta name="description" content="As três mensagens em inglês que fazem o cliente americano confiar em você.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/jogo.css">
+<style>
+  .previa .msg { font-size: 15px; line-height: 1.45; color: var(--palco-texto); background: #2a2a2a; border-radius: 14px 14px 14px 4px; padding: 12px 14px; }
+  .previa .msg .ph { color: var(--palco-texto-2); }
+  .pt-traducao { font-size: 14px; color: var(--ink-3); margin: 6px 0 0; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="tela capa ativa" id="t0">
+    <p class="para-quem">Para quem tem negócio de serviço nos EUA</p>
+    <h1>As três mensagens em inglês que fazem o cliente americano confiar em você</h1>
+    <p class="lede">Diga o seu serviço e o nome da empresa. A primeira mensagem aparece pronta nesta tela, e as três chegam no seu WhatsApp.</p>
+    <button class="btn" id="comecar" type="button">Montar as minhas mensagens <span class="seta">→</span></button>
+    <div class="previa" aria-hidden="true">
+      <span class="rot">A primeira, quando ele pede orçamento</span>
+      <span class="msg">Hi <span class="ph">[customer name]</span>, this is <span class="ph">[your name]</span> from <span class="ph">[sua empresa]</span>. Thanks for reaching out…</span>
+    </div>
+    <p class="assinado"><span class="ini">PM</span>Feito pela equipe do Pedro Mustafa</p>
+  </section>
+
+  <section class="tela" id="t1">
+    <div class="progresso" data-passo="1"></div>
+    <p class="pergunta">Qual é o serviço que você mais faz?</p>
+    <div class="opcoes" id="servicos"></div>
+    <button class="voltar" type="button" data-volta="t0">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t2">
+    <div class="progresso" data-passo="2"></div>
+    <p class="pergunta">Qual é o nome da sua empresa?</p>
+    <p class="ajuda">Do jeito que o cliente vê no Google e no caminhão. Ele entra nas três mensagens.</p>
+    <input type="text" id="empresa" autocomplete="organization" placeholder="Bright Home Cleaning" aria-label="Nome da empresa" style="font-size:22px;font-weight:700">
+    <p class="error" role="alert"></p>
+    <button class="btn mostrar" type="button" id="mostrar" style="margin-top:14px">Ver a minha primeira mensagem <span class="seta">→</span></button>
+    <button class="voltar" type="button" data-volta="t1">‹ Voltar</button>
+  </section>
+
+  <section class="tela" id="t3" aria-live="polite"><div class="espera" id="espera"></div></section>
+
+  <section class="tela" id="t4">
+    <div class="palco" id="palco">
+      <span class="rot">As suas mensagens</span>
+      <div class="numerao ganho"><span id="rN" aria-hidden="true">0</span><small> mensagens em inglês</small></div>
+      <p id="rPara"></p>
+      <p class="apoio">Quando ele pede orçamento, na véspera do serviço e depois, pedindo avaliação. Mais dois textos para o telefone.</p>
+      <span class="etiqueta">Mande hoje: a resposta ao pedido de orçamento</span>
+      <p class="leitura"><span id="rLeitura"></span><span class="quem">Pedro</span></p>
+    </div>
+
+    <h2>A primeira, já pronta</h2>
+    <p class="muted small" id="m1Quando"></p>
+    <div class="script" id="m1"></div>
+    <p class="pt-traducao" id="m1Pt"></p>
+
+    <h2>As três, e o resto</h2>
+    <ul class="vem" id="vem"></ul>
+
+    <form class="card portao" id="lead" novalidate>
+      <div class="field"><label for="name">Seu nome</label><input id="name" type="text" autocomplete="given-name"></div>
+      <div class="field"><label for="phone">WhatsApp</label><span class="hint">Escolha o país e digite com DDD.</span><input id="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+      <label class="caixa"><input type="checkbox" id="ligar"><span><b>Aceito que alguém da equipe do Pedro Mustafa me ligue em até 24 horas para falar das minhas mensagens.</b></span></label>
+      <div class="hp" aria-hidden="true"><label>Deixe vazio<input id="hpf" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit" id="send"><span class="rot-btn">Receber as três mensagens</span> <span class="seta">→</span></button>
+      <p class="sob-botao">Abrem na hora e também chegam no seu WhatsApp.</p>
+      <p class="error" id="leadError" role="alert"></p>
+      <p class="legal">Ao enviar, você recebe as mensagens e até 5 mensagens da equipe do Pedro Mustafa no WhatsApp nos próximos 10 dias. Para parar, é só responder PARAR. <a href="../privacidade/">Privacidade</a></p>
+    </form>
+  </section>
+
+  <section class="tela" id="t5">
+    <svg class="feito-svg" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29 l8 8 l15 -17"/></svg>
+    <h2 style="margin-top:0">Pronto, <span id="tNome"></span>.</h2>
+    <a class="btn" id="abrir" href="ver/">Abrir as minhas mensagens <span class="seta">→</span></a>
+    <p style="margin-top:20px">A equipe do Pedro te chama no WhatsApp em até 24 horas<span id="tFone"></span>.</p>
+    <h3 style="margin-top:26px">Se for mandar uma só hoje</h3>
+    <div class="script" id="tTexto"></div>
+  </section>
+
+  <footer class="foot"><span>Pedro Mustafa · M&amp;O</span><a href="../privacidade/">Privacidade</a></footer>
+</main>
+<script src="../assets/config.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/fx.js"></script>
+<script src="../assets/jogo.js"></script>
+<script src="../assets/servicos.js"></script>
+<script src="../assets/mensagens.js"></script>
+<script>
+(function () {
+  var id = T.uid(), J = JOGO({ chave: "mensagens", total: 2, lingua: "pt", ferramenta: "mensagens", id: id }), st = J.st;
+  J.progresso();
+  J.regras({ t2: function () { return document.getElementById("empresa").value.trim() ? "" : "Coloque o nome da empresa, que entra nas três mensagens."; } });
+  J.botoes();
+  var box = document.getElementById("servicos");
+  box.innerHTML = Object.keys(SERVICOS).map(function (k) { return '<button type="button" data-v="' + k + '">' + T.esc(SERVICOS[k].pt) + "</button>"; }).join("");
+  J.opcoes(box, "servico", "t2", function () { setTimeout(function () { document.getElementById("empresa").focus(); }, 400); });
+  var emp = document.getElementById("empresa");
+  if (st.empresa) emp.value = st.empresa;
+  emp.addEventListener("input", function () { st.empresa = emp.value.trim().slice(0, 80); J.salva(); });
+  emp.addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("mostrar").click(); });
+  document.getElementById("comecar").addEventListener("click", function () { T.event(id, "mensagens", "start"); J.vai("t1"); });
+  FX.pulso(document.getElementById("comecar"));
+
+  var sv = null, en1 = "";
+  function fill(t) { return t.replace(/\{E\}/g, st.empresa).replace(/\{S\}/g, sv.about).replace(/\{Y\}/g, sv.your); }
+  document.getElementById("mostrar").addEventListener("click", function () {
+    if (!J.confere("t2")) return;
+    st.empresa = emp.value.trim().slice(0, 80); J.salva();
+    sv = SERVICOS[st.servico] || SERVICOS.other;
+    T.event(id, "mensagens", "step", "2");
+    J.espera("t3", document.getElementById("espera"), [
+      "Colocando a " + st.empresa + " nas três mensagens…",
+      "Ajustando cada uma para " + sv.pt.toLowerCase() + "…",
+      "Separando a que vai primeiro…"
+    ]).then(revela);
+  });
+
+  function revela() {
+    var m = MENSAGENS[0];
+    en1 = fill(m.en);
+    document.getElementById("rPara").textContent = "com o nome da " + st.empresa + ", prontas para mandar por SMS.";
+    document.getElementById("rLeitura").textContent = m.porque;
+    document.getElementById("m1Quando").textContent = m.quando;
+    document.getElementById("m1").textContent = en1;
+    document.getElementById("m1Pt").textContent = "O que ela diz: " + m.pt.replace(/\{E\}/g, st.empresa);
+    J.vem(document.getElementById("vem"), [
+      ["ja", "A primeira mensagem, com o nome da sua empresa"],
+      ["chega", "A da véspera e a do pedido de avaliação, com a tradução de cada uma"],
+      ["chega", "O recado da caixa postal e o SMS da ligação perdida, em inglês"],
+      ["chega", "O que a pesquisa diz sobre responder rápido, confirmar e pedir avaliação"],
+      ["chega", "Como responder quando o cliente acha caro ou diz que vai pensar"],
+      ["chega", "Como deixar as três salvas no celular, e o plano de 30 dias"]
+    ]);
+    FX.mostra("t4");
+    T.event(id, "mensagens", "result", st.servico || "");
+    T.pixel("ViewContent", { content_name: "mensagens" });
+    var palco = document.getElementById("palco").children;
+    palco[0].classList.add("in"); palco[1].classList.add("in");
+    FX.countUp(document.getElementById("rN"), 3, { dur: 600, fmt: function (v) { return String(Math.round(v)); } })
+      .then(function () { palco[2].classList.add("in"); palco[3].classList.add("in"); return FX.wait(250); })
+      .then(function () { palco[4].classList.add("in"); palco[5].classList.add("in"); return FX.stagger(document.querySelectorAll("#vem li"), 60); })
+      .then(function () { FX.pulso(document.getElementById("send")); });
+  }
+
+  document.getElementById("lead").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var tel = document.getElementById("phone").value, phone = T.phone(tel);
+    var err = !name ? "Coloque o seu nome." : !phone ? (T.phoneErro(tel) || "Confira o país e coloque o WhatsApp com DDD.") : !T.validEmail(email) ? "Confira o e-mail." : "";
+    document.getElementById("leadError").textContent = err;
+    if (err) { document.getElementById(!name ? "name" : !phone ? "phone" : "email").focus(); return; }
+    if (!sv || document.getElementById("hpf").value) return;
+    var ligar = document.getElementById("ligar").checked;
+    var btn = document.getElementById("send"), rot = btn.querySelector(".rot-btn");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true"); rot.textContent = "Enviando…";
+    var link = T.link("ver/", { id: id, d: T.enc({ e: st.empresa, s: st.servico }) });
+    try { localStorage.setItem("pm_nome", name.split(" ")[0]); } catch (x) {}
+    T.sendLead({
+      id: id, tool: "mensagens", lang: "pt", name: name, email: email, phone: phone, business: st.empresa, ligar: ligar,
+      consent: (ligar ? document.querySelector(".caixa span").textContent + " · " : "") + document.querySelector(".legal").textContent.replace(/\s+Privacidade$/, ""), consentVersion: "mensagens-2026-10-16",
+      inputs: { servico: st.servico },
+      result: { servico: sv.pt },
+      reportUrl: link
+    }).then(function () {
+      document.getElementById("tNome").textContent = name.split(" ")[0];
+      document.getElementById("abrir").href = link;
+      document.getElementById("tTexto").textContent = en1;
+      FX.mostra("t5");
+    }).catch(function () {
+      btn.disabled = false; btn.removeAttribute("aria-busy"); rot.textContent = "Receber as três mensagens";
+      document.getElementById("leadError").textContent = "Deu um erro do nosso lado. Tenta de novo em um minuto.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

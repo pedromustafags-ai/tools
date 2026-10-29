@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>O seu plano</title>
+<link rel="stylesheet" href="../assets/app.css">
+<style>
+  .card + .card { margin-top: 16px; }
+  .capa-plano { background: var(--palco); color: var(--palco-texto); border-radius: var(--radius); padding: 26px 22px; margin: 18px 0; }
+  .capa-plano small { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--palco-texto-2); }
+  .capa-plano h2 { margin: 8px 0 10px; font-size: 26px; line-height: 1.15; }
+  .capa-plano p { margin: 0; color: var(--palco-texto-2); }
+  .prompt { white-space: pre-wrap; font: 14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; background: var(--sun-soft); border: 1px solid var(--line); border-radius: 10px; padding: 14px; max-height: 340px; overflow: auto; margin: 12px 0; }
+  .perguntas { padding-left: 0; list-style: none; counter-reset: q; }
+  .perguntas li { counter-increment: q; margin: 0 0 16px; padding-left: 38px; position: relative; }
+  .perguntas li::before { content: counter(q, decimal-leading-zero); position: absolute; left: 0; top: 1px; font-weight: 800; color: var(--ink-3); }
+  .perguntas b { display: block; margin-bottom: 4px; }
+  .rotulo { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 6px; }
+  .caso .nota { font-size: 30px; font-weight: 800; margin: 2px 0 10px; color: #17804A; }
+  .caso .contou { padding-left: 18px; margin: 0 0 14px; }
+  .caso .contou li { margin: 2px 0; }
+  .caso .passos { padding-left: 20px; margin: 6px 0 0; }
+  .caso .passos li { margin: 0 0 12px; }
+  .caso .passos b { display: block; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="brand">M&amp;O</p>
+  <p class="kicker">O seu plano</p>
+  <h1 id="ola">O seu plano está pronto</h1>
+
+  <div class="capa-plano"><small>M&amp;O · o seu plano</small><h2 id="plano-titulo"></h2><p id="plano-frase"></p></div>
+  <section class="card caso" id="seu-caso" hidden>
+    <p class="rotulo">O seu caso</p>
+    <p class="nota"></p>
+    <p class="small"><b>O que você contou</b></p>
+    <ul class="contou small"></ul>
+    <p class="rotulo">Por onde começar no seu caso</p>
+    <ol class="passos"></ol>
+  </section>
+
+
+  <section class="card">
+    <p class="rotulo">1 · O seu plano, personalizado para o seu negócio</p>
+    <p>O passo a passo para aplicar a partir desta semana, com os textos prontos para usar.</p>
+    <a class="btn" id="pdf" href="#" target="_blank" rel="noopener">Abrir o meu plano <span class="seta">→</span></a>
+  </section>
+
+  <section class="card">
+    <p class="rotulo">2 · As skills para o seu agente de IA</p>
+    <p id="serve"></p>
+    <p class="small"><b>Separe antes:</b> <span id="separe"></span></p>
+    <pre class="prompt" id="prompt"></pre>
+    <button class="btn ghost" type="button" id="copiar">Copiar</button>
+    <p class="small muted">Cole no ChatGPT ou no Claude, troque o que está entre colchetes pelo seu caso e mande.</p>
+    <p class="small"><b>Confira o que voltou:</b> <span id="confira"></span></p>
+  </section>
+
+  <section class="card">
+    <p class="rotulo">3 · As 4 perguntas para fazer a qualquer agência</p>
+    <p>Antes de assinar com qualquer pessoa, faça as quatro e anote as respostas. Vale também para a gente.</p>
+    <ol class="perguntas">
+      <li><b>“Para quem vocês já venderam, no meu mercado?”</b>Peça nome de negócio e cidade. Saber vender onde o seu cliente mora é o que interessa.</li>
+      <li><b>“Quem responde os meus pedidos, e em quanto tempo?”</b>Se a resposta for “a sua equipe”, o anúncio fica com eles e a venda continua toda com você.</li>
+      <li><b>“Qual número do relatório de vocês mostra cliente fechado?”</b>Impressão, clique e lead podem subir com a sua agenda vazia. O número que importa é o que entrou no caixa.</li>
+      <li><b>“O que faria vocês me dizerem que eu não sou um bom cliente para vocês?”</b>Quem não sabe responder nunca recusou ninguém, e vai aceitar o seu dinheiro de qualquer jeito.</li>
+    </ol>
+  </section>
+
+  <footer class="foot"><span>M&amp;O · Pedro Mustafa</span> <a href="../privacidade/">Privacidade</a></footer>
+</main>
+<script src="planos.js"></script>
+<script>
+(function () {
+  var cod = (new URLSearchParams(location.search).get("p") || "").replace(/\D/g, "");
+  var p = (window.PLANOS && window.PLANOS.pt[cod]) || window.PLANOS.pt["02"];
+  document.getElementById("plano-titulo").textContent = p.titulo;
+  document.getElementById("plano-frase").textContent = p.frase;
+  document.getElementById("pdf").href = p.pdf;
+  document.getElementById("serve").textContent = p.serve.charAt(0).toUpperCase() + p.serve.slice(1);
+  document.getElementById("separe").textContent = p.separe;
+  document.getElementById("prompt").textContent = p.prompt;
+  document.getElementById("confira").textContent = p.confira;
+  var bt = document.getElementById("copiar");
+  bt.onclick = function () {
+    var ok = function () { bt.textContent = "Copiado"; setTimeout(function () { bt.textContent = "Copiar"; }, 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(p.prompt).then(ok, function () {});
+  };
+})();
+</script>
+<script src="../assets/config.js"></script>
+<script src="../assets/caso.js"></script>
+</body>
+</html>

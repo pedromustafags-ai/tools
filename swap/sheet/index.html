@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Website Swap Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,500&display=swap">
+<link rel="stylesheet" href="../../assets/app.css">
+<link rel="stylesheet" href="../../assets/jogo.css">
+<link rel="stylesheet" href="../../assets/swap.css">
+<link rel="stylesheet" href="../../assets/relatorio.css">
+<style>
+  .rx .pair { border-radius: 0; border-top: 3px solid var(--ink); }
+  .rx .pair .cut, .rx .pair .write { border-radius: 0; }
+  .rx .pair .n { display: inline-block; min-width: 22px; height: 22px; border-radius: 50%; background: var(--confianca); color: #fff; font-size: 12px; font-weight: 700; text-align: center; line-height: 22px; margin-right: 6px; }
+  .testes { display: grid; gap: 12px; }
+  @media print { .rx .pair { break-inside: avoid; margin-bottom: 10px; padding: 10px 12px; } .rx .pair .cut, .rx .pair .write { font-size: 10pt; padding: 6px 9px; } .rx .pair .why { font-size: 9pt; } }
+</style>
+</head>
+<body class="rx">
+<main class="wrap">
+  <div id="bad" class="card hidden" style="margin-top:24px"><p>This link is incomplete. Pick your trade again and a new link will reach your inbox.</p><a class="btn" href="../">Open the swap sheet <span class="seta">→</span></a></div>
+
+  <article id="sheet" class="hidden">
+    <header class="capa" data-secao="capa">
+      <div class="capa-topo"><span>Pedro Mustafa · M&amp;O</span><span>Website Swap Sheet</span></div>
+      <p class="capa-tipo" id="capaTipo">Website Swap Sheet</p>
+      <h1 id="cTitulo"></h1>
+      <p class="capa-para" id="cPara"></p>
+      <div class="capa-arte"><img src="../../assets/img/capa-swap.png" alt="Line drawing of someone at a laptop crossing out lines on a printed page"></div>
+      <div class="capa-kpis">
+        <div><b class="ganho">8</b><span>swaps, from the headline to the footer</span></div>
+        <div><b>3</b><span>tests for any line the sheet doesn't cover</span></div>
+        <div><b>10 min</b><span>to read your homepage out loud with it</span></div>
+      </div>
+      <div class="capa-pe"><span>A private sheet, written for your trade.</span><span>Six chapters · sources at the end</span></div>
+    </header>
+
+    <section class="cap" data-secao="porque" id="sPorque"></section>
+    <section class="cap" data-secao="mapa" id="sMapa"></section>
+    <section class="cap" data-secao="trocas" id="sTrocas"></section>
+    <section class="cap" data-secao="testes" id="sTestes"></section>
+    <section class="cap" data-secao="plano" id="sPlano"></section>
+
+    <section class="cap" data-secao="metodo">
+      <p class="cap-num">06 · Sources and next step</p>
+      <h2>How the sheet was written</h2>
+      <p>The lines in red are the kind that show up on site after site in your trade. The lines in green are what an owner would say instead, with brackets for what only you can fill in. Nothing in green promises a result: each line states something a customer can check.</p>
+      <h3>Sources</h3>
+      <ol class="fontes" id="fontes"></ol>
+      <h3>Want the three lines I'd change first on your site?</h3>
+      <p>Reply to the email that brought you here with your homepage link, and Pedro's team will mark them for you. If you checked the box, someone from the team will call you within 24 hours. Reply STOP to any text and they stop.</p>
+      <a class="btn noprint hidden" id="agenda" href="#" target="_blank" rel="noopener">Pick a time to talk <span class="seta">→</span></a>
+      <div class="quem" style="margin-top:28px">
+        <span class="ini">PM</span>
+        <div><b>Prepared by Pedro Mustafa</b><br><span class="muted small">Marketing strategist. I work with home-service owners on the stretch between the quote request and the booked job.</span></div>
+      </div>
+      <button class="btn ghost noprint" type="button" id="pdf" style="margin-top:22px">Print it or save as PDF</button>
+    </section>
+  </article>
+
+  <footer class="foot noprint"><span>Pedro Mustafa · M&amp;O</span><a href="../../privacy/">Privacy</a></footer>
+</main>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/app.js"></script>
+<script src="../../assets/swaps.js"></script>
+<script src="../../assets/swap.js"></script>
+<script src="../../assets/mercado.js"></script>
+<script src="../../assets/relatorio.js"></script>
+<script>
+(function () {
+  var id = T.qs.get("id"), t = T.qs.get("t");
+  var trade = SWAPS.trades.filter(function (x) { return x.id === t; })[0];
+  if (!trade) { document.getElementById("bad").classList.remove("hidden"); return; }
+  var own = T.qs.get("pedro") === "1";
+  function ev(a, x) { if (!own) T.event(id, "swap", a, x); }
+  ev("open");
+  function $(k) { return document.getElementById(k); }
+  var rx = RX("en"), cite = rx.cite, ex = rx.ex, leve = rx.leve, capNum = rx.capNum, barras = rx.barras;
+  var outro = trade.id === "other", rot = T.minuscula(trade.label);
+  var nome = ""; try { nome = localStorage.getItem("pm_nome") || ""; } catch (e) {}
+  var mes = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  // ---------- capa ----------
+  $("capaTipo").textContent = "Website Swap Sheet" + (outro ? "" : " · " + trade.label);
+  $("cTitulo").innerHTML = 'Eight lines on ' + (outro ? "your website" : T.esc(rot) + " websites") + ', and <span class="ganho">what to say instead</span>';
+  $("cPara").textContent = "Prepared for " + (nome || "you") + " · " + mes;
+  rx.cabecalho("Website Swap Sheet · " + trade.label + " · " + mes);
+  var cfg = window.TOOLS_CONFIG || {};
+  if (cfg.AGENDA) { var a = $("agenda"); a.href = cfg.AGENDA; a.classList.remove("hidden"); a.addEventListener("click", function () { ev("book"); }); }
+
+  // ---------- 01 · por que as primeiras linhas pesam ----------
+  var B = MERCADO.textoIa;
+  $("sPorque").innerHTML = capNum("01", "Why it matters") +
+    "<h2>Customers decide in your first two lines</h2>" +
+    '<p class="lead">' + T.esc(SWAPS.intro) + "</p>" +
+    ex("ia", "What consumers said after reading text written by a person and by a machine", barras([
+      { rotulo: "Picked out the machine-written text", valor: B.identificam, texto: B.identificam + "%", classe: "cinza" },
+      { rotulo: "Said they'd engage less once they knew a machine wrote it", valor: B.menos, texto: B.menos + "%", classe: "" }
+    ], 100), "One test with two short texts, 2,000 consumers in the U.K. and the U.S. The company that ran it sells brand software." + cite("bynder")) +
+    "<h3>Two more findings</h3>" +
+    '<ol class="achados">' +
+    "<li><b>Products described with the words “artificial intelligence” were less popular</b> in experiments with more than 1,000 U.S. adults across eight kinds of products." + cite("cicek") + " The sheet keeps the word off your page for the same reason.</li>" +
+    "<li><b>A fast reply lost its advantage when people believed it was automatic,</b> in research on 11.6 million marketplace interactions." + cite("ms") + " What sounds like a person wins, on the website and in the reply.</li>" +
+    "</ol>" +
+    leve("", "<p>The fix is concrete: trade every line that could sit on a competitor's site for one a customer can check, like your hours, your service area, your price or how fast you call back.</p>");
+
+  // ---------- 02 · o mapa da página ----------
+  function mapa() {
+    var W = 360, H = 430, g = "", x0 = 30, w = 300;
+    g += '<rect x="' + x0 + '" y="8" width="' + w + '" height="' + (H - 16) + '" rx="10" fill="#fff" stroke="var(--ink)" stroke-width="1.5"/>';
+    g += '<line x1="' + x0 + '" x2="' + (x0 + w) + '" y1="30" y2="30" stroke="var(--ink)" stroke-width="1"/><circle cx="' + (x0 + 14) + '" cy="19" r="3" fill="var(--ink-3)"/><circle cx="' + (x0 + 24) + '" cy="19" r="3" fill="var(--ink-3)"/><circle cx="' + (x0 + 34) + '" cy="19" r="3" fill="var(--ink-3)"/>';
+    // blocos: [y, altura, número do par, rótulo curto]
+    var B = [[42, 30, 0, "Headline"], [76, 22, 1, "Under the headline"], [108, 44, 2, "About us"], [160, 44, 3, "Services"], [212, 44, 4, "Why choose us"], [264, 52, 5, "Reviews"], [324, 30, 6, "Contact button"], [366, 46, 7, "Footer"]];
+    B.forEach(function (b) {
+      var y = b[0], h = b[1], ativo = b[2] < 2;
+      g += '<rect x="' + (x0 + 14) + '" y="' + y + '" width="' + (w - 28) + '" height="' + h + '" rx="4" fill="' + (ativo ? "var(--ganho-suave)" : "var(--confianca-suave)") + '" stroke="' + (ativo ? "var(--ganho)" : "var(--confianca)") + '" stroke-width="1"/>';
+      g += '<circle cx="' + (x0 + 30) + '" cy="' + (y + h / 2) + '" r="10" fill="' + (ativo ? "var(--ganho)" : "var(--confianca)") + '"/><text x="' + (x0 + 30) + '" y="' + (y + h / 2 + 4) + '" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">' + (b[2] + 1) + "</text>";
+      g += '<text x="' + (x0 + 48) + '" y="' + (y + h / 2 + 4) + '" font-size="12" font-weight="600" fill="var(--ink)">' + b[3] + "</text>";
+    });
+    return '<div class="svg-box" style="max-width:380px"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Wireframe of a homepage with the eight spots of the sheet numbered from top to bottom">' + g + "</svg></div>" +
+      '<p class="legenda"><i style="background:var(--ganho)"></i>Change these two first &nbsp; <i style="background:var(--confianca)"></i>The other six, in order</p>';
+  }
+  $("sMapa").innerHTML = capNum("02", "Where the lines sit") +
+    "<h2>Where the eight lines sit on your homepage</h2>" +
+    '<p class="lead">' + T.esc(SWAPS.how_to_use) + "</p>" +
+    ex("mapa", "The eight spots on a typical homepage, top to bottom", mapa(), "The numbers match the swaps in chapter 03.") +
+    leve("Where to start", "<p>Spots 1 and 2 are what a customer reads before deciding to scroll or call. Swap those two this week, even if the rest waits.</p>");
+
+  // ---------- 03 · as oito trocas ----------
+  $("sTrocas").innerHTML = capNum("03", "The eight swaps") +
+    "<h2>The eight swaps for " + (outro ? "your website" : T.esc(rot) + " websites") + "</h2>" +
+    "<p>Fill each bracket with what's true in your business. If a bracket asks for something you don't do yet, skip that line until you do.</p>" +
+    '<div id="pairs">' + trade.pairs.map(function (p, i) { return Swap.pair(p, i, true).replace('<p class="where">', '<p class="where"><span class="n">' + (i + 1) + "</span>"); }).join("") + "</div>";
+  document.querySelectorAll("#pairs .copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = +b.getAttribute("data-i");
+      T.copy(b, trade.pairs[i].write, function () { ev("copy", "par" + (i + 1)); });
+    });
+  });
+
+  // ---------- 04 · os três testes ----------
+  $("sTestes").innerHTML = capNum("04", "Three tests") +
+    "<h2>Three tests for any line the sheet doesn't cover</h2>" +
+    "<p>Run them on your About page, your service pages and your Google description. A line that fails any of the three goes.</p>" +
+    '<div class="objecoes">' + SWAPS.tests.map(function (x) {
+      return '<div class="obj"><span class="diz">' + T.esc(x.name) + "</span><p><b>" + T.esc(x.question) + "</b></p><p class=\"muted\">" + T.esc(x.example) + "</p></div>";
+    }).join("") + "</div>";
+
+  // ---------- 05 · o plano ----------
+  var P = trade.pairs, semanas = [
+    ["Week 1", "Swap spots 1 and 2: " + P[0].where.toLowerCase() + " and " + P[1].where.toLowerCase() + "."],
+    ["Week 2", "Swap spots 3 to 5: " + [P[2], P[3], P[4]].map(function (p) { return p.where.toLowerCase(); }).join(", ") + "."],
+    ["Week 3", "Swap spots 6 to 8, then run the three tests on your Google description."],
+    ["Week 4", "Read the whole page out loud once more, and ask one customer what they'd check first."]
+  ];
+  $("sPlano").innerHTML = capNum("05", "Your 30-day plan") +
+    "<h2>The whole homepage in four weeks</h2>" +
+    "<p>Nothing here needs a new website. Whoever edits your current site can make each swap in a few minutes.</p>" +
+    '<table class="t"><thead><tr><th>When</th><th>What to do</th></tr></thead><tbody>' +
+    semanas.map(function (l) { return "<tr><td><b>" + l[0] + "</b></td><td>" + T.esc(l[1]) + "</td></tr>"; }).join("") + "</tbody></table>";
+
+  $("fontes").innerHTML = rx.fontes();
+  $("pdf").addEventListener("click", function () { window.print(); });
+  window.addEventListener("beforeprint", function () { ev("print"); });
+  $("sheet").classList.remove("hidden");
+  rx.observa(function (s) { ev("section", s); });
+})();
+</script>
+</body>
+</html>
